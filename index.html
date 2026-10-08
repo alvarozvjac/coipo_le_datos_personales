@@ -1,0 +1,988 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="CON012 – Canal de ejercicio de derechos de titulares de datos personales (Ley N° 21.719). CONAF / Unidad de Información y Análisis. Maqueta no operacional." />
+<title>CON012 – Canal Ley 21.719 · Maqueta</title>
+<meta name="robots" content="noindex,nofollow" />
+<meta name="color-scheme" content="light dark" />
+<style>
+/* =====================================================================================
+   CON012 · Maqueta del canal Ley N° 21.719 — alineada al estándar de interfaz COIPO.
+   Fuente: coipo_master_produccion/identidad/ESTANDAR_UI.md (UI-1 a UI-20) y los tokens de
+   semilla/ESQUELETO/frontend/src/estilos/{tokens,interfaz}.css.
+
+   REGISTROS (§1). Vistas 1-4 (sitio, identificación, formulario, acuse) = EDITORIAL: las abre
+   un ciudadano, ritmo amplio. Vistas 5-7 (bandeja, flujo, perfiles) = OPERATIVO: densidad.
+   Cada vista lleva data-registro y la hoja lo usa para el ritmo vertical.
+
+   ÚNICA EXCEPCIÓN A LOS TOKENS: el bloque «.sitio» (vista 1) es una representación de la portada
+   pública de conaf.cl, no interfaz de CON012. Conserva su paleta a propósito. También el botón
+   ClaveÚnica, que es identidad de un tercero.
+
+   PUNTOS DE CORTE (§8.2, UI-17), solo max-width y con .98:
+     teléfono 559.98px · tableta 767.98px · columna 899.98px · ancho 1399.98px
+   ===================================================================================== */
+
+:root {
+  /* ── MEDIDO del JPEG banner3.jpg (UIA). No se toca. ─────────────────────────────── */
+  --banner-campo-principal: #064928;
+  --banner-campo-izquierdo: #15301d;
+  --banner-remate-derecho: #5e8f19;   /* NUNCA texto encima (UI-5) */
+
+  /* Geometría del banner de UIA (marca.json de conaf_uia). Sin variante corta. */
+  --razon-banner: 17.1299;
+  --alto-minimo: 68px;      /* DECISIÓN de maqueta del estándar */
+  --ancho-asset: 3032;
+  --titulo-desde: 875;      /* inicio del campo plano (en banner3 empieza en 858) */
+  --titulo-hasta: 2704;     /* remate (2744) menos 40 px de aire */
+
+  /* ── DERIVADO / DECISIÓN: copia de interfaz.css ────────────────────────────────── */
+  --verde-institucional: var(--banner-campo-principal);
+  --tinta-institucional: var(--banner-campo-izquierdo);
+  --verde-interfaz-oscuro: #4fb37a;
+
+  --fondo: #f5f7f6;
+  --superficie: #ffffff;
+  --texto: #15301d;
+  --texto-tenue: #5b6560;
+  --borde-sutil: #e3e6e5;
+  --borde-control: #767f7b;
+  --deshabilitado: #9aa5a0;
+
+  --error: #b23b3b;
+  --aviso: #8a5a00;
+  --info: #1f5c8b;
+
+  --e-0: 0; --e-1: .25rem; --e-2: .5rem; --e-3: .75rem; --e-4: 1rem;
+  --e-5: 1.5rem; --e-6: 2rem; --e-7: 3rem; --e-8: 4rem; --e-9: 6rem;
+
+  --f-xs: .75rem; --f-s: .875rem; --f-m: 1rem; --f-l: 1.125rem;
+  --f-xl: 1.375rem; --f-2xl: 1.75rem; --f-3xl: 2.25rem;
+  --f-display: clamp(2.5rem, 5vw, 4rem);          /* EDITORIAL: no se usa en esta maqueta */
+
+  --i-titulo: 1.25; --i-cuerpo: 1.5; --i-denso: 1.35;
+  --tr-titulo: -.015em; --tr-versalita: .12em;
+  --medida: 68ch;
+
+  --r-s: 4px; --r-m: 8px; --r-l: 16px; --r-pill: 999px; --r-circulo: 50%;
+
+  --s-1: 0 2px 6px rgba(6, 73, 40, .08);
+  --s-2: 0 6px 18px rgba(6, 73, 40, .10);
+  --s-3: 0 12px 36px rgba(6, 73, 40, .12);
+
+  --z-base: 0; --z-barra: 100; --z-desplegable: 200; --z-modal: 300; --z-aviso: 400;
+
+  --curva: cubic-bezier(.16, .85, .2, 1);
+  --t-micro: .2s; --t-local: .35s; --t-capa: .5s;
+
+  --foco-color: var(--verde-institucional);
+  --foco-ancho: 3px;
+  --foco-separacion: 2px;
+  --tactil-minimo: 44px;
+
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color-scheme: light dark;
+}
+
+/* UI-3 / UI-4: todo token de color usado como texto, borde o foco se redefine en oscuro. */
+[data-theme='oscuro'] {
+  --fondo: #1a1f1c; --superficie: #232b27; --texto: #e8eae9; --texto-tenue: #aab4ae;
+  --borde-sutil: #2f3a34; --borde-control: #717e77; --deshabilitado: #5a655f;
+  --verde-institucional: var(--verde-interfaz-oscuro);
+  --foco-color: var(--verde-interfaz-oscuro);
+  --error: #f08a7a; --aviso: #e8b23f; --info: #7ab8e0;
+  --s-1: 0 2px 6px rgba(0, 0, 0, .35); --s-2: 0 6px 18px rgba(0, 0, 0, .4); --s-3: 0 12px 36px rgba(0, 0, 0, .45);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='claro']) {
+    --fondo: #1a1f1c; --superficie: #232b27; --texto: #e8eae9; --texto-tenue: #aab4ae;
+    --borde-sutil: #2f3a34; --borde-control: #717e77; --deshabilitado: #5a655f;
+    --verde-institucional: var(--verde-interfaz-oscuro);
+    --foco-color: var(--verde-interfaz-oscuro);
+    --error: #f08a7a; --aviso: #e8b23f; --info: #7ab8e0;
+    --s-1: 0 2px 6px rgba(0, 0, 0, .35); --s-2: 0 6px 18px rgba(0, 0, 0, .4); --s-3: 0 12px 36px rgba(0, 0, 0, .45);
+  }
+}
+[data-theme='claro'] { color-scheme: light; }
+[data-theme='oscuro'] { color-scheme: dark; }
+
+/* ── Base ───────────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--fondo); color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--f-m); line-height: var(--i-cuerpo);
+}
+button, input, select, textarea { font: inherit; -webkit-tap-highlight-color: transparent; }
+a { color: var(--verde-institucional); text-decoration: underline; text-underline-offset: .15em; }
+h1, h2, h3, h4 { margin: 0; line-height: var(--i-titulo); color: var(--verde-institucional); }
+h2 { font-size: var(--f-s); text-transform: uppercase; letter-spacing: .04em; }
+h3 { font-size: var(--f-s); }
+.tabular { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--mono); }
+.muted, .sec { color: var(--texto-tenue); }
+.oculto { display: none !important; }
+.sin-mayus { text-transform: none; }
+.sin-salto { white-space: nowrap; }
+.ancho-completo { width: 100%; }
+.desplaza-x { overflow-x: auto; }     /* UI-20: lo ancho desplaza en su contenedor, no en el body */
+
+/* UI-10: el foco es UN token, una sola receta. */
+:focus-visible {
+  outline: var(--foco-ancho) solid var(--foco-color);
+  outline-offset: var(--foco-separacion);
+  border-radius: var(--r-s);
+}
+
+.salto-al-contenido {
+  position: absolute; left: var(--e-4); top: calc(-1 * var(--e-8)); z-index: var(--z-aviso);
+  padding: var(--e-2) var(--e-4); background: var(--superficie); color: var(--texto);
+  border-radius: var(--r-s); transition: top var(--t-micro) var(--curva);
+}
+.salto-al-contenido:focus-visible { top: var(--e-4); }
+
+/* ── Banner institucional UIA (BannerInstitucional.css de la semilla) ──────────────
+   Tres prohibiciones: sin object-fit, sin texto sobre el remate ni la marca, no sticky. */
+@property --ancho-asset { syntax: "<number>"; inherits: true; initial-value: 3032; }
+@property --titulo-desde { syntax: "<number>"; inherits: true; initial-value: 100000; }
+@property --titulo-hasta { syntax: "<number>"; inherits: true; initial-value: 0; }
+
+.banner-institucional {
+  background: var(--banner-campo-principal);   /* UI-2: exacto, sin ΔE */
+  overflow: hidden; line-height: 0; position: relative;
+  --ancho-imagen: max(100%, calc(var(--alto-minimo) * var(--razon-banner)));
+}
+.banner-institucional .banner-imagen { display: block; width: var(--ancho-imagen); height: auto; }
+.banner-titulo {
+  position: absolute; inset-block: 0;
+  inset-inline-start: calc(var(--titulo-desde) / var(--ancho-asset) * var(--ancho-imagen));
+  inset-inline-end: max(1rem, calc(100% - var(--titulo-hasta) / var(--ancho-asset) * var(--ancho-imagen)));
+  padding-inline-start: clamp(12px, 1.6vw, 28px);
+  display: flex; flex-direction: column; justify-content: center; gap: 2px;
+  line-height: 1.25; color: #fff; pointer-events: none;
+}
+.banner-titulo-nombre {
+  margin: 0; color: #fff; text-transform: none; letter-spacing: .01em;
+  font-size: clamp(.95rem, 1.35vw, 1.45rem); font-weight: 700;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.banner-titulo-meta {
+  margin: 0; font-size: clamp(.7rem, .85vw, .85rem); opacity: .92;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+@media (forced-colors: active) { .banner-titulo { forced-color-adjust: none; } }
+@media (max-width: 559.98px) {          /* teléfono: el título baja a su franja */
+  .banner-titulo { position: static; padding: var(--e-3) var(--e-4); background: var(--banner-campo-principal); inset: auto; }
+  .banner-titulo-nombre { font-size: var(--f-m); white-space: normal; }
+  .banner-titulo-meta { font-size: var(--f-xs); white-space: normal; }
+}
+
+/* ── Barra de contexto (etapa, vigencia, tema) ─────────────────────────────────── */
+.contexto {
+  background: var(--superficie); border-bottom: 1px solid var(--borde-sutil);
+  padding: var(--e-2) var(--e-5); display: flex; flex-wrap: wrap; align-items: center; gap: var(--e-2);
+  font-size: var(--f-xs);
+}
+.contexto .tema { margin-left: auto; }
+.chip {
+  display: inline-flex; align-items: center; gap: var(--e-1); padding: var(--e-1) var(--e-2);
+  border-radius: var(--r-pill); border: 1px solid var(--borde-control);
+  background: var(--fondo); color: var(--texto); font-size: var(--f-xs);
+}
+.aviso-maqueta {
+  padding: var(--e-2) var(--e-5); font-size: var(--f-s);
+  background: color-mix(in srgb, var(--aviso) 12%, var(--superficie)); color: var(--aviso);
+  border-bottom: 1px solid var(--aviso);
+}
+.aviso-maqueta::before { content: "▲"; margin-right: var(--e-2); }
+.aviso-maqueta b { font-weight: 700; }
+
+/* ── Navegación por vistas ─────────────────────────────────────────────────────── */
+.nav {
+  display: flex; gap: var(--e-1); padding: var(--e-3) var(--e-5) 0; max-width: 1300px; margin: 0 auto; flex-wrap: wrap;
+  border-bottom: 1px solid var(--borde-sutil);
+}
+.nav button {
+  min-height: 2.5rem; padding: var(--e-2) var(--e-4);
+  border: 1px solid var(--borde-sutil); border-bottom: 3px solid transparent;
+  border-radius: var(--r-m) var(--r-m) 0 0; background: var(--fondo); color: var(--texto-tenue);
+  cursor: pointer; font-weight: 600; font-size: var(--f-s);
+  transition: background var(--t-micro) var(--curva), color var(--t-micro) var(--curva), border-color var(--t-micro) var(--curva);
+}
+.nav button:hover { background: var(--superficie); color: var(--texto); }
+.nav button:active { background: var(--borde-sutil); }
+.nav button.activo, .nav button[aria-current='page'] {
+  background: var(--superficie); color: var(--verde-institucional);
+  border-bottom-color: var(--verde-institucional);        /* la forma (barra) lleva el estado, no solo el color */
+}
+
+.vista { display: none; max-width: 1300px; margin: 0 auto; padding: var(--e-4) var(--e-5) var(--e-7); }
+.vista.activa { display: block; }
+.vista[data-registro='editorial'] { padding-top: var(--e-5); }
+.vista[data-registro='editorial'] .columna { gap: var(--e-5); }
+
+.contenedor { display: grid; grid-template-columns: 340px 1fr; gap: var(--e-4); }
+.contenedor.bandeja { grid-template-columns: minmax(0, 1fr) 380px; }
+.columna { display: flex; flex-direction: column; gap: var(--e-4); min-width: 0; }
+@media (max-width: 899.98px) {          /* columna */
+  .contenedor, .contenedor.bandeja, .grid2 { grid-template-columns: 1fr; }
+}
+
+/* ── Tarjetas ──────────────────────────────────────────────────────────────────── */
+.tarjeta {
+  background: var(--superficie); border: 1px solid var(--borde-sutil); border-radius: var(--r-m);
+  box-shadow: var(--s-1); padding: var(--e-4) var(--e-4); min-width: 0; overflow-wrap: break-word;
+}
+.tarjeta:has(table.casos) { overflow-x: auto; }     /* UI-20: la tabla desplaza dentro de su tarjeta */
+.grid2 > *, .contenedor > *, .perfiles > * { min-width: 0; }
+.tarjeta > h2 { margin-bottom: var(--e-3); }
+.tarjeta .cab { display: flex; align-items: baseline; justify-content: space-between; gap: var(--e-3); margin-bottom: var(--e-2); flex-wrap: wrap; }
+.tarjeta .cab h2 { margin: 0; }
+.tarjeta.guia { border-color: var(--info); background: color-mix(in srgb, var(--info) 8%, var(--superficie)); }
+.tarjeta.cabecera-bandeja { display: flex; gap: var(--e-4); align-items: center; flex-wrap: wrap; }
+.cabecera-bandeja .selector { margin-left: auto; display: flex; gap: var(--e-2); align-items: center; flex-wrap: wrap; }
+.cabecera-bandeja .selector label { font-size: var(--f-xs); color: var(--texto-tenue); font-weight: 600; }
+.lista-plana { margin: 0; padding-left: var(--e-5); font-size: var(--f-s); line-height: 1.6; }
+
+/* UI-12: el estado vacío es editorial aunque viva en el operativo. */
+.vacio {
+  display: grid; justify-items: center; text-align: center; gap: var(--e-2);
+  padding: var(--e-7) var(--e-4); color: var(--texto-tenue);
+}
+.vacio::before {
+  content: "☰"; display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: var(--r-circulo);
+  border: 1px solid var(--borde-control); font-size: var(--f-xl); color: var(--verde-institucional);
+}
+.vacio p { margin: 0; max-width: var(--medida); }
+
+/* ── Formularios ───────────────────────────────────────────────────────────────── */
+.campo { display: flex; flex-direction: column; gap: var(--e-1); margin-bottom: var(--e-3); }
+.campo label { font-size: var(--f-xs); font-weight: 600; color: var(--texto-tenue); }
+.campo input, .campo select, .campo textarea,
+.control {
+  padding: var(--e-2) var(--e-3); border: 1px solid var(--borde-control); border-radius: var(--r-m);
+  background: var(--superficie); color: var(--texto); width: 100%; font-size: var(--f-s);
+  transition: border-color var(--t-micro) var(--curva);
+}
+.control { width: auto; }
+.campo input:hover, .campo select:hover, .campo textarea:hover, .control:hover { border-color: var(--texto); }
+.campo input[readonly] { background: var(--fondo); color: var(--texto-tenue); }
+.campo input:disabled, .campo select:disabled, .campo textarea:disabled { background: var(--fondo); color: var(--deshabilitado); border-style: dashed; cursor: not-allowed; }
+.campo [aria-invalid='true'] { border-color: var(--error); }
+.fila { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-3); }
+.fila3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--e-3); }
+.opcion { display: flex; gap: var(--e-2); font-size: var(--f-s); align-items: flex-start; }
+.opcion input { margin-top: var(--e-1); }
+.opcion.declaracion { margin: var(--e-2) 0 var(--e-3); }
+details summary { cursor: pointer; color: var(--verde-institucional); font-weight: 600; font-size: var(--f-s); }
+
+/* Botones — los ocho estados (UI-9): reposo, hover, focus-visible (global), active,
+   disabled, cargando [aria-busy], vacío y error = no aplican a un botón; viven en el
+   campo y en el .aviso. */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--e-2);
+  min-height: 2.5rem; padding: var(--e-2) var(--e-4); border-radius: var(--r-m);
+  border: 1px solid var(--borde-control); background: var(--superficie); color: var(--texto);
+  cursor: pointer; font-weight: 600; font-size: var(--f-s);
+  transition: background var(--t-micro) var(--curva), border-color var(--t-micro) var(--curva), color var(--t-micro) var(--curva);
+}
+.btn:hover:not(:disabled):not([aria-busy='true']) { border-color: var(--verde-institucional); color: var(--verde-institucional); }
+.btn:active:not(:disabled):not([aria-busy='true']) { background: var(--borde-sutil); transform: scale(.98); }
+.btn:disabled { background: var(--fondo); color: var(--deshabilitado); border-color: var(--borde-sutil); border-style: dashed; cursor: not-allowed; }
+.btn[aria-busy='true'] { cursor: progress; }
+.btn[aria-busy='true']::before {
+  content: ""; width: 1em; height: 1em; border: 2px solid currentColor; border-top-color: transparent;
+  border-radius: var(--r-circulo); animation: girar 1s linear infinite;
+}
+@keyframes girar { to { transform: rotate(360deg); } }
+.btn.primario { background: var(--banner-campo-principal); border-color: var(--banner-campo-principal); color: #fff; }
+.btn.primario:hover:not(:disabled):not([aria-busy='true']) { background: var(--tinta-institucional); border-color: var(--tinta-institucional); color: #fff; }
+.btn.primario:active:not(:disabled):not([aria-busy='true']) { background: #000; }
+.btn.primario:disabled { background: var(--fondo); color: var(--deshabilitado); border-color: var(--borde-sutil); }
+[data-theme='oscuro'] .btn.primario:focus-visible { outline-offset: var(--foco-separacion); }
+.btn.verde { background: var(--banner-campo-principal); border-color: var(--banner-campo-principal); color: #fff; }
+.btn.verde:hover:not(:disabled) { background: var(--tinta-institucional); color: #fff; }
+.btn.pequeno { min-height: 2rem; padding: var(--e-1) var(--e-2); font-size: var(--f-xs); font-weight: 500; }
+.btn.ancho { width: 100%; padding: var(--e-3); font-size: var(--f-m); }
+.acciones { display: flex; flex-wrap: wrap; gap: var(--e-2); }
+.ayuda { font-size: var(--f-xs); color: var(--texto-tenue); margin-top: var(--e-1); }
+
+/* Botón ClaveÚnica: identidad de un tercero (gob.cl). Se conserva su azul. */
+.cu {
+  display: inline-flex; align-items: center; gap: var(--e-3); min-height: var(--tactil-minimo);
+  padding: var(--e-3) var(--e-4); border-radius: var(--r-m); background: #0f69b4; color: #fff;
+  font-weight: 700; border: none; cursor: pointer; font-size: var(--f-m);
+}
+.cu span { background: #fff; color: #0f69b4; border-radius: var(--r-s); padding: 1px var(--e-2); font-size: var(--f-xs); }
+.cu:hover:not(:disabled) { background: #0b4f87; }
+.cu:active:not(:disabled) { background: #083b66; }
+.cu:disabled { background: var(--deshabilitado); cursor: progress; }
+
+/* ── Estados con forma + etiqueta + color (UI-13, UI-14) ───────────────────────── */
+.sem-mini {
+  --c: var(--texto-tenue);
+  display: inline-flex; align-items: center; gap: var(--e-1); padding: 1px var(--e-2);
+  border-radius: var(--r-pill); font-size: var(--f-xs); font-weight: 700; max-width: 100%;
+  color: var(--c); background: color-mix(in srgb, var(--c) 10%, var(--superficie)); border: 1px solid var(--c);
+}
+table.casos .sem-mini { white-space: nowrap; }
+.sem-mini.VERDE { --c: var(--verde-institucional); }
+.sem-mini.AMARILLO { --c: var(--aviso); }
+.sem-mini.ROJO { --c: var(--error); }
+.sem-mini.AZUL { --c: var(--info); }
+.sem-mini.GRIS { --c: var(--texto-tenue); }
+.sem-mini.VERDE::before { content: "✓"; }
+.sem-mini.AMARILLO::before { content: "▲"; }
+.sem-mini.ROJO::before { content: "✕"; }
+
+.aviso { font-size: var(--f-s); border-radius: var(--r-m); padding: var(--e-2) var(--e-3); border: 1px solid var(--c); color: var(--c); background: color-mix(in srgb, var(--c) 9%, var(--superficie)); }
+.aviso.info { --c: var(--info); }
+.aviso.warn { --c: var(--aviso); }
+.aviso.ok { --c: var(--verde-institucional); }
+.aviso.crit { --c: var(--error); }
+.aviso::before { display: inline-block; margin-right: var(--e-2); font-weight: 700; }
+.aviso.info::before { content: "i"; display: inline-grid; vertical-align: baseline; place-items: center; width: 1.1em; height: 1.1em; border: 1.5px solid currentColor; border-radius: var(--r-circulo); font-size: var(--f-xs); line-height: 1; }
+.aviso.warn::before { content: "▲"; }
+.aviso.ok::before { content: "✓"; }
+.aviso.crit::before { content: "✕"; }
+.aviso.sin-icono::before { content: none; }
+
+/* Pasos */
+.pasos { display: flex; gap: var(--e-2); flex-wrap: wrap; margin-bottom: var(--e-4); }
+.pasos span { padding: var(--e-1) var(--e-3); border-radius: var(--r-pill); border: 1px solid var(--borde-control); background: var(--superficie); color: var(--texto-tenue); font-size: var(--f-xs); font-weight: 600; }
+.pasos span.activo { background: var(--banner-campo-principal); border-color: var(--banner-campo-principal); color: #fff; }
+.pasos span.hecho { border-color: var(--verde-institucional); color: var(--verde-institucional); }
+.pasos span.hecho::before { content: "✓ "; }
+
+/* Derechos */
+.derechos { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-2); }
+.derecho {
+  position: relative; border: 1px solid var(--borde-control); border-radius: var(--r-m); padding: var(--e-3);
+  cursor: pointer; display: flex; gap: var(--e-3); align-items: flex-start; background: var(--superficie);
+  transition: border-color var(--t-micro) var(--curva), background var(--t-micro) var(--curva);
+}
+.derecho:hover { border-color: var(--verde-institucional); }
+.derecho:focus-within { outline: var(--foco-ancho) solid var(--foco-color); outline-offset: var(--foco-separacion); }
+.derecho input:focus-visible { outline: none; }
+.derecho.sel { border-color: var(--verde-institucional); box-shadow: inset 0 0 0 1px var(--verde-institucional); background: color-mix(in srgb, var(--verde-institucional) 7%, var(--superficie)); }
+.derecho input { margin-top: var(--e-1); }
+.derecho b { display: block; font-size: var(--f-s); color: var(--verde-institucional); }
+.derecho small { color: var(--texto-tenue); font-size: var(--f-xs); }
+.derecho.cond { border-style: dashed; }
+.bloque-derecho { border-left: 3px solid var(--verde-institucional); padding: var(--e-2) var(--e-3); margin: var(--e-2) 0 var(--e-3); background: var(--fondo); border-radius: 0 var(--r-m) var(--r-m) 0; }
+.bloque-derecho h3 { margin-bottom: var(--e-2); }
+.docs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-1) var(--e-3); font-size: var(--f-s); margin-bottom: var(--e-2); }
+.docs label { display: flex; gap: var(--e-2); align-items: flex-start; }
+.adj { border: 1px dashed var(--borde-control); border-radius: var(--r-m); padding: var(--e-3); text-align: center; color: var(--texto-tenue); font-size: var(--f-xs); background: var(--fondo); }
+
+/* Acuse */
+.acuse { border: 1px solid var(--verde-institucional); background: color-mix(in srgb, var(--verde-institucional) 9%, var(--superficie)); border-radius: var(--r-m); padding: var(--e-5); }
+.acuse .num { font-size: var(--f-2xl); font-weight: 700; color: var(--verde-institucional); }
+.dl { display: grid; grid-template-columns: 180px 1fr; gap: var(--e-1) var(--e-3); font-size: var(--f-s); }
+.dl dt { color: var(--texto-tenue); }
+.dl dd { margin: 0; }
+
+/* Bandeja */
+.kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--e-3); margin-bottom: var(--e-4); }
+.kpi { background: var(--superficie); border: 1px solid var(--borde-sutil); border-radius: var(--r-m); padding: var(--e-3) var(--e-4); box-shadow: var(--s-1); }
+.kpi .v { font-size: var(--f-2xl); font-weight: 700; color: var(--verde-institucional); line-height: var(--i-titulo); }
+.kpi .l { font-size: var(--f-xs); color: var(--texto-tenue); }
+.kpi.rojo .v { color: var(--error); }
+.kpi.amar .v { color: var(--aviso); }
+table.casos { width: 100%; border-collapse: collapse; font-size: var(--f-xs); }
+table.casos th { text-align: left; font-size: var(--f-xs); text-transform: uppercase; letter-spacing: .04em; color: var(--texto-tenue); padding: var(--e-2); border-bottom: 1px solid var(--borde-control); }
+table.casos td { padding: var(--e-2); border-bottom: 1px solid var(--borde-sutil); vertical-align: middle; }
+table.casos td:first-child, table.casos td.tabular { white-space: nowrap; }
+table.casos tbody tr { cursor: pointer; transition: background var(--t-micro) var(--curva); }
+table.casos tbody tr:hover td { background: color-mix(in srgb, var(--verde-institucional) 7%, var(--superficie)); }
+table.casos tbody tr:focus-visible { outline-offset: calc(-1 * var(--foco-ancho)); }
+table.casos tr.sel td { background: color-mix(in srgb, var(--verde-institucional) 13%, var(--superficie)); }
+table.casos tr.sel td:first-child { box-shadow: inset 4px 0 0 var(--verde-institucional); font-weight: 700; }
+.filtros { display: flex; gap: var(--e-2); flex-wrap: wrap; margin-bottom: var(--e-3); }
+.filtros .control { font-size: var(--f-s); }
+.leyenda { font-size: var(--f-xs); color: var(--texto-tenue); display: flex; gap: var(--e-3); flex-wrap: wrap; margin-top: var(--e-2); align-items: center; }
+
+/* Línea de hitos: forma distinta por estado (hecho = ✓, actual = relleno, pendiente = hueco) */
+.linea { position: relative; padding-left: var(--e-5); margin: var(--e-2) 0; }
+.linea::before { content: ""; position: absolute; left: .45rem; top: var(--e-1); bottom: calc(-1 * var(--e-3)); width: 2px; background: var(--borde-control); }
+.linea:last-child::before { display: none; }
+.hito { position: relative; margin-bottom: var(--e-3); font-size: var(--f-s); }
+.hito::before {
+  content: ""; position: absolute; left: calc(-1 * var(--e-5)); top: 2px; width: 1rem; height: 1rem; border-radius: var(--r-circulo);
+  background: var(--superficie); border: 2px solid var(--borde-control); display: grid; place-items: center; font-size: .625rem; line-height: 1; color: #fff;
+}
+.hito.hecho::before { content: "✓"; background: var(--verde-institucional); border-color: var(--verde-institucional); }
+[data-theme='oscuro'] .hito.hecho::before { color: #000; }
+.hito.actual::before { background: var(--superficie); border: 5px solid var(--verde-institucional); }
+.hito b { display: block; }
+.hito small { color: var(--texto-tenue); }
+
+.plazo { display: grid; grid-template-columns: auto 1fr; gap: var(--e-3); align-items: center; border-radius: var(--r-m); padding: var(--e-3) var(--e-4); border: 1px solid var(--c, var(--borde-control)); color: var(--c, var(--texto)); background: color-mix(in srgb, var(--c, var(--texto)) 8%, var(--superficie)); }
+.plazo .n { font-size: var(--f-3xl); font-weight: 700; line-height: 1; }
+.plazo .d { font-size: var(--f-xs); }
+.plazo.VERDE { --c: var(--verde-institucional); }
+.plazo.AMARILLO { --c: var(--aviso); }
+.plazo.ROJO { --c: var(--error); }
+.plazo.VERDE .d::before { content: "✓ "; }
+.plazo.AMARILLO .d::before { content: "▲ "; }
+.plazo.ROJO .d::before { content: "✕ "; }
+
+.pie { padding: var(--e-4) var(--e-5); text-align: center; font-size: var(--f-xs); color: var(--texto-tenue); border-top: 1px solid var(--borde-sutil); max-width: 1300px; margin: 0 auto; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-4); }
+.perfiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--e-4); }
+.perfil .dl { grid-template-columns: 70px 1fr; font-size: var(--f-xs); }
+.perfil h3 { font-size: var(--f-s); }
+table.matriz td:not(:first-child) { text-align: center; font-size: var(--f-xs); }
+@media (max-width: 899.98px) { .perfiles { grid-template-columns: 1fr 1fr; } .kpis { grid-template-columns: repeat(2, 1fr); } .cs-footer { grid-template-columns: 1fr 1fr; } }
+
+/* ── Teléfono ──────────────────────────────────────────────────────────────────── */
+@media (max-width: 559.98px) {
+  .fila, .fila3, .derechos, .docs, .perfiles { grid-template-columns: 1fr; }
+  .dl { grid-template-columns: 1fr; }
+  .dl dt { margin-top: var(--e-2); }
+  .vista { padding-left: var(--e-4); padding-right: var(--e-4); }
+  .contexto, .aviso-maqueta, .nav { padding-left: var(--e-4); padding-right: var(--e-4); }
+  .contexto .tema { margin-left: 0; }
+}
+
+/* ── Táctil (§8.3-8.4): 44 px, letra ≥ 16 px en campos, sin depender del hover ─── */
+@media (pointer: coarse) {
+  .btn, .nav button, .cu, .derecho, .campo input:not([type='checkbox']), .campo select, .control, details summary, .contexto .btn { min-height: var(--tactil-minimo); }
+  .btn.pequeno { min-height: var(--tactil-minimo); padding-inline: var(--e-3); }
+  .opcion, .docs label { min-height: var(--tactil-minimo); align-items: center; }
+  input[type='checkbox'], input[type='radio'] { width: 1.5rem; height: 1.5rem; }
+  table.casos td { padding-block: var(--e-3); }
+}
+@media (hover: none) and (pointer: coarse) {
+  input, select, textarea { font-size: max(16px, var(--f-m)); }
+  button, a, input, select, textarea { touch-action: manipulation; }
+}
+
+/* ── UI-15: prefers-reduced-motion apaga TODO el movimiento ──────────────────────
+   Sin opacity:1!important a propósito: aquí ninguna animación depende del scroll, y
+   .btn:disabled no usa opacity (ver §7 hueco 10 del estándar). */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+  .btn[aria-busy='true']::before { animation: none; border-top-color: currentColor; opacity: .5; }
+}
+
+/* =====================================================================================
+   .sitio — REPRESENTACIÓN de la portada pública de conaf.cl (vista 1).
+   No es interfaz de CON012: conserva la paleta del sitio real (sept-2026) a propósito y NO
+   adopta tokens ni tema oscuro. Su único aporte propio es el realce de lo «Propuesto».
+   ===================================================================================== */
+.sitio-marco { overflow-x: auto; border-radius: var(--r-m); border: 1px solid var(--borde-control); box-shadow: var(--s-1); }
+.sitio { min-width: 880px; background: #fff; color: #555; font-family: "Noto Sans", system-ui, sans-serif; position: relative;
+  --resalte: #fab219; --resalte-fondo: #fff4d6; --resalte-tinta: #3d2a00; --sitio-azul: #064928; }
+.sitio .marca-maqueta { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); background: var(--resalte); color: var(--resalte-tinta); font-weight: 800; font-size: 11px; letter-spacing: .06em; padding: 4px 12px; border-radius: 999px; z-index: var(--z-barra); box-shadow: var(--s-1); white-space: nowrap; }
+.cs-top { background: #f5f5f5; padding: 6px 60px; font-size: 11px; color: #3f7a36; display: flex; gap: 6px; align-items: center; }
+.cs-top span + span::before { content: "|"; color: #bbb; margin-right: 6px; }
+.cs-top .cs-rrss { margin-left: auto; display: flex; gap: 5px; }
+.cs-top .cs-rrss::before { content: none; }
+.cs-rrss i, .cs-soc i { width: 20px; height: 20px; border: 1px solid rgba(63, 122, 54, .6); border-radius: 50%; display: inline-grid; place-items: center; font-style: normal; font-size: 9px; color: #3f7a36; }
+.cs-nav { display: flex; align-items: center; gap: 22px; padding: 12px 60px; font-size: 13px; color: #333; }
+.cs-nav nav { display: flex; gap: 18px; }
+.cs-nav nav .act { color: #3f7a36; border-bottom: 2px solid #67ad5c; }
+.cs-logos { display: flex; gap: 8px; align-items: center; }
+.cs-gob { width: 44px; height: 38px; background: linear-gradient(#0039a6 0 50%, #d52b1e 50% 100%); border-radius: 2px; display: inline-block; }
+.cs-conaf { color: #2f8f3f; font-weight: 900; font-size: 18px; letter-spacing: -.5px; }
+.cs-conaf.grande { font-size: 26px; text-align: center; display: block; margin-bottom: 8px; }
+.cs-buscar { margin-left: auto; border: 1px solid #ddd; border-radius: 999px; padding: 6px 14px; color: #767676; font-size: 12px; min-width: 160px; }
+.cs-omit { background: #fafafa; color: #767676; text-align: center; padding: 18px; font-size: 12px; border-top: 1px dashed #e5e5e5; border-bottom: 1px dashed #e5e5e5; }
+.cs-carrusel { display: flex; align-items: center; gap: 8px; padding: 22px 14px 6px; }
+.cs-arrow { color: #bbb; font-size: 26px; padding: 0 4px; user-select: none; }
+.cs-tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; flex: 1; min-width: 0; }
+.cs-tile { text-decoration: none; color: #222; display: block; min-width: 0; }
+.cs-img { aspect-ratio: 350/210; border-radius: 2px; position: relative; padding: 14px 16px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+.cs-img b { font-size: clamp(14px, 1.6vw, 22px); line-height: 1.05; color: #fff; }
+.cs-img small { font-size: 10px; color: #fff; margin-top: 6px; opacity: .9; }
+.cs-img.mesu { background: #1a5ce0; align-items: center; text-align: center; }
+.mesu-w { font-family: ui-monospace, monospace; letter-spacing: 4px; font-weight: 400; }
+.cs-img.ta { background: #1f7a7a; }
+.cs-folder { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); width: 44px; height: 34px; background: #fff; border-radius: 3px; opacity: .95; }
+.cs-img.tr { background: #f0eeb0; }
+.cs-img.tr b { color: #3f7a4a; }
+.cs-img.tr .light { font-weight: 400; color: #4f8a5a; }
+.cs-zig { color: #4f8a5a; font-size: 22px; letter-spacing: -4px; line-height: 1; }
+.cs-img.dp { background: var(--sitio-azul); align-items: flex-start; }
+.cs-img.dp b { font-size: clamp(14px, 1.5vw, 20px); }
+.cs-ico { font-size: 22px; margin-bottom: 4px; }
+.cs-tile.nuevo { outline: 3px solid var(--resalte); outline-offset: 3px; border-radius: 4px; }
+.cs-tag { position: absolute; top: 6px; right: 6px; background: var(--resalte); color: var(--resalte-tinta); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; }
+.cs-tag2 { background: var(--resalte); color: var(--resalte-tinta); font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 999px; vertical-align: middle; }
+.cs-cap { text-align: center; font-weight: 700; font-size: 15px; color: #222; margin-top: 10px; }
+.cs-dots { display: flex; gap: 9px; justify-content: center; padding: 10px 0 18px; }
+.cs-dots i { width: 7px; height: 7px; border-radius: 50%; background: #8dc98a; display: inline-block; }
+.cs-dots i.on { background: #fff; border: 2px solid #3f7a36; width: 9px; height: 9px; }
+.cs-footer { background: #f5f5f5; display: grid; grid-template-columns: 1.1fr 1fr 1fr 1.3fr; gap: 24px; padding: 30px 60px 26px; font-size: 12px; color: #595959; }
+.cs-footer h5 { color: #3f7a36; font-size: 12px; margin: 0 0 18px; font-weight: 700; }
+.cs-footer ul { list-style: none; margin: 0; padding: 0; }
+.cs-footer li { margin: 0 0 9px; padding-left: 12px; position: relative; }
+.cs-footer li::before { content: "›"; position: absolute; left: 0; color: #3f7a36; font-weight: 700; }
+.cs-footer li.nuevo { background: var(--resalte-fondo); border-radius: 6px; padding: 4px 6px 4px 14px; margin-left: -6px; }
+.cs-footer li.nuevo::before { left: 4px; }
+.cs-footer li a { color: var(--sitio-azul); font-weight: 700; text-decoration: none; }
+.cs-social { display: flex; gap: 16px; align-items: flex-start; }
+.cs-forestin { font-size: 64px; line-height: 1; }
+.cs-soc { display: flex; flex-direction: column; gap: 8px; }
+.cs-soc i { width: 30px; height: 30px; font-size: 11px; }
+.cs-contacto p { margin: 0 0 8px; line-height: 1.5; }
+.cs-contacto p.nuevo { background: var(--resalte-fondo); border-radius: 6px; padding: 3px 6px; color: var(--sitio-azul); font-weight: 700; }
+.cs-copy { background: #f5f5f5; border-top: 1px solid #e3e3e3; padding: 12px 60px; font-size: 11px; color: #767676; }
+</style>
+</head>
+<body>
+<a class="salto-al-contenido" href="#contenido">Saltar al contenido</a>
+<header class="banner-institucional">
+  <img class="banner-imagen" src="data:image/jpeg;base64,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PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvZy9pbWcvIgogICAgICAgICAgICB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIKICAgICAgICAgICAgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiCiAgICAgICAgICAgIHhtbG5zOnN0RXZ0PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiCiAgICAgICAgICAgIHhtbG5zOnN0TWZzPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvTWFuaWZlc3RJdGVtIyIKICAgICAgICAgICAgeG1sbnM6aWxsdXN0cmF0b3I9Imh0dHA6Ly9ucy5hZG9iZS5jb20vaWxsdXN0cmF0b3IvMS4wLyIKICAgICAgICAgICAgeG1sbnM6cGRmPSJodHRwOi8vbnMuYWRvYmUuY29tL3BkZi8xLjMvIgogICAgICAgICAgICB4bWxuczpwZGZ4PSJodHRwOi8vbnMuYWRvYmUuY29tL3BkZngvMS4zLyI+CiAgICAgICAgIDxkYzpmb3JtYXQ+SlBFRyBmaWxlIGZvcm1hdDwvZGM6Zm9ybWF0PgogICAgICAgICA8ZGM6dGl0bGU+CiAgICAgICAgICAgIDxyZGY6QWx0PgogICAgICAgICAgICAgICA8cmRmOmxpIHhtbDpsYW5nPSJ4LWRlZmF1bHQiPmJhbm5lcjwvcmRmOmxpPgogICAgICAgICAgICA8L3JkZjpBbHQ+CiAgICAgICAgIDwvZGM6dGl0bGU+CiAgICAgICAgIDx4bXA6Q3JlYXRvclRvb2w+QWRvYmUgSWxsdXN0cmF0b3IgMzAuNyAoTWFjaW50b3NoKTwveG1wOkNyZWF0b3JUb29sPgogICAgICAgICA8eG1wOkNyZWF0ZURhdGU+MjAyNi0wOC0wNVQyMzoxNjowNS0wNDowMDwveG1wOkNyZWF0ZURhdGU+CiAgICAgICAgIDx4bXA6TW9kaWZ5RGF0ZT4yMDI2LTA4LTA2VDAzOjE2OjA1WjwveG1wOk1vZGlmeURhdGU+CiAgICAgICAgIDx4bXA6TWV0YWRhdGFEYXRlPjIwMjYtMDgtMDVUMjM6MTY6MDUtMDQ6MDA8L3htcDpNZXRhZGF0YURhdGU+CiAgICAgICAgIDx4bXA6VGh1bWJuYWlscz4KICAgICAgICAgICAgPHJkZjpBbHQ+CiAgICAgICAgICAgICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0iUmVzb3VyY2UiPgogICAgICAgICAgICAgICAgICA8eG1wR0ltZzp3aWR0aD4yNTY8L3htcEdJbWc6d2lkdGg+CiAgICAgICAgICAgICAgICAgIDx4bXBHSW1nOmhlaWdodD4xMjQ8L3htcEdJbWc6aGVpZ2h0PgogICAgICAgICAgICAgICAgICA8eG1wR0ltZzpmb3JtYXQ+SlBFRzwveG1wR0ltZzpmb3JtYXQ+CiAgICAgICAgICAgICAgICAgIDx4bXBHSW1nOmltYWdlPi85ai80QUFRU2taSlJnQUJBZ0VBQUFBQUFBRC83UUFzVUdodmRHOXphRzl3SURNdU1BQTRRa2xOQSswQUFBQUFBQkFBQUFBQUFBRUEmI3hBO0FRQUFBQUFBQVFBQi8rNEFEa0ZrYjJKbEFHVEFBQUFBQWYvYkFJUUFCZ1FFQkFVRUJnVUZCZ2tHQlFZSkN3Z0dCZ2dMREFvS0N3b0smI3hBO0RCQU1EQXdNREF3UURBNFBFQThPREJNVEZCUVRFeHdiR3hzY0h4OGZIeDhmSHg4Zkh3RUhCd2NOREEwWUVCQVlHaFVSRlJvZkh4OGYmI3hBO0h4OGZIeDhmSHg4Zkh4OGZIeDhmSHg4Zkh4OGZIeDhmSHg4Zkh4OGZIeDhmSHg4Zkh4OGZIeDhmSHg4Zi84QUFFUWdBZkFFQUF3RVImI3hBO0FBSVJBUU1SQWYvRUFhSUFBQUFIQVFFQkFRRUFBQUFBQUFBQUFBUUZBd0lHQVFBSENBa0tDd0VBQWdJREFRRUJBUUVBQUFBQUFBQUEmI3hBO0FRQUNBd1FGQmdjSUNRb0xFQUFDQVFNREFnUUNCZ2NEQkFJR0FuTUJBZ01SQkFBRklSSXhRVkVHRTJFaWNZRVVNcEdoQnhXeFFpUEImI3hBO1V0SGhNeFppOENSeWd2RWxRelJUa3FLeVkzUENOVVFuazZPek5oZFVaSFREMHVJSUpvTUpDaGdaaEpSRlJxUzBWdE5WS0JyeTQvUEUmI3hBOzFPVDBaWFdGbGFXMXhkWGw5V1oyaHBhbXRzYlc1dlkzUjFkbmQ0ZVhwN2ZIMStmM09FaFlhSGlJbUtpNHlOam8rQ2s1U1ZscGVZbVomI3hBO3FibkoyZW41S2pwS1dtcDZpcHFxdXNyYTZ2b1JBQUlDQVFJREJRVUVCUVlFQ0FNRGJRRUFBaEVEQkNFU01VRUZVUk5oSWdaeGdaRXkmI3hBO29iSHdGTUhSNFNOQ0ZWSmljdkV6SkRSRGdoYVNVeVdpWTdMQ0IzUFNOZUpFZ3hkVWt3Z0pDaGdaSmpaRkdpZGtkRlUzOHFPend5Z3AmI3hBOzArUHpoSlNrdE1UVTVQUmxkWVdWcGJYRjFlWDFSbFptZG9hV3ByYkcxdWIyUjFkbmQ0ZVhwN2ZIMStmM09FaFlhSGlJbUtpNHlOam8mI3hBOytEbEpXV2w1aVptcHVjblo2ZmtxT2twYWFucUttcXE2eXRycSt2L2FBQXdEQVFBQ0VRTVJBRDhBOVU0cTdGWFlxN0ZYWXE3RlhZcTcmI3hBO0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZXQmo4OWZ5blA4QTAwRWYmI3hBOy9JbTQvd0NxZU1kMnZ4WXJoK2VYNVVucDVoaCttT2Nmcmp4bjZlZjJiL2MyWTZueUkrSkErK21tL1BQOHFWNitZSXQvQ0s0UDZvOGcmI3hBO0pncHlEZzVrZkFnL2RhMy9BSlh0K1UvL0FGTUVmL0ltNS82cFllSU5maVI3M2Y4QUs5dnluLzZtQ1A4QTVFM1AvVkxIaUMrSkh2ZC8mI3hBO3l2YjhwLzhBcVlJLytSTnovd0JVc2VJTDRrZTlVLzVYaCtWZi9Vd1JmOGlwL3dEcW5qeEJIaXg3M2Y4QUs3L3lyLzZtQ0wva1ZQOEEmI3hBOzlVOGVJTDRzZTkzL0FDdS84cS8rcGdpLzVGVC9BUFZQSGlDK0xIdmQvd0Fydi9Ldi9xWUl2K1JVL3dEMVR4NGd2aXg3M2Y4QUs3L3kmI3hBO3IvNm1DTC9rVlA4QTlVOGVJTDRzZTkzL0FDdS84cS8rcGdpLzVGVC9BUFZQSGlDK0xIdmQvd0Fydi9Ldi9xWUl2K1JVL3dEMVR4NGcmI3hBO3ZpeDczZjhBSzcveXIvNm1DTC9rVlA4QTlVOGVJTDRzZTlFNmYrYnY1ZGFqZVc5blpheWsxemRTSkJieGlLY2NwSkdDcXRUR0J1VDMmI3hBO3g0d3ZpeHVyWmhrbXgyS3V4VjJLdXhWMkt1eFYyS3V4VjJLdXhWMkt1eFYyS3V4VjJLdXhWOEQrVnRTMHpUUE1XbjZocWxsK2tiQzEmI3hBO21XV2V5SkFFb1hjS2VRWlNLOVFSdjB5a09ERTBYcnY1a1A4QWxKNXRHbUhTdFUwM3k1UEQvdlVJclZpWDljSzNHUXdSaVA4QWR0WGMmI3hBO08zWHRralJiWjhKZVE2bFkyZW42aHFsbEJlUlg4VnZXS0M4aTJTVXJLZzVSMTlxOU8zU295TFVRejYxdGZ5eUhsYjlIelhobGd1cnUmI3hBO2FlSzdIMVZiNkFzVmp0ZzdNeXlMR0ZINzVSRXdKK0lVQXJoMlorbWxEVWZLWDVWUWFkUGNSYXpPSFJCd3BkMnM3ODNJQ3NJSTRnN2gmI3hBO2U2OGdmY2I0MEZNWXZPU2llcXdqWXZFckVJNUhFa1YySkZUVEl0UksvQXdkaXJzVmRpcnNWZGlxcmJXMDF6T3NNS2xwSE5BQmtaU0UmI3hBO1JaU0F5L1MvSlVJSE81WU80L1pOYVYraW1hM0xyajBabkd5anlsb3FXL20vUVdSRVBIVWJRN2RRQk9tKytEQnFPS1k5Nnd4K29QcW4mI3hBO042NTdzVmRpcnNWZGlyc1ZkaXJzVmRpcnNWZGlyc1ZkaXJzVmRpcnNWZGlyeitQOGd2eWtqYmt1Z0tUMCtLNXUySDNOTVJqSFpyOEsmI3hBO0txUHlML0tnZjlNL0YveU51UDhBcXBqUDFjL3MyKzVzeDFEa0I4UUQ5OXJKZnlHL0tXV25MUUVGT25DNHVrLzRqS01nSUFKeUVUNWcmI3hBO2ZBQWZkU2wvMEw5K1VYL1ZoLzZlNzMvcXRoNFExZUZGMy9RdjM1UmY5V0gvQUtlNzMvcXRqd2hmQ2l1SDVBL2xJQlFhRC8wOTN2OEEmI3hBOzFXeDRRdmd4N25mOHFCL0tUL3F4ZjlQZDUvMVd4NFFqd1k5enYrVkEvbEovMVl2K251OC82clk4SVh3WTl6ditWQS9sSi8xWXYrbnUmI3hBOzgvNnJZOElYd1k5enYrVkEvbEovMVl2K251OC82clk4SVh3WTl6ditWQS9sSi8xWXYrbnU4LzZyWThJWHdZOXp2K1ZBL2xKLzFZdismI3hBO251OC82clk4SVh3WTl5SnNmeVMvTEN4a2FTMTBVUnV3b1crczNUR24reWxPUXlZSVRGRUpHS0k2STVmeXQ4aUtLRFRLVi80dnVQOEEmI3hBO3FwbFA1SEYzZmFVOEFWTFQ4dGZKVnBkdzNsdnAzQzR0NUZsaGs5YWRxT2hES2FOSVFhRWQ4bEhSNGdiQTVlOVBBR1Raa3NuWXE3RlgmI3hBO1lxN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFkmI3hBO3E3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhrM243OHd2TkdrZWFMeXdzTCswdHJXQVJjSTUmI3hBOzRKcEgrT05XWThvNDNXbFc4Y3g4bVFnMDRPZlBLTWlBUXgxdnpaODlxMVAwblkwcFV0OVZ1S0RjZ2cxaHJ0VEllTEpwL05UN3g4bkwmI3hBOytidm5BVHl3ejZ4WXdtTWlqbTFtNHNDQWFnR01QMzdxTWZHbDNyK2FuM2o1UFUveTU4d1grdStYQmYzczBkeE42OHNZbWlReG95b1ImI3hBO1FoVFEvZmwrT1ZoenRQTXlqWlpSbGpjN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlgmI3hBO1lxN0ZYeWI1eWw4MEw1ejE4dytidGZoZ0dvWGl4V2tXcDNjY01hbWR5cXhwR3dDcWdIQlZHd0ZNeEo1eURRRHI4dXJsRWtDdnRTUXQmI3hBOzV1Vll3UFBIbVZpQ0N6ZnBXN3FhL3N0dU9udGtmek11NXgveitUdUgydTlmemVybHY4WmVaSFZoc2gxYTdvdFBDamc3KzV4R29sM0omI3hBO2pyOGg2RDdWcG04NDFmOEE1M1B6TjhYMlIrbGJyNGY5WDR2MTF3L21KTXZ6MCs0TEdqOHpTcWZVODNlWWpKUWZ2VzFPNkxudDNZajMmI3hBOzZZRHFKZHdZeTEwKzRPRUhtSGtwL3dBVitZQ0ZyVmYwbmMwYXZqOFZkdmJCK1lsM0JoK2V5ZnpSOGxJMlhtVWtrZWN2TVlyMkdwVGImI3hBO2ZmaitZbDNCZnoyVCthUGtpb2JMeldzWUVmbi9BTXhwdFgwMTFPNkZENGZDbE1QNWlYa3lHdnlkdytSYVJQT3FzR1BuYnpTd0JCS24mI3hBO1ZMaWg5alNod2ZtWjl5UDVReTl3KzFNdFIxVHpiZTZuSmZEekZydHFrakszMUszMU8vUzNVS3BYaXFtVm5BTmFuNHVvK2RSSFBNQmomI3hBO0RYWlFLcTBIY1MrY25XTGo1djhBTWlGRlJXNGFwZVZiZ0RWbXF4RlhyOFZQRGFuZVExRXU1dS9QVDh2dC9TcHh2NTFTbkx6ZjVta28mI3hBO0NEeTFXNzNPKzU0c3UrLzRmUEQrWWt2NTZmY0ZxZjQyVXFUNXk4ME9CU29PcVhWRFJxNzBJN2JiZHZmZkQrWWt2NTZmY0cwL3hyVlEmI3hBO2ZPZm1mcHhMSFZMcnUxZVJvZkRiYnQ3NFB6RWwvUFQ3Z3FTRHpoUnovalh6S2dvVFVhcmQ3VUo2Y2ordkFOVEs5d3hqMmhrdmNDdmkmI3hBOyt5Y3pYYnV4VjJLdXhWMkt1eFYyS3V4VjJLdXhWMkt1eFYyS3V4VjJLdXhWMkt2a3p6aGVJM25UWDBTVlNFMUs3Vnd2RmlwOWQ2MUgmI3hBO2ptR2NVNUVrQW40T2x5d2x4bmJxbHMxeGFJeWdYZkFFRTFuRVVPNEd3SEtRZzc5Y3FBdmt5eWFYTEQ2b3lIdkZLTTJvMk1iZ2ZYNGkmI3hBO2g2TUhoWS9TRmRxZmZoNFMxSEhMdUtvM21kQXNhcHFwNHhnS281b29VQ3ZTai81UndDSkhKa2VNOTdVbXVRekJGT29HV0lHcDVGVFEmI3hBO2tBRWdjalhEUllFUzgxTnRSdEtEamRBbjlvSGdLZkw0amdvb29ybTFDeG9lTjJDZXdJUUQvaVp4b3Bvcm9kWGdSQi9wdkU5ZUlDTXQmI3hBO1QxNnQ0QWRzYUtnRmVOZFRoVTNxODZmWjR4VXI4Ni93dzdydXUvVGtIRmY5UCtLbnhEaEZRSDJQTGZIZE8vbXVnOHl5eGdVMUl4VTUmI3hBO1VFZkNnNVVyVDRsNjhSWDVZN3FETHphYnpaZjEyMUlrRG9TNjE4UDFZK3BibDVxSjh3U2trbTdqSk81SjlQQnVqMUtxNjVGdHl2MUgmI3hBO2pSSXovRVlhS2QxRnRiWndVTjFHd1lVSUhEY0hCdWoxUHNuTmk3NTJLcE5MNTA4blJYRXR2THJ1blIzRURtT2VGcnVBT2pxU0dWMUwmI3hBOzFWZ1JRZzVLTURMa0xZOFE3MWtubnJ5UkVBWmZNT21JRDBMWGx1UDF2bFltRDFiY21LVVBxQkh2V2Y4QUt3dklQL1V5NlYvMG5XMy8mI3hBO0FEWGhzTmZFSGY4QUt3dklQL1V5NlYvMG5XMy9BRFhqWVhpQ3BINTQ4bFNyeWo4d2FhNjFwVmJ5QWl2MFBqWVJ4RHZYL3dDTS9KLy8mI3hBO0FGZmRQLzZTNFA4QW12R3d2RU85MytNL0ovOEExZmRQL3dDa3VEL212R3d2RU85MytNL0ovd0QxZmRQL0FPa3VEL212R3d2RU85MysmI3hBO00vSi8vVjkwL3dENlM0UCthOGJDOFE3M2Y0ejhuLzhBVjkwLy9wTGcvd0NhOGJDOFE3M2Y0ejhuL3dEVjkwLy9BS1M0UCthOGJDOFEmI3hBOzczZjR6OG4vQVBWOTAvOEE2UzRQK2E4YkM4UTczZjR6OG4vOVgzVC9BUHBMZy81cnhzTHhEdmQvalB5Zi93QlgzVC8ra3VEL0FKcngmI3hBO3NMeER2ZC9qUHlmL0FOWDNULzhBcEtnLzVyeHNMeGp2Zk1kejVXOHo2ZCtiT3Y2MWUrUjdyekRwRStvNmd5UVNXMGp4U0pMTzdSeW8mI3hBO2FGVHRRZ21vb2NoMWErdkpJNy84dk5UYS9XYXg4azY4bHJLckc2dDVrcVZkcGFnUU1rSzhWV01mdEE3N2RPb3BGZVNLMXZ5UFBkMkYmI3hBO3dOTy9McldyTFVaWldhR2FzelJScVRVRDB6R1FmbHQ4OEtuM01XVDhyUHpIWmdvOHRhaUs5emJTZ2ZlUmdwalJaSjVXL0xIemJiYXgmI3hBO2F5YXQ1ZHZ6cDhSTFRLYko3bFdvcG9yUkNXMkxBdDFwSU1BRFVJbTdJWmpMNU5qZTFUMC9KVWtkeEhJc2pKK2pMM2l5bC9pajUvWG0mI3hBO0pIRlIxVWRUdlg3UnBudytYMklQVXZLMS9DWVYwNzh2RGZJQzdPWjdPK3RXWGtlUVQ0TDJmbW9MRUE3R2dHUHdRUjVJT1BRL044Zk0mI3hBO0Q4c29IVm41S0h0N3R1Szh1UVN2cWcwQStIclh4cmo4RVVmNXFTYTM1QzgrYWxlQ2UzOG1UYVpFcUJCYldrRS9Db0pKWW1WcEdMRW4mI3hBO3g2VUdBZ3NURW5vbC93RHlxNzh4UCtwZHYvOEFrUS85TUZGSEJMdVRRZmxINWgrck03YWZxNHVQU0RSd2pUU1FaYUNxTS9yQ2k5ZmkmI3hBO29mOEFWMzJQQ253ejV2UXRNOHArVGJYU29ZTHo4dWRYdjcrR0pWZTZhS2VJVFNDZ0xzcXprSnk2N1Z4NFF6R09OY2o5ckdmekI4aXYmI3hBO3FBc0I1UThpNmxwZnBoemZzOGM3YzJZSnhDaDJrK0ZTR29kaWU0eE1lNWpLSGNDeG5UdnluODlUWElXNjBTK2dnRzdNWUhKUHNLQTUmI3hBO1ZsTW9qWVdVREdXVlJmbGpxY0VBV0hSTDNuVGRtdHBHMzk2cm12UGprN2dwT0czMVRtN2M1Mkt2ays0OG0rYnJEODJOZDF1NzhqM0gmI3hBO21EUjdqVXI5MWdsdDJlTjQ1cDNaSlkvMlNhYnJYYks2M2FhMzVKSnFYNVo2N0xxOGQxWStTTmJoc1pESzE1YVNCV29aQzNGWUNzUzgmI3hBO1ZRRVU1Y3Z3M2FSWGtqZGUvTCs4dmJHZjlIZmx4ckZocVVqRm81bGR6Q3RXci9kRkdGS2JjUlQ1NDBranlZb241US9tYzdoUjVadncmI3hBO1NhVmFGbEgwazdZS0xHaW1jZjVOL21ZaUJSNWR1OXY4bGY2NE9FdEp4eUo1THY4QWxUMzVtLzhBVXUzZi9Bci9BRng0U2p3cGR6dismI3hBO1ZQZm1iLzFMdDMvd0svMXg0U3ZoUzduZjhxZS9NMy9xWGJ2L0FJRmY2NDhKWHdwZHp2OEFsVDM1bS84QVV1M2YvQXIvQUZ4NFN2aFMmI3hBOzduZjhxZS9NMy9xWGJ2OEE0RmY2NDhKWHdwZHp2K1ZQZm1iL0FOUzdkLzhBQXIvWEhoSytGTHVkL3dBcWUvTTMvcVhidi9nVi9yancmI3hBO2xmQ2wzTy81VTkrWnYvVXUzZjhBd0svMXg0U3ZoUzdrUllma3orWWN0d3EzV2gzY0VBM2QrQVkvSUFFNVhsTW9qWVdVakZKbFVQNVMmI3hBOzYxQkNGaDBTNjUwM1pvaTIvdlVacmo0NU80S1RndDlNUDl0dm1jM2JtTllxa3ZtaXkrdldzTnQ5YnY3RWh6TDlZMDROeitFY2VEOFYmI3hBO2ZadlVyU25iMnlFeGJYa0Zpckk5eVdhTnBTYVZjQ1dUVmRhMUVQRXlMRmRwTklncTNJc1FzWStQOTNRVjdIYnJnaUs2bHJoRGg2eUwmI3hBO0pJbzFibW9hUVViY3NHRzlBZmhKN2ZMSnQxTHhiMGNQemJidFUwMzlxNHBwV3dwZGlyc1ZkaXF6MGwzM2JjMSswM2pYeHhWM3ByeTUmI3hBO1ZhdEFQdEdteHIwcjc0cTJxaGEwcnZ2dVNldnp4VmRpcnNWUmVLWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYWXEmI3hBOzdGVUsvd0J0dm1jVU5ZcTh3L1B2ekRQb2VnYWJQRGR5V2p6WG5vcTBiTXZKbWphaXR4OXE5Y2dmcUh1UDZHeUEyTHlSdnpkWklyVVcmI3hBOytveVQzRUlWakk5dzBaY2djV3Framl2R1RiMzc1TGdrblpPclQ4d0k1YlFYY3VxWFZwTXBaMnRTczhrbFY1RmlWS01PSEVqcUtkYWomI3hBOzRhaEVKSW9NZXNQekIxRFVmTTAwZW5hdmRxc2xucURSd2ZXSkZiMUk3Q1I2eG9hSFo5MUk2VXlVb2tEZGpPcU5JUDhBSkx6SDVxVzYmI3hBOzFTRFhQTWtsc25LSkVYVTd0aE1TQ2FyQkZNM0l2UTByMEJwV3ZUSWpJUnlGdUxySnlnUFNEYjJUU2RFOHk2cHA4dDgvbUcrdFZsbGQmI3hBO3RPNE5ielJ5V29vSXBKQ0l6WDFLRjE0RmZoWVYzQnpMaE0wTHEvYzF3bktoZk5RMHZ5WjV1RHozTjlyMHNseS93UndEMVlVb0dMaHEmI3hBOyt0TlEwYW13NmR1bUVWZDAzZm1TUlJEQ1B6WTgxYXpiZVlORFRUOVpuaGhtME95bkgxYWFUMFpDN1NmdkF4cHk1YmZFVnJUYzVoNVQmI3hBO1VpNU9JV0dGNmIrYVBubUxsYVIzVjNmQ05paXpGcGpWUWFiVUZmZjRzaVVNK3V2TSt2YWJwMTM5VjFLOC9SMXZNenVDdjFoM2RrVlUmI3hBO1JHY0xJbytGbW9OdXZmT2Zua09USmRuZmw2aU52bTduSG9vWTQrb1hMbXluOGc5Yjh4YXRkYXBOcU43YzNka0kwV0FYU2hDc2drYm0mI3hBO0ZYOW9CZVB4ZU5SMnpiNmFnU0x2NGsvZTYzT090VTlrek1jWjJLb3ZGTHNWZGlyc1ZkaXJzVmRpcnNWZGlyc1ZkaXJzVmRpcnNWZGkmI3hBO3JzVmRpcUZmN2JmTTRvYXhWNWQrZk9nVGEzcFdpVzBkamRYNlEzLzFpYUt5aWVhVlZqaWFqQUlyRlJ5SVhsVGF2MFpBL1VQY2YwTmsmI3hBO0RRTHhMVi95WjFxNWxjNlZwT29NenNzMFVrMm56UUZHSXE0SWFxcjhSL1pKNlpNU0laY1FLenkxK1UzbmU5T295YTFvT3BXZDZxVmcmI3hBOzQyd1paUzZ2eStJdkVxbFc0OGVOZm9wbVJHVVdFclMveVQ1Qzg4YWQrWUNYTno1YTFLSFQ0SU5RVTZqY1dNMEtCR3NwWTBxeFhpT1cmI3hBO3czWS9PdVZaQ0tMR1hKbkdyK1RmTk4zZHpSeGFCZUMzNGhMZ0cxbUFucFhaaUZVMFdwNGtHbzZnMXpYOGVTQjlJTHR4SERLUHFJWkgmI3hBO1A1eC9NN1QwdDdleThsM2d0WVlFZ1MxaHRybFlnVVphbGZUaStBZW12QkZyUWUvVE15R29KRzhhTHJzbWlnT1U3VC9XZk9IbUM0OHQmI3hBO1NUNk5vV3NXK3VtRVF3YWZOcGQxL3ZSSUFoa053WVRGeGlMYzZrZ054OTh5b2dYdWRuWFN4eXZ5WUgrYkhrSHpIZjZqb2FhVG9kNWMmI3hBO1cxbG8xbmExaGprWVJQR0hIcE5VSDRsQkZhbXVZK2I2elhLM01oOUtUMjNsTHpqYldjRVNlV3RRbGxvcXlFMms2OGUxZVN4VnFQbWYmI3hBO25sUnRXVmVkUEpHdnh2Y1hGalphaGVUVHFuS3podFpSSHhnbVlEbFQxWTMvQUdtNG5zMjFlK2tHbG5DWWpWeC9uVTdtR3JqT0pKMlAmI3hBO3ZaTitTSGw3elhwZDNxYzJ0V3N0bGIzRWNadGJXV05rQ0d2eFVKVlYvd0JpT24wNXNOSjlSMkk4eUt0d05WS3dOd1hyZVo3aHV4VkYmI3hBOzRwZGlyc1ZkaXJzVmRpcnNWZGlyc1ZkaXJzVmRpcnNWZGlyc1ZkaXJzVlFyL2JiNW5GRFdLb0cva2tqbVZvL1NMZWhJUDM3Y1k2R1cmI3hBO0VIa1FEMnlCK29lNC9vWmZ3bFpaU2FxVDZrTnZaaEhQRjVZSFp1MytydlJ2OHgzbXhBYmxqMXlTUlpHc3JKcEJ4cXpOSlhZOWo2WjImI3hBO0hiL09xbFYxTmJuL0FBL2ZQZExFczVnbHFJcWxRT0o3c0FUWHIwL3JnUEpqUGtVTkxOY3Rmc3ZwNmV6K3FWVGxJNWxBNTdFcUVQeGMmI3hBO2Q2VituR2w0UXF5RHpKSkR4bXQ3RjVBeElqTFRNcEEveWpHS0hmd3dzbGV3WFUrUWp1clMxU0NnK0tKMnF1eDJDTkdBZHdQMnNWVXQmI3hBO1J1RERYNElINTNGQ0p5L1RndjJlQ1NiKzUyR0tDRUl1czNzVUNpRkxSQlZRRUl1VkZXSExiOTFYdzN4VUtjT28zUWxyYncyS0s1NG4mI3hBO2d0dzc3VXI4S3dyMVBUK05NVlRtMmE2YTBqTjFISEhjVmNPa1BJcHN4QzA1cWpmWkE3ZmhpcS9GWFlxaThVdXhWMkt1eFYyS3V4VjImI3hBO0t1eFYyS3V4VjJLdXhWMkt1eFYyS3V4VjJLb1YvdHQ4emlockZVTk15cmV4bGlGQmdsRlN4ajZ2RVB0RGNaQS9VUGNmME1oeUt3VHgmI3hBOzh3a2JlcXhVL1p1bVk3Yjdnc1BuWHd4bklqb1NvRnQrdkV3VnZVUUNnLzQrMzl2ZWh5YUc5VUwvQU9INzhFRGlMZVRpd2N5VnFwL2EmI3hBO08rQThtTStSZGQzTU1jN1ZjRWtra0M1SzA0ZUs4bHA5R1JuSWpvU3pBdGMwOEpEZ1NvUTJ3UDFsaDhYVURZN2RlMlRRcXgyN3ZSNk4mI3hBO3hZY2dWdVpTTjk5cUhwaXFIdlRDR2N5R0lIMVc0aVdab1FmZ1d0T05lV1FseGRGRmRWT2VPMjlVajFJZ28vWk53UWRoWHhxS2pHVVMmI3hBO1RzVWdoZEMxa1pDRWFMbWRoUzZZbXBJTk5qc2NtaE1HVmxqUldGQ0tqcVcySFRjN25GQ3pGWFlxaThVdXhWMkt1eFYyS3V4VjJLdXgmI3hBO1YyS3V4VjJLdXhWMkt1eFYyS3V4VjJLdm4zWHYrY3VmS09oK1lkWDBUVU5GMUI3dlNyKzZzWkpMZjBXamY2dE84UWNGM1J2aUNWcFQmI3hBO0ZDWitULzhBbkpiUlBOMTFKYTZINWQxU2VlSVZNWk5xcElBTEdsWmgwQzViand5bmRkR25OcUlZNjRqejViRStmUk5vdnpZZlZYc1cmI3hBO3N2TDkrUDBoYnl2WnlOSllnRlZLU2x6Nms0VlFGai9icGxKanZia1h0VHJqOHlyK3owNGFwTm91b0paR2MyUzNBWFRDUFhFeGdJWGomI3hBO01UeDlUNGVYMmZmdms0eE1pSWptV0Vqd3hNanlDRGkvT2l6WTZqRytsM3hrc0kvV3VZNjZaSHdqNE5NU0E4akdUNEVQMmErSFVqSFAmI3hBO0U0cGNNOWl5MDRPYUJuRGVJNWxIU2Ztc0x1MC9Sa0hsdS9hOHY3YWIwQzhsZ3JsRlZlVE9GbFhqL2ZKMUFyMnFRY3Bsa2lCdVVha2UmI3hBO0ZFR2V3bHkvQVFjWDV4cmQzWWFMUmRTOU9lU1VMemlzVlVlaXJTeUw2cnloUndTTmlTM2I2TUp5QUdqMUYvQnlScE1oaEdkZW1mTGMmI3hBO2RmTG1yVC9taGYyMmw2bHExeHBHb0N3MHFWWUwrZmpwckZIWll5dXl6YzNCRXlIa29Jb2ZiSlJJSXNORW9rR2luT20rZmRiK3Z6Mk0mI3hBO2ZscTdudUxkWW5sVDFkTVZna3hrUkZETGRLaExOYnliQ3BGUGxrNXhNZWV6WEhKRWl3VXRrL05TUzdndHJxRFE3eElML3dEZTIwdnEmI3hBOzZhNEt5UkpJdlBuY2Z1NnFOZzlDVHQxMnlYZ3oyMjU4bUVzMEFDU2RvODByZy9PeXlrMU85MHFQVEwwWDFyT2JlU0psc0U5T2RXWlQmI3hBO0dyTk1FY2xnUUtFMXB0a1lRTXVUWVpBYnQ2eitjMFdqNlhhYXRxZWw2bEhZWDZLOW5MNlZoS3pLeUNWR0tSeU80SEg0dmlVZEQ0R2smI3hBO1pqaEZua1dXTWNjakdPNUN0NVovUDdTOWRqbWkwdlI5UnYzdElIdkoyUDFPSGpDdkdwVUdXTUg3UStFVlk0cVJXeVg2My96bEI1WjAmI3hBO2F3dDc2NzBUVURiM05QU01iV3JOUWdOVXFKcWpxT3VLR1BYUC9PYWZra1c4aHRkQzFKN2dLZlNXVDBFUXRUYmt5eU9RSytBeFY5S1kmI3hBO3BkaXJzVmRpcnNWZGlyc1ZkaXJzVmRpcnNWZGlyc1ZkaXJzVmRpcnNWZkVINWhmOUMyLzQrOHkvcGY4QXhsK2x2MHJmZnBENnAraS8mI3hBO3EvMWo2eS9xK2o2bngrbnpydzViMDY0cW1INWUvd0RLamZyRngvaGIvSGYxbjRlWHAvbzMxT2greDZXL1RybVRwdkYzOE8rVzdSbTgmI3hBO1BianJ5WmZvZi9LdmZyTmwraVA4ZGV0NmIvVWZUK29VOUtueGNhL0R3cDlHVUMyOUY2bC9nLzhBUm4rbmY0OC9SLzF0K1BMNmh3K3MmI3hBOyt2OEFId3AveThVK3o4UE9uZW1ISHhjUTRmcXZaaktxMzVJTmYrVmIrdHEzTC9HbjFuMFA5eTNyZm96MXZxL3BOOXIxZjNuSDBxL1omI3hBOzdZTlRmRis4cTl1ZGQ0cjdhcnpycXd4OEczRHozcnY4L3dCcU1sL3dkOWIwN2wvanY2NTlYUDZQNC9vNzFQcS93Y3VtL3dESlhsdjAmI3hBOzc1Ums0UDRxWjZtdUFlTDlQUy8wSWFEL0FBSDlSZzlQL0huMUQxcFBRNWZVUFI5YmcvcTE1L0Q5am55NWJVclhhdVR5VmNlTG53K24mI3hBOytyNWVUWmg0dHVDL0t2c3BVbS93UCtnTlY5VC9BQnorZ3ZWVDlMZjhjMzBQVXBGNmZLbTMyZlQ0OGR1UEh0VENLNkxQaXM4WFByYUkmI3hBOzA3L0JmNlRtL1J2K012MGx4WDFQcTM2STlTdFplUEgwL3dEZGxmVit6OFhYTHRSNG5DZkZ2aHFOOFhLcjlQUHorbno1Tk1PRy9UVjcmI3hBOzh2dC9haHJYL2xYL0FLV24vVi84Wi9WNlIvVWVQNko5S25IOTF5cDhOZjVQVTNyMDN5Y3ZHb1h4Y3R1Zkt1bncreEg3dmZsNS90UU4mI3hBO24veXEvd0RTMnAvVlA4Y2ZwVGxKK2xmVCtvK3J5NWZ2UFZwdlhuMXIzeDAvaTJmRHUvSmNuQlhxZHJmL0FDckQ5RjZiK2xQOGIvVXYmI3hBO1RUOUY4djBmOWlqZW53cHY5bm53cjJyVGF1VVpmbzlmMGVmTHArejdHL0RmRjZQcTh1YS95UDhBOHFxOWJVUDhKLzR1OVg5SHkvWHYmI3hBO1MvUkgrOFB3ZXBUMU5xZlorenY0WkZCdTkrYkdmT0gvQUNvajlDV1A2WC94cDlRLzQ4L1QvUmYyZCtuTHRXbnYwN1lVTU0vNnhZLzcmI3hBOy9uL3VVWXErL3dERlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYWXE3RlhZcTdGWFlxN0ZYLy9aPC94bXBHSW1nOmltYWdlPgogICAgICAgICAgICAgICA8L3JkZjpsaT4KICAgICAgICAgICAgPC9yZGY6QWx0PgogICAgICAgICA8L3htcDpUaHVtYm5haWxzPgogICAgICAgICA8eG1wTU06UmVuZGl0aW9uQ2xhc3M+cHJvb2Y6cGRmPC94bXBNTTpSZW5kaXRpb25DbGFzcz4KICAgICAgICAgPHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD51dWlkOjY1RTYzOTA2ODZDRjExREJBNkUyRDg4N0NFQUNCNDA3PC94bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ+CiAgICAgICAgIDx4bXBNTTpEb2N1bWVudElEPnhtcC5kaWQ6ZmIxYjY0YjctOGQ4MS00ZWI3LThjYzItZmE0NDlmYjUyNDBkPC94bXBNTTpEb2N1bWVudElEPgogICAgICAgICA8eG1wTU06SW5zdGFuY2VJRD54bXAuaWlkOmZiMWI2NGI3LThkODEtNGViNy04Y2MyLWZhNDQ5ZmI1MjQwZDwveG1wTU06SW5zdGFuY2VJRD4KICAgICAgICAgPHhtcE1NOkRlcml2ZWRGcm9tIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgPHN0UmVmOmluc3RhbmNlSUQ+eG1wLmlpZDo5NmJiOGE1Yi02MjMwLTQ3YTAtODg2MS1iNDYwYzc0NmUxOTI8L3N0UmVmOmluc3RhbmNlSUQ+CiAgICAgICAgICAgIDxzdFJlZjpkb2N1bWVudElEPnhtcC5kaWQ6OTZiYjhhNWItNjIzMC00N2EwLTg4NjEtYjQ2MGM3NDZlMTkyPC9zdFJlZjpkb2N1bWVudElEPgogICAgICAgICAgICA8c3RSZWY6b3JpZ2luYWxEb2N1bWVudElEPnV1aWQ6NjVFNjM5MDY4NkNGMTFEQkE2RTJEODg3Q0VBQ0I0MDc8L3N0UmVmOm9yaWdpbmFsRG9jdW1lbnRJRD4KICAgICAgICAgICAgPHN0UmVmOnJlbmRpdGlvbkNsYXNzPnByb29mOnBkZjwvc3RSZWY6cmVuZGl0aW9uQ2xhc3M+CiAgICAgICAgIDwveG1wTU06RGVyaXZlZEZyb20+CiAgICAgICAgIDx4bXBNTTpIaXN0b3J5PgogICAgICAgICAgICA8cmRmOlNlcT4KICAgICAgICAgICAgICAgPHJkZjpsaSByZGY6cGFyc2VUeXBlPSJSZXNvdXJjZSI+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDphY3Rpb24+c2F2ZWQ8L3N0RXZ0OmFjdGlvbj4KICAgICAgICAgICAgICAgICAgPHN0RXZ0Omluc3RhbmNlSUQ+eG1wLmlpZDoyZDdkZjZiNC0zYWY2LTQ3ODQtYmNjYi04ZGQ5YTEwN2ViZDU8L3N0RXZ0Omluc3RhbmNlSUQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDp3aGVuPjIwMjYtMDgtMDVUMTQ6NTc6MTctMDQ6MDA8L3N0RXZ0OndoZW4+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDpzb2Z0d2FyZUFnZW50PkFkb2JlIElsbHVzdHJhdG9yIDMwLjcgKE1hY2ludG9zaCk8L3N0RXZ0OnNvZnR3YXJlQWdlbnQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDpjaGFuZ2VkPi88L3N0RXZ0OmNoYW5nZWQ+CiAgICAgICAgICAgICAgIDwvcmRmOmxpPgogICAgICAgICAgICAgICA8cmRmOmxpIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgICAgICAgPHN0RXZ0OmFjdGlvbj5zYXZlZDwvc3RFdnQ6YWN0aW9uPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6aW5zdGFuY2VJRD54bXAuaWlkOmZiMWI2NGI3LThkODEtNGViNy04Y2MyLWZhNDQ5ZmI1MjQwZDwvc3RFdnQ6aW5zdGFuY2VJRD4KICAgICAgICAgICAgICAgICAgPHN0RXZ0OndoZW4+MjAyNi0wOC0wNVQyMzoxNjowNS0wNDowMDwvc3RFdnQ6d2hlbj4KICAgICAgICAgICAgICAgICAgPHN0RXZ0OnNvZnR3YXJlQWdlbnQ+QWRvYmUgSWxsdXN0cmF0b3IgMzAuNyAoTWFjaW50b3NoKTwvc3RFdnQ6c29mdHdhcmVBZ2VudD4KICAgICAgICAgICAgICAgICAgPHN0RXZ0OmNoYW5nZWQ+Lzwvc3RFdnQ6Y2hhbmdlZD4KICAgICAgICAgICAgICAgPC9yZGY6bGk+CiAgICAgICAgICAgIDwvcmRmOlNlcT4KICAgICAgICAgPC94bXBNTTpIaXN0b3J5PgogICAgICAgICA8eG1wTU06TWFuaWZlc3Q+CiAgICAgICAgICAgIDxyZGY6U2VxPgogICAgICAgICAgICAgICA8cmRmOmxpIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgICAgICAgPHN0TWZzOmxpbmtGb3JtPkVtYmVkQnlSZWZlcmVuY2U8L3N0TWZzOmxpbmtGb3JtPgogICAgICAgICAgICAgICAgICA8c3RNZnM6cmVmZXJlbmNlIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgICAgICAgICAgPHN0UmVmOmZpbGVQYXRoPi9Vc2Vycy9hbGZvbnNvcXVpcm96L0Rlc2t0b3AvQ2FwdHVyYSBkZSBwYW50YWxsYSAyMDI2LTA4LTA1IGEgbGEocykgOC4xMS4zMeKAr3AubS4ucG5nPC9zdFJlZjpmaWxlUGF0aD4KICAgICAgICAgICAgICAgICAgICAgPHN0UmVmOmRvY3VtZW50SUQ+MDwvc3RSZWY6ZG9jdW1lbnRJRD4KICAgICAgICAgICAgICAgICAgICAgPHN0UmVmOmluc3RhbmNlSUQ+MDwvc3RSZWY6aW5zdGFuY2VJRD4KICAgICAgICAgICAgICAgICAgPC9zdE1mczpyZWZlcmVuY2U+CiAgICAgICAgICAgICAgIDwvcmRmOmxpPgogICAgICAgICAgICAgICA8cmRmOmxpIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgICAgICAgPHN0TWZzOmxpbmtGb3JtPkVtYmVkQnlSZWZlcmVuY2U8L3N0TWZzOmxpbmtGb3JtPgogICAgICAgICAgICAgICAgICA8c3RNZnM6cmVmZXJlbmNlIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgICAgICAgICAgPHN0UmVmOmZpbGVQYXRoPi9Vc2Vycy9hbGZvbnNvcXVpcm96L0Rlc2t0b3AvQ2FwdHVyYSBkZSBwYW50YWxsYSAyMDI2LTA4LTA1IGEgbGEocykgOC4xMS4zMeKAr3AubS4ucG5nPC9zdFJlZjpmaWxlUGF0aD4KICAgICAgICAgICAgICAgICAgICAgPHN0UmVmOmRvY3VtZW50SUQ+MDwvc3RSZWY6ZG9jdW1lbnRJRD4KICAgICAgICAgICAgICAgICAgICAgPHN0UmVmOmluc3RhbmNlSUQ+MDwvc3RSZWY6aW5zdGFuY2VJRD4KICAgICAgICAgICAgICAgICAgPC9zdE1mczpyZWZlcmVuY2U+CiAgICAgICAgICAgICAgIDwvcmRmOmxpPgogICAgICAgICAgICAgICA8cmRmOmxpIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgICAgICAgPHN0TWZzOmxpbmtGb3JtPkVtYmVkQnlSZWZlcmVuY2U8L3N0TWZzOmxpbmtGb3JtPgogICAgICAgICAgICAgICAgICA8c3RNZnM6cmVmZXJlbmNlIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgICAgICAgICAgPHN0UmVmOmZpbGVQYXRoPi9Vc2Vycy9hbGZvbnNvcXVpcm96L0Rlc2t0b3AvQ2FwdHVyYSBkZSBwYW50YWxsYSAyMDI2LTA4LTA1IGEgbGEocykgOC4xMS4zMeKAr3AubS4ucG5nPC9zdFJlZjpmaWxlUGF0aD4KICAgICAgICAgICAgICAgICAgICAgPHN0UmVmOmRvY3VtZW50SUQ+MDwvc3RSZWY6ZG9jdW1lbnRJRD4KICAgICAgICAgICAgICAgICAgICAgPHN0UmVmOmluc3RhbmNlSUQ+MDwvc3RSZWY6aW5zdGFuY2VJRD4KICAgICAgICAgICAgICAgICAgPC9zdE1mczpyZWZlcmVuY2U+CiAgICAgICAgICAgICAgIDwvcmRmOmxpPgogICAgICAgICAgICA8L3JkZjpTZXE+CiAgICAgICAgIDwveG1wTU06TWFuaWZlc3Q+CiAgICAgICAgIDxpbGx1c3RyYXRvcjpTdGFydHVwUHJvZmlsZT5CcmFuZGluZzwvaWxsdXN0cmF0b3I6U3RhcnR1cFByb2ZpbGU+CiAgICAgICAgIDxpbGx1c3RyYXRvcjpDcmVhdG9yU3ViVG9vbD5BSVJvYmluPC9pbGx1c3RyYXRvcjpDcmVhdG9yU3ViVG9vbD4KICAgICAgICAgPGlsbHVzdHJhdG9yOklzRmlsZVNhdmVkVmlhSW5zdGFudFNhdmU+VHJ1ZTwvaWxsdXN0cmF0b3I6SXNGaWxlU2F2ZWRWaWFJbnN0YW50U2F2ZT4KICAgICAgICAgPHBkZjpQcm9kdWNlcj5BZG9iZSBQREYgbGlicmFyeSAxOC4wMDwvcGRmOlByb2R1Y2VyPgogICAgICAgICA8cGRmeDpDcmVhdG9yVmVyc2lvbj4yMS4wLjA8L3BkZng6Q3JlYXRvclZlcnNpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgCjw/eHBhY2tldCBlbmQ9InciPz7/4AAQSkZJRgABAgEBLAEsAAD/7QAsUGhvdG9zaG9wIDMuMAA4QklNA+0AAAAAABABLAAAAAEAAQEsAAAAAQAB/9sAhAACAgICAgICAgICAwICAgMEAwICAwQFBAQEBAQFBgUFBQUFBQYGBwcIBwcGCQkKCgkJDAwMDAwMDAwMDAwMDAwMAQMDAwUEBQkGBgkNCwkLDQ8ODg4ODw8MDAwMDA8PDAwMDAwMDwwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/3QAEAXv/7gAOQWRvYmUAZMAAAAAB/8AAEQgAsQvYAwARAAERAQIRAf/EAaIAAQACAwEAAwEBAAAAAAAAAAAGCQUICgcBAgQDCwEBAAICAwEBAQEAAAAAAAAAAAQGAwUBAgcICQoLEAABAwIDAQMGChJzAAAAAAAAAQIDBAUGBxESCBMhCSIxNnWzFBYjMkFRYZSx0hUmM0JEUlRVVnFygZOywcLR4QoXGBkaJCUnKCkqNDU3ODk6Q0VGR0hJSlNXWFlaYmNkZWZnaGlqc3R2d3h5eoKDhIWGh4iJipGSlZaXmJmaoaKjpKWmp6ipqrS1tre4ubrDxMXGx8jJytPU1dbX2Nna4uPk5ebn6Onq8PHy8/T19vf4+foRAQABAQIDBA8EVC8AAAAAAAABAgMRBCExEhSR0QUTFSJBUVJTVGFxgZKhsRYyQpMGBwgJChcYGRojJCUmJygpKjM0NTY3ODk6Q0RFRkdISUpVVldYWVpiY2RlZmdoaWpyc3R1dnd4eXqCg4SFhoeIiYqUlZaXmJmaoqOkpaanqKnS8PGqsrO0tba3uLm6wcLDxMXGx8jJytPU1dbX2Nna4eLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAAABEQIRAD8AqYIKvAAAAAAAAGwOXUMT8NROfEx7uhEvCrUVeSh7PyhFnRVqNiZiJ16rYPOuUlrqjDJunYQnXQen9II/hqeILfqmz2mNCGg1ZVs5f2aiNRGt41qchqcCIcZ3s9pjQhlpwu2pi6K6rt7L51Xq1Gd7LaY0Ic59t9uVaM6ZqvVqM72W0xoQZ9t9uVaM6ZqvVqM72W0xoQZ9t9uVaM6ZqvVqM72W0xoQZ9t9uVaM6ZqvVqM72W0xoQZ9t9uVaM6ZqvVqM72W0xoQZ9t9uVaM6ZqvVqM72W0xoQZ9t9uVaM6ZqvVqM72W0xoQZ9t9uVaM6ZqvVqM72W0xoQZ9t9uVaM6ZqvVqM72W0xoQZ9t9uVaM6b0mwU1NLaaR8lPFI92+bT3MRVXSRyclUPmrlYGuam7eKcUa59J0P0H5UfZUW3KH4FXaRFVU6tvmYvnpfabGWZ6BUfdJD4Db4gpuanZvV86WO0U6EHQKj7pIfAbfEDNTszOljtFOhB0Co+6SHwG3xAzU7MzpY7RToQdAqPukh8Bt8QM1OzM6WO0U6EHQKj7pIfAbfEDNTszOljtFOhB0Co+6SHwG3xAzU7MzpY7RToQdAqPukh8Bt8QM1OzM6WO0U6EHQKj7pIfAbfEDNTszOljtFOhB0Co+6SHwG3xAzU7MzpY7RToQdAqPukh8Bt8QM1OzM6WO0U6EHQKj7pIfAbfEDNTszOljtFOhB0Co+6SHwG3xAzU7MzpY7RToQdAqPukh8Bt8QM1OzM6WO0U6ENbd0JBDD0Ud5hZFtdD9rYajddOg2muhudRMzOb332r5/wCV6WNFnnHM0xHS3JF22mtpuXz+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH2YxXuaxvC5y6IHWuuKKZqnJCTxsSNjY28hqaBU7W0m0qmqdi+4dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABkILVXVGisp3Navb7+NT5Xk9+MVVtTTsWKq2opyyzUGG+QtTUd7ZGnhy+IMFWFbKEerC9lDMQWmgg0VtO17k7ek45fleAwVW1dWxR6reurYvvcY0db6tiIiI2JyoiepU18ILKdfhxYzr8b1//QqYIKvAAAAAAAAHuuAbvaaPD0cFZdKSlmSeVVhmnjY7RVTRdlzkU9d5Q3UlgthqPii1taKas1ViqqiJ0JlQeUhwO3tcLmqiiqqLoxxEzHCTTow4f7vlv68xdmLVrbwDciz4OnTaPWbhW2q+BnSOjDh/u+W/rzF2Ya28A3Is+Dp0zWbhW2q+BnSOjDh/u+W/rzF2Ya28A3Is+Dp0zWbhW2q+BnSOjDh/u+W/rzF2Ya28A3Is+Dp0zWbhW2q+BnSOjDh/u+W/rzF2Ya28A3Is+Dp0zWbhW2q+BnSOjDh/u+W/rzF2Ya28A3Is+Dp0zWbhW2q+BnSOjDh/u+W/rzF2Ya28A3Is+Dp0zWbhW2q+BnSOjDh/u+W/rzF2Ya28A3Is+Dp0zWbhW2q+BnSOjDh/u+W/rzF2Ya28A3Is+Dp0zWbhW2q+BnSOjDh/u+W/rzF2Ya28A3Is+Dp0zWbhW2q+BnSOjDh/u+W/rzF2Ya28A3Is+Dp0zWbhW2q+BnSOjDh/u+W/rzF2Ya28A3Is+Dp0zWbhW2q+BnSej2HF+EobTSRzYotEUjd82o31sDXJrI5U1RXnzxynXPTqZt7Sy1+icxdNOvRN1FMTdMYsuLevvHlTGp7UdgHKJYHYYVhFlZWtOrb6K66aK6b7a0qi+mqYmL4mJi+McTEsv0dMHd5ZZuv9P2cqWdrXaJ0Jeoca7ULubg/Jtn8sdHTB3eWWbr/T9nGdrXaJ0JONdqF3Nwfk2z+WOjpg7vLLN1/p+zjO1rtE6EnGu1C7m4PybZ/LHR0wd3llm6/wBP2cZ2tdonQk412oXc3B+TbP5Y6OmDu8ss3X+n7OM7Wu0ToSca7ULubg/Jtn8sdHTB3eWWbr/T9nGdrXaJ0JONdqF3Nwfk2z+WOjpg7vLLN1/p+zjO1rtE6EnGu1C7m4PybZ/LHR0wd3llm6/0/Zxna12idCTjXahdzcH5Ns/ljo6YO7yyzdf6fs4zta7ROhJxrtQu5uD8m2fyx0dMHd5ZZuv9P2cZ2tdonQk412oXc3B+TbP5Y6OmDu8ss3X+n7OM7Wu0ToSca7ULubg/Jtn8sdHTB3eWWbr/AE/Zxna12idCTjXahdzcH5Ns/ljo6YO7yyzdf6fs4zta7ROhJxrtQu5uD8m2fyzXzPe9Wa8dFXtE3aiunQfod0I6CTxz73t9B9na3tztNdldNeqNtqLs66M1momMmWN68M5XTqXwLUhnPOttZ2uZ1bfmK6a8zfqu6/MzN1903X5bpa9m3eFgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABlLbDq507k4G8azvfUhqdSlvdEWcbHHLMBpAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH76a21tVosUDkYvnY7jW/Crye/GOq1ppyyxV21NOWWdp8OMTRaqdXL3JHwJ8KviCNVhWyhGrwueQwzlPQ0lLpvMDWOTt/TV3wq6qR6rSqrLKNVa1VZZfrOjGAAP41KbVNUN6uN6fKKdqMsO1HHof/RqYIKvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD7Nar3Na1NXOXREDrVVFMTM5ISaGNIo2Rp26nCvVr1IVW2tZta5qnYv6BiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+kUUszkZFG6R68hrU1U4mYjK4mqIxyz1Lh6ok0dUyJA3uROOd4hCPXhMRkxoteF0xkxpDTWqipdFZCj3p52Scc7xCd+ItdtVVsUWu3rqyyyBiYQAAAAAPpIiLHIi8hWrr8Icxlcxlf/0qmCCrwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyduh2nOmcnAzgZ3vqQ1OpO3upiiNjlZkNIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0U9JUVTtiCJ0i9SqchO9ryEOtVcU5XSuumnLKS0mHWN0dWSba+kTOBO/rySJXhU8hRK8LnkKQwwQ07diGNsTeqamnwpGqqmrKiVVTVlf1OrqAAAAAAAAfzmXZild1THL8odqcrtTlh/9Opggq8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfZjXPc1jU1c5dEQOtdcUUzVOSEmijSKNkbeQ1OT2KhVLa1m0rmqdi/oGMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB/aCnnqX73BG6R3VJ1He15CHWqqKYvl1qrimL5Sijw9GzR9Y7fHekTV0b39eSpEtMJmeOoVphUzipSKOOOJqMjY2NjeQ1qaIRZmZyokzM45fc4cAAAAAAAAAAB+erds0lU7uWF6/CNU70Y6o3rvZxfVG9f/1KmCCrwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABlbdBwrO5ORxsfhVDT6lLfFFnG9llw0wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABE14E4VXkIBIqCwyzbMtXrDHyUiTp6976ojWmExGKlEtcKiMVONK4KeGmYkcEaRsTqE6nva9SQqqpqm+UGqqapvl/Y6uoAAAAAAAAAAAAGPuz9i3Va9WzZ+HKieFMtjF9cM1hF9cP/VqYIKvAAAAAAAAAAAAAAAE3y/y3x3mriSmwjl3hevxbiGqasjLdQx7SsjaqI6WaRytjijaqoivkc1qapqvCcxEzkdqaJqm6IW35ecSd7S+Uk9fmJi254Uzor4qh9tstLLR1Fmt72yObTx1ixRzyVG2xqOc6GZmztaIjtnjs0WOLHlTqMCvpxzjTLMLiUeXNqyqulZg3HGI6jMqw2qWtbWV60zrbcamniWR8PQWOFkkDZVbsxqkzlZrx2+HM2MXO1WBUxTinG14yc4mLf82MnsB5mOzNpsPXTGaw3F2HZre6WKG0TS6NkbUsm1dO6FN9a1Y0bqqMVycLjpTZXxexWeBzXTE35Uj3RvEuMTYTp7NdNzu+65hUTKWodim0XutoI7hHLEjXRvpNmKkZK2RNpNjheioiJta8HNVldkc2uBzHHMasjCGWGPMc4jwthbDuGa6oumMrk204fWaJ8EE9VtaPbv8iNjRI0RXSKq8aiKq6aGKImUOmiapiI2KzPC3Ej80psQ2mHG2Y+GrdhiSB0t6r7IlXWVkcrdnSCGGpgpmO2lVelFciIia7Kroi5YsZTKcBqvxziYjddcTotWRWV9Vmllzi+74mt+HZ4GYss94jgdNHTVMrYGVUElMyJNI5HsR7VYvGqr9pEaqLxXZXRfDi3wSKKc1EqpjEhAAAAAAAAAAAAAAAAAAAAZGz0kdwu1roJnObDW1cFPK5iojkbLI1qq1VRU10Xg4A5h7NumssLBkxnpmFljhesuFfYcJ1dNBbqu6yRS1j2zUcFQ5ZXwRQRqu1KqJssTg072dq4um53tqIormIeEHVjAAAAB8oiuVGtRVVV0RE5KqB/SeCemlkgqYX088S7MsMrVY9q9UrV0VAP5AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/pHG6V7Y28ly6BjtbSLOmap2CSsY2NjWN4GtTRAqtpXNdU1Tll9w6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/vT001VKkUDFe9eT1SJ1ar1B1qrimL5da64pi+U1t9ogokSR+k1R1Mi8hvfKeFIFrbzXi2DXWtvNeLJDNMjkkXZjY6R3crUVV+UI81RGVgiJlkIrNdZtFZQTaLyFc1Wp8u0MFWF2VOWqHeLKudg/fHha8P6dCyLvuRvhuphq1JWMbG/fMkYNXL90eDa1e2tXAzq9nad2KNMNWpWjYRLvGCVbGX7WYLZ52XBV6tGx6fKq5TFOpadhTw/2HaME3b9TMHW9On1NQ/vStTw1TFOpW02ERw3aMFp2cv0twpaG6aslf309fCIhjnUnbTstB2jBqH6G4asrdPIntKnUrJIvym1odJ1IW88i4UO2d6Nk/slhs7U0Sgj7/AKr2KnScNtp5FLnVNGyf1Sz2pF1S30/B1cbV7FDrnq12qdFzqqjZQ/olstqLqlvpkVOQqRM8Qdc8Wu1Toy51XTsoffoBQ90UHgNviDjV1ptU6MucxTsofKUNEi6pRwIqchUjb4gaur2qdEzFOyfboLS900XwxviDjVlWzkzMbJirxSUS0qNfRwP23omjo2ryOHqU6wzWFrXFWKqdFnsKImrI/9apggq8AAAAAAAAAAAAAAAdCvEmsL2GhyIxfi2mo4lxHiDF9TQ3a5aIsq01BSUrqanVU4Uax08j0Tq3qvVEmxjE2mA0xmJndrTjKmsdd7VRX203SyXFjpbfeKSehr42PdG50NRG6ORGvYqOaqtcuiouqdQHExfifFms9sw9aLVYLJQxWyzWOjgt9otsCbMVPS00bYoYo29Q1jGo1E6pARF0XQyQcvx09voKSmpqKloaemo6PZ6B0kUTGRRbPTd7Y1ERunUaIC5+wCIY/wAD2DMvBWJ8A4phknw9iy3zW26xwv3uXepm6K6N+i7L2ro5q6LoqHExfFzrVTFUXS0It3ErdzBQrVLU1OM7wlQ9zokq7tA1IEXkNj6DUcGqJ1G3tL1aqY9U0o0YFZ7tV7ux9w3cty7bbJjG1Yw6OeCMR3ea1xvmo+gdXbp3skqKWCbZmlZNtwxP6UajNXMXjG6oYq7PMoeEYNqrHffDQQxooAAAAAAAAAAAAAAAAAZzDPLJh/mlSc+aIcxlbRbvbzV1nTzSofqspDvacelmwnpZLUE6MAAAAAPTcmMSYhwfmxl5inCWHJsX4msF+oq6xYXp45Zpa+qhla6KnZHA10rle5NERiKvVHNM3S72czFUTC3297vnNa20bY90VuJbgzB06IyrnuVvrqSFjVVN8ckV3t8sMvI6ar2da4zasnYwnThNUcfoxMBFkfuIN2tb6yfIK7Lkpm4ynkqeiZLClNHIrE1XfLXvj4Xxp1L6GTjEXV7V4GqzNNeRxquytuO4pVT5xZM5g5E41rsCZjWZbVeKVN9o6qN2+0ddSucqR1VHPoiSRP0XRdEc1dWva16OamGqmYyoVpZzRN0vLDh0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADM26DZaszk4X8DO9eLDR6k8IzU6rjJGXesmGqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHy1rnuRrWq5y8CNRNVUTNwzlLhq91mix2+RjF7fl0jTTq+P0Ve/IRLTD7Gzy1RvsfEd4s6p2CV23LevrHolRXRQNThkWNqyaJ3tdnhNfbam6KI12mZ3uLTc1WeZjHL0224FstuiSNN+n7nc5yN2l6tdlEX5U0ttqXtrSb8UIlVjFU31Y0ghs1qg03ugh1TkK5u2vwrtVIVeF2tWWqXMWVEbBkWtaxEaxqManIaiaIYJmZyslz7HAAAAAAAAAAAAAAAwN4k1fDF3KiuXv/AnYEmwjLKVg8Ypl/9epggq8AAAAAAAAAAAAAAAdO24SxBuYoMr7bhTIbEMPaaqqaC744wzcK2Zb0tzSnhgq6makqH8CIrGsV1O3eeBNleRrKs5puxNxg02eZupb2mRJAAAAAAAAKvOKyXSSj3PGE7c2Fj47vjqibLM6REezeaCvkTZj5LtVThXkN6nhchitsiHh065G9c75GaoAAAAAAAAAAAAAAAAAM5hnlkw/zSpOfNEOYytot3t5q6zp5pUP1WUh3tOPSzYT0slqCdGAAAAAHqOSb8cR5u5cSZaQ01RmAzEFCuDoKtY0gfcUlb0HSVZXNZsq/TXaVEOab78TvZ35qLsq5257oXihuScE1+zqyFs2P8AxtV96qrHvTpoIERN8V0tuqKtIWI3XV01MrfU2hnzVcZYbCbW2ox1U3whl9yayR3YWEJ88tx5P41XnzgyaOvueDaR7bS9axNZGNkihckdPM9Wq6Cqgckb3atl47aWLjMxVjpyus2dFtGas8VUM3gy72/ihmQWK8oMzaOKx7pvJtsj7ddamFKaofUxKsLah8eyxY2zSM6DVsSIrWP2ZUajt7axGvxdOVzTOeKJpnj0fN89Rvc7bX2a5XCz3WkloLpaqmWjuVDM3ZkhqIHrHLG9q8hzXNVFTqzA1sxc/CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/vTwrPK1nUcl69UgR8Jt4saJq2Ow3qSIiNRERNERNEQKvMzM3y+Q4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+7I3yvbHEx0j3cDWNRVVe9IhxMxEXyJRQYOvFZo6WNtDEvb0y8dp1jE1X4XQ19tqUsbPJr07rTZabGqUxosD2uDZdVySVz05KKu9s+Ebw/LjWWupe1q47ERw5+bfM1NhEZUppaCiom7NJSxU6chVY1EVe9ryV7+a60tq7Tj0zLLFMRkZKngfUStjZ1PTndQidWYaqopi9xXVFMXylcEEdPGkcaaInJXqVXq1IVVU1TfKBVVNU3y/sdXUAAAAAAAAAAAAAAAAAInXyb7VSqnIauynuXgJtnF1MJ9lF1MP//QqYIKvAAAAAAAAAAAAAAN69zvxP7OPdB4Xoce0dxs+CsD3GaWK3Xa7vmfU1jIHrFJLS0sEbtpjZGubrI+PVUXTVOEyU2c1JNlgtVpF+SFxu5e3BWW25svLcapfLhjrMNtNJSQYhqmJR0lJHMzYmSloo3ybKyIqorpJJF04G7PDrmos4pT7HBqbOb8st6zIkgAAAAAeE37I1uKMw6XMq75lYyorzZukcMWmx3DtG2qhpddVjfRIyVlU+VeGV1Rto/gRGNY1rU6zTfN7FNnfVffKL5oYFzkw1gbMC/ZQZx3eTGMsVTeqW3YrpbfdqN8sFKjegtE1tPT9A0kSJFaibUSP47e+Oeq8TE3YpcV01REzTONy7ZgZn5h5qXl9/zFxldcYXVVcsU9yqXysha9dVZTxapHCzXtyNrWp1CEWZmcrTVV1VTfM3oGcOoAAAAAAAAAAAAAAAAAZzDPLJh/mlSc+aIcxlbRbvbzV1nTzSofqspDvacelmwnpZLUE6MAAAAAMrYr7eMM3i2Yhw9c6izXyzVEdXabtSSLFPTzxLtMkje3RWuaqaoqBzEzE3w3uyK4ovn1lliS3rjzEtZmpgWadqX2y3hzJq9kLl4+WirXIkrZGpwtbI50a9N0brtNyU2swk2eF10zjxw2ZzyvmX25zzwyg3XeQN9tr8C5mvjhzNwVZ6mFEkpq5kdTM7oHG7WPoTBrJsOaiR1ESP5LtE71XUzFUM1pMWdcWlOScrN5z4gwjkhu/snc58CYktdThTOHebfj9LdWwSUzZKqRtvrZp95cqNZsS09Vx3TpGOcKpuqiXNpMUW0VRklpRxQ7DmG7JunsWXfCdxt9xs+O6GhxIj7bNFPCypqGOp6vV8TnJtyT075Xarrq86Wka8jYVERaTdsWj5jRwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADP0UG8xbTk6Uk4XdYnUIFcw/CNW13Rkh+0IIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP1UlFV18qQUcD6iVe3WpyE6tV5CJ1qmO0taLOL6puhzFMzkT22YEVdmS61Gnq2gXsXr4RO/mnt9TGws4386TPTYbNO6K20FuZsUVLHAmmiuanHL3ty6qvf1NPa29pazfXN7PTTEZH7jE7AHyiKqoiJqq8CIhwJVQ0qU0SIvbV/DIvhO/EO0rzUoFrXmp3T9pjYwAAAAAAAAAAAAAAAAA/jUSpDDJKvbjeDvfUfKnamL5udqKc1NyHLw8K8KrySe2L//RqYIKvAAAAAAAAAAAAAAOpvcB4bxBhncpZWU2ILul0ddaSe8WeBGNalFb7jO+pp6ZHpwyaI9ZFV3CivVnIahLs411ucFiYs4vbkHdIAAAAAAAAMPiK0uv+H77YmXCe0vvVvqqBl1pdnf6ZamJ0STRbaObtx7W03VFTVOFBLiYvi5zGbrDcVY53N9+fUWhl0x9lrNRNr243p7bM2K3IsyQLBc3xJJDA/bc1GOV6JJtJoiLq1IldnNLT2+DzZzs4aTnRHAAAAAAAAAAAAAAAAADOYZ5ZMP80qTnzRDmMraLd7eaus6eaVD9VlId7Tj0s2E9LJagnRgW7bkXcP5MZ37nibNHGdViOLEsdZd4GsttdDBS7NCnSXSb6aR2vV8dwmaiziYvTrDBqa6M1KokwoIAAt23Se4fyYyn3K7c5cL1WI5MXLR4enWOuroZqPauktOyfpJtMx2mkrtnj+Dg5Jmqs4im9OtsGpos81GVJMWbiPImz7iilzzoqC8tx9NlpZcUPqH3F7qXtIV1FSzzO3jZ02FfK7RuvAczZxmb3arB6Iss1sblMpga8A3W3CO5/wACbo/N3EeB8wZrpDZbVhCsvlK60VDKafoVBX2+mYjnyRTIrNipfqmnJ04er72dMVTjSMGsotKrp2S2Px6q3Mfdfjb4lab8hGbVNKdnKz3bSrd3birJ3c4ZRYcxxl9U4imvV1xfR2Oqbd62Gpg6Cz0FwqXq1kdPCqP26Zmi68jXgOlpRFMYkfCcHps6b42bwPdmbnTL/IW0ZEV2B5rtLNmPhya64hS51MdQ1s8cdG5EgRkUWw3Wd3AuvUcJ1rpim5iwiyiiIu2LxrMrJy3YJy/3PN8t9fWV+L84rLXXm72eZ0KQU8faQdS21KfZRHJvsbVVyvcvHcjZ5B1mm6IY67PMxTOxltLYdxBgrE26Fz9yboMwK612HKqxULcP4suK0rUqMQ3JtDDSwViNajUhfVVEkaNYiP4GptbXAveLOL5hmjB4muqm/JxWul23PVVhTJXGWOMXxXO05gYezSgyzocKrvaQuqm0L62rdIixuc5WojEY5kiNVHIvCit2umZuhimyupmZy33PbbhuVMpsNZ0bozCGI8U4pqMudz7g2mvtfeLYlJ2k6y5TR29y0zEmgSFGq+plY3VE4WtXa01U7ZiL53TJNhTFVUTM3RDxbOHIzCthwTl9m7k3iW641y1zGr6my0tFd6OOnvdqvNLoq26sjpnyRSPkau0x0XA5E5GmyrutVOK+GO0s4iIqpxxKW7qDcx2LITBuU11tF/rb/iG9pXWjNeKWSGSjteI6KnoaqShpd7hjXZY2sc1Vc+TVWLwt6ac10Zl2trGLOI4e9eu33cfZJ1GaF43OOFMwsV23dA22y01dbae+01DJh65XJ9rjusltjqId5nhfvT1RHvarU0XkqmyvbMRfdsXebCnNZiJnNcJXfYLHVX3Ellw1G10NbeblTWyNjmrtNlqJmwoitXRdUc7kGJFiL5ub8Yw3KmR90xVnFlblDmDixc2snqS43GWx4ppKF9tvsFpY19bFQVlE5jopY0VdEmj45U05G0rMk0RjiEmqwomZppmb4RHBW52y2TITAmcWOrPmriSoxxX36NlHgCho6umoaKyTNhdUVbqmF29o922iKrtONd1SiKYuvcU2VOYiqb8eyaQ1PQZamoWjSVtGsr+grZlRZEj1XYR6tREV2mmuiaamNGfwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD9tDBv0u05Ok4+FetXqECBh+EaqoujLLPhXQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+zWue5rGNV73KiNa1NVVV5CIhxMxGORPLNgmafYqLsq08S8LaRvbR3fS9u965PejT4VqVpp12zxzs9h+yz0WN+V6TSUdLQxJBSQMp4k7danJ61V5Kr1qmitLWq0m+qb5SYpiMj9J0cgAABl7VTbb1qHpxsa6M766vvxgtq7ouR7eu6LkhIqIAAAAAAAAAAAAAAAAAADCXefgjp0Xk8e/whIsKdik4PTsWCJKU//9Kpggq8AAAAAAAAAAAAAA6DdxTu4ckY8l8C5bZiYupcB4zwRRRWJsNyZLHSVtNA7e6WeGpRjokVY1a17Xua5HI5UTZ4SRRaRddLaYPhNGZiJm6YWrGZNfmrKynoKWasq5Fjggbq9yNc9y6rojWsYiuc5yqiNa1FVV0REVVAq5fm3nXmPu1LJlvfrdV2rc8YtwrcpsMSUSIlJVW2S1dDor30NWPR9S2pZFHoi6QK7e9F1e+TFfM1XbBCzdVVrdPHbvml6Hue90pUwZIXvOXMe8vq8q6LFGJm1mLKuVZam00br1SUtkpIqeKBZamNzK16KqrtMbG1rUdtNanNNWK+XeyttczU5L5/YbhYOziywzCtVBe8C41tuLrZcq3tHU9RaZFqlbWbytQtPMyJrnwyJE1ZFbIjVRqK5eDhO8VRLPTaU1Y4lArfuqcjKjDmH8V3nHdvwZY8W194oMKV+IZ4KKK5LYqvoFWzU0u+PjdE2XREcr01RUXTRTjNw6xbUXX33PdLPerPiK2Ud7w/dqO+2a4s3233a3zx1VLOzVU2oponOY9NUVNUU7MkTE44ZBXsR7Yle1JHtVzI9U2la1URyonJ0RXJr3sOX3AqA4p7uoEw1YmbnnBlfTTXnFVLv2ZcqNbK+it7ljkpqRqrqjJKhUV7upbGjfSRFTDa17BAwy2ujMRv1DZHa0AAAAAAAAAAAAAAAAAM5hnlkw/zSpOfNEOYytot3t5q6zp5pUP1WUh3tOPSzYT0slqCdGB0c8Tk80Y1PNLEnYEmy4622CdKtFzjEZqQAB0c7uDzb/ZzNwbz+iJNpxxtsJ6U6Cqa8bgbOGyZFQ7oOqxJg2TBk2FqHFrbZFWXBbp0CuEEVRFGsTrc2HfUbM1HJv2zrro5eSuHVc3XoM4NVFGaxXXXtHzojt39zxuH85s78OWLNHBlVhuLDUd4dA6O5V00FVtUMzN96TZTSN06rjuE702czjSLLBqq4zUNst3Bu38m878mKXBmV16v0eJYsR0Nye6eiloW9BYIalknSu3ydqRvB1J3tLSJjEz4ThNNdN1Kr7LbEmIn5i4BY+/XF7H4jtTXsdVTKiotXFqiptGKJxodEzmoXncVr8044K9rItv1UXgkW2RssO45G902oXFNuVvcl+0Jqec2w6WuwR8MyU7x5BhndA7mu+UGROIM4cI5gVmPMgbJQ2Oy2bD8tslw9eYbRUyVdA6tSseyaHV79Jkja7abwcKIiHWKoxX7B0i1om6aom+NB51W7pmnvWE91VJc6C5UeYW6KxJYbrb6qicxaK2UVquc1ykp+hDpGTo5FWKOPZYuqM4VbyHcZrLu3Sba+KtnL07MbdmYfzcwrucbZjXD9wZiDAWMaTEWdt1oaWma2/JQpTUkVZTqlTEstVJRQK2RJUjajtlrHozpvM133O9eERXFN+wnGWjdKZHYgve7BkzOpMeUtn3Rt7oJcOVmGaK1yXGgtNvuU1ayKo6G1zYmySs3iN6MSRE2XbLuQozUY79iRbUTNV9+N+fD26YyJwresncNWXAOKHZOZK19yxhQ2+4yUdVecQ4vni0oam4qyWCmgggeyPRIke5EaqbL9eBFURdsiLaiJiIibox72UYxPurLZmvlna8L5s2FjsWUGbFLjiovWG7LbaCmqbVPTuiu0c8cElLvtXM9UkR72qsmiI+VuiHE13xjdZts1TdVlvveqYp3VG5wtmcmLd0ll1hfMTEOct5SplwzS4u7RVHYLTWVFH0BbU71QzVNRPvMS8Yxz0TrddHN7TXF98ZWSq2oiqa4ib920YyixXY8G5tZc45xdBXXKw4UxRbL7fKWibHNV1EVDVx1L2MbO+Nj3P2NFRz2669OTkmOmbpRrOqIqiZ2bbvFG6MyAw1iTOHM3JzDuPrxm1m/Dfad19xq620lvsTcRyyOr5aCmtss0kkqRyOZEskmjODgXRUd3mqMcwz1WtETM033zs92/dbt0DuebpkrlJlfiTFOeWDJcAWKutl/t+BW2emtdynulVJVVj5kmuDHztV0itTfGJwKurdXLqzUXRGMi1ommKZmYu2SvGbed+l6Do9INt28JIqK/Y143aVNE105OhjRX8wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB9mtc9zWNTVzl0RA611RTEzOSEkgiSCNsadR05erXqQq2EW02tc1S/sGEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZO12itu8+80keqN7azO4GMTq3L4QwYRhNFhTfVLtTRNWR67ZcOUNmaj2p0IrFTj6p6cKdWjE7dQrWFYdXbzdkp2Wml0WcUpAQmQAAAAH9IoZZ3tihjdI9y6Na1FVflDrVVFMXzNwn1LZbg2JkcdDNstTkqxW69WvDpyTU2mG2N981xooc2VpXN90v3NsF3d3CKida9ieHGCdSWDxyLhTpOYwW02XEf06Ll29IG/D2+JOutTB9nwpc5ztNkdFy7ekDfh7fEjWpg+z4Umc7TZP5rYLu3hWjXvz2L2DjtGpLB55Fwp0nE4LabLiP4PtFzZyaGVe+W7XYamSnDbCeRw6zg9pGwl+WSlqYu2tPLHpydpjk7FDNTbUVZKonfsc0VRliX8DI6gAAAAAAAAAB9XvbGxz3Lo1qauXvRzEXuYi/Eh08rp5Xyu5L11ROqTqEJ1NN0XNhTTmYufyOzs//06mCCrwAAAAAAAAAAAAAABuNhPd9bq/BlksmHbRmpJNZrBE2noaa42y2V0joI2tbHFLU1NK+oejUboirJtdRrppp3i0qhnpwm0iLr0ezX3Z26LzjW1R4ozBqrbQWWpirbdarA1LVA2rgcj4qh/QbZkkkY5EcxXvXYVNWI1dRNcy4rwiuvLLdXIDip2JbE2jwvugcPtxjYnJvMmNbRDFDc2Ndqiuq6PjKepRVXjlZvbtNVVJHcC96bXZpFlhsxiqxtv8AMDKjLrdB7kfEuBdxnecOQ2K936C/1VjbU1EdPv8AG5lRNQrDMrn2+SR8cb2xvjYxFTprUer07zEVU66kVUU2lndZo/lLkDmtuctw3mph+js9dcM6sfQ1tQmGLU+OqnoKq6MhtMMdNLSue1z4YOlnPa9UauvHbLdRTTNNO7daLKqzspjYyieYmQe58yf3PW5uw7un75cL1fcqYLx2gsusNVHS+IrpiKsjrquhiia3oRLHFMjY0kZJE3uZybbWnE0xERe4rsqKKKYr2Gw2d78tBl1u8cyqe2PyosuGNxnlbQM7V3AbJEo658Ejmos1cykoqiZ9RomqpMyHqdW6qrnLqpyYnEUW1XHbqYePYn3NXFFMoscU2d9nx0ub+KbDTTxLU267VN0qXW5y7UlG+3XOKnWWOTZR28QNfx2jmJttRydZprib3SbG2onNX3ywKcUM3ZGcFWzKvLbL6z2rH9er6WqlsFrq5rnA+PpOdyR11RPDStY5V23ytVI+pc3TUasqnFDjPVrXrsRjfjsvEst0bjaSfE2YmPcOWK93t7qy5trqyru9zdUSqrpHVUscSxOerl4XNnfr1ZxqqZyuIwKurHMvG85eJz7ojKGzVmJoaC25jYct8Sz3GrwvLNPVUsLU1fJNRTwwzK1uiqqxJIiN452ia6cVWUwx2mCV0Rfla/5I7m/N/dCXSot+WeFpLlR297WXjEdU9KW2USuTVEmqZODaVOFGMRz1ThRunCdaaZqyMVnZVWmSG/NNxInNl9A2SszUwjBc1jVX0kMNfNAkmnA1J3QxuVNep3rvxk1TKVnGrZw0+z43GOe+56pnXjGOHYbxhJr0jdjXD8r623RucqNak6ujimg1VURFmiY1VXRqqp0qomlgtcHrs8uRK8g9wTnvn3aqXFFvoKLBGCqxGvoMTYjdLAlbEvnZRU0UcksrdOQ9UbG7qHrwimzmpzZYNXaY8kNmr/xInNKloklw1mthi9V6MRz6K4U1Zb2K7RdprJY21evUaKrU16nQ7zYyzTgNWwmGr9n4n7up7tj+fL+XLp9mnpIW1NXiuvnY2xMp3uVrJG3CHfWSqqp2ziR0qJwrGiIunTVdV9zDGC2kzdc24t3Egcay0kT7tnVZKKvVOl6aktNTVQtXqmyyT07nd/jQ76p3bPGATs2rGf24Bz0yFstbi+qgt+OsEW5Nu44iw++R8lFFwdKVlJMxksbEXXV7NtjU4XObqdarOYYbXBa6Ivyw0dMaMAAAAAAAzmGeWTD/ADSpOfNEOYytot3t5q6zp5pUP1WUh3tOPSzYT0slqCdGB0d8Tia5+4znYxqve+54jaxjU1VVVEREREJNlx1tsE6VaLn68a0zH9K/xJ8RVZ+NEe6WrzFWyPGtMx/Sv8SfEVWfjQukzFWyPGtMx/Sv8SfEVWfjQukzFWydA+7kikg3AawzRuhmht+DmSxPRWua5tRRIrXIvCiovJQkWnHW0wnpToMvmB5tj0HtSeGfqsoTmeOb5zV0o30KmtxPuYqHOTN+owtm5g/EdDhFuHK24wVTYqm3ItVFNTNiRJ3Roi6tkdwdT34w2dF840HB7HN1XVRidD+TeTeCsicFQYAwBBV0+HaerqK2OOtqHVMu+1LkdIqyORF01TgQk00xEXQ2tnZxRF0NRfHr/cqd2nEnxMy9kOmqqWDOdmyNn4mnuX7HdrXeqC1YibXWergraJz7xK5qS08jZGK5uxwptNTVBqqkjBLOHnHFa/NOOCvayLb9VF4OLbI64dxyN7ptQuKbcre5L9oTU85th0tdgj4Zkp3jW/DG5iw/fotxvTSX+5R3rdH3O7dG6kYtOjbba6C6MpIJaPaaqq+WnbLIqyKqbSIiNXRUXpFGTdsUWMTmN2kdx3G9PhjOPNLBeI77WVuX2EMtr7mfg7GlrdE5LvZaCFJKKRJN6mj46R6RS6InHIuwuis2ucxjczg91UxOS69+W07njKaz7nXAWcOPqXNe6XzH1BiGugZgq10VbZ7VFaKx9JBLdZ6pIlgZNso/VHv41HLxvAiszF15FlTFEVTfj2RbtztkRge3ZY2nP7M7E2H8xc27fRXe2WTC9tpaujw9b7mrUoJ7zLUSte5ZEVXOZC1XsTgVOQrmZiMpFlRTdmpm+eE/VgTci2KmxpukbBmzcMU1Vr3PraKKXojUcFRcrnNc6xKehdBTVfAqSxdKIzVF0Xp3BxyKMt+wKbCL6oqvxbJg8Q7keK2brLCG50tGJqu72rE77XX1V3mpW0lyt1rq6bofWJV0yukbHUUtM2Ryo5dF0a5UbtaJxNGvXOJsLrSKHrGC9wRbsR595x4CuGK7hR5Y5bUcdTYsWRdB+hV3muVvS52umge5m8yOWlSSWV0bV0azkN2kVO0WeOYd6cGvrmL8UPFNyLuYLfuibtit2KMR1GEML2Gnp6C23SBGb5WYhubnNt1DHvrXNcjkikfJpwoiJyEdtJ1oozTHYWOrL7/mlHcpMgsP3vBOJM5M6MX1GXeUWFrt0Xt8oKZKy+Xi+b2k3aNt1K/ZYjmxrtPllcjW9UqI9WKacV85HFFlExmqpuhnsI5R5GZpYozQly7vGO6HL7LLKq9Y3rqzEsVrhuc12tbkSKma2kdNAkMqzRIiK7bVUfwommiKYnI5pooqmbr7oi96lkvhDKzc22jL3N7OvGNxteOc1bJVVWWmHbNZKa8yWC2V6LSwYjrEq52RK7Zc58LEZIqN1XYe/jWc0xFOOXezpps7qqpxzk033wpuKqrGm6QzxykxvmM6GbCVhkxFacx3NayC53C8y0TrTJVpMrlRtQtfrKjHK7ba5jXKvCIovmYc04PfXNMzv3gdz3P02Ecm818b487SFhxtgDH9vwFQYdVY0p5KuSCeprVl2mK5+zFEjo1jeiORdrhbodczdDFNldTMzlibmsp1YQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMW+n0Tf3JwrwRp1nUqGl1JYTfOq437KBqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABKMP4ZqLw5J5VdT29q8dNpxz9OSjNexNfhuH02EXRjq4m9ZbOzmrePX6OjpqCBlNSQthhZyGt6lerVeSq9apWbW1qtKs1VN8pcUxGKH6To5AAGSo7Rca/Raale5i+druNZ8OXRF78RbfDLKx49Vj2WxZKLKqvJCU0mDFXR1bWadXHCnhzvEGpttTm26dHSjTSacD2qUipsPWim02aRsru5puP+UXg+UNba6kre05FdvMSRTYUU7BJrbTxteqsjbGyNONa1ERNV6xDXW1czlm+S0xRdDNEZgAAAAAAAfxkpqebtrBHLrydtqO7FDJTa108dmY37rNFM5Yfglsdql6dRsavVsVWeCqiEmjUhb08i0cbFVg1nOwY2XCtC/himliXqlVHJ2CL8qSqNTNrHHoieEw1YDROSZYubClU3hgqY5escisXw4mUambOePUzHD0mGrAaoyTDEz2S6Qa7VI96J29Ho/wXVSZZ6kLCvJVG/xcVgqwa0p2DGua5iq17VY5OS1yaKS4mJi+GGYufU5cAAABg7rVcimYvVLL4RPCkmxo2KTYUcilgyQlAH//1KmCCrwAAAAAAAAAAAAAAAAAAPfdzXnxiXc85q4fx1Y6uXtE7/HSYysqOdvVxtUj06EQvYnArmt4+J2nGvRq8KaovamrMyy2NrNnVfDrRvt5oMOWO84hukiw2yw0NRcbjKmmrYKWJ0sruFUTga1V4VJjdzN0XqydxBgq6574qxPu0s3tLziK/wBxq7XlJZqjpWmsdtpJHRvfSNdwNVr1dAxURFTZleur5VVMVnF+vSh4PTNc6sq3zEcU53SuOcqrdgbLLLfEdZhK84uhqLviTEFsmdTV8dDA9IaaGnqI3JJFvsu+K9zFR3GI1HaK5F4tapjFBhltNN0QzPE5d1NXZhZa4qwtm/juGrxLgC4UzbdiPEFcxlVW224xyOhZLPUvR9RJDLBKjnqqu2XMR3UKvNlXfGMwS2zVMxVORY7ZcEYMsV9xHi2w4atlsxFjN0E2Jr/SU8bKm4LAxGQunlamr9lvI4et5KqpkuS4piJvjYqV93pu3c2sKZ3VOWWUOLZsG2fLlKVL1X0cUL5bhdZYmVL2yumZIiwwNkbHvezo5yPV+2mzs4LS0mJuhr8JwiqKrqZuuWnblbOiTP3IzBOZFbDHS32vhlocT0sSaRtuNDK6nncxvDstlViStbrwNeiclDNRVmovTbG01ZREvbLDhvD+FqKW3YaslDYKCerqK6eit9PHTRPqquV01RM5kbWor5JHK5y8lVO1zJERGRz17oTihWfTs88SrltjB2FcEYJvVRbMP2COlp5Ia2OhlWGSeuSVj3S9CFYrtlVRGNVEbo5Fcsaq0m/E1drhVebxTihfVl/iCkzWynwRiq8WemdQ5j4Ttl3udgqGNqKfe7vQxVEtNIyRHNezSVWKjkVFTkkiJvhsqZzVMTs4eJ7oHdYZUZHYcx5aFxjZ480cNWKWow7gSZXpLLWS023QRqxrUTYcrmKqIvTTrVXEMdrb00ROPGpI3PG7hzzw9nrhi9Y9zMvmLsI4rvNPQYzsN2q3T0EVJWzJFJPSUz13qldBt741IUYi7OwvGqpgptJva+ywmuK4mZxOmclNu5xM/uKBZ+Pz6xPWZe41nwzgrBd9qLdhrDEcMTqSqgoJVgdLXRvj2plqVYr1a9eMR2yzRW7RGqtJvxNTa4VXm8U4oX2ZR49oc5MpcD5gOtraalx1YqetrrPMiSRxvnj2amnXaTR7Gv2moqpxzeFU4dCRTN8XtnZ1ZumJ2bmh3bmSNvyG3QeKMK2GnWkwnfYYcR4RpdNEhoa9Xo6BnqSGoiliZ6lamvDqRbSm6WowizzFcxGRqSdGAAAAAADOYZ5ZMP8ANKk580Q5jK2i3e3mrrOnmlQ/VZSHe049LNhPSyWoJ0YEiwhd6awYswvfqxkstHZLvRV9VHCiOkdHTTslejEc5qK5UaumqomvUiHNM3TEr/PH2vc494VmR8Rto/Lgk6uhtM/UbKfm354+17nHvCsyPiNtH5cDV0GfqNlPzb88fa9zj3hWZHxG2j8uBq6DP1Gyn5t+1n3XfFBcmc/ci8TZY4OwzjS23681dtnpau80Vuho2to6yKokR76e41EiKrWKiaMXh5OnJOldpFUXMNvhVNpRdF75xVu68lLzuMqXISkpcSpjiHLizYUfLJQQtoOh9BR00EqpMlSrt72oXaO2NVTTgE2kZm4qwmmbLM7G5jd1Hu+sns7dzrcso8KYbxlb8SVnaG3qtu1Hb4qFO0dUQzS6yQXGeThbGuz0nydNdBXaRMXOLbCaa6MzF6oowoIBIsIXemsGLML36sZLLR2S70VfVRwojpHR007JXoxHOaiuVGrpqqJr1IhzTN0xKzHdx7uPKfdMZT4ewJgTD2LbTd7Ti2kv1TU36koIKZ1NBQV9K5jHUtfVPV6vqmKiKxE0R3Ha6IuW0tIqhMwnCabSm6L8r93FNuVvcl+0Jqec2w5tdgYZkp3jynC+6hy1w9mruXMXJSXp+HMhMrO0FXUXQeNZJcUzUNwZPJEzfkasC1NTEqPXRyo3VWryDrFcXxunSm2piqmdlHDYDLzdc01m3MWZ2SWM7fU3fFNRZ6myZUYtbGyeaktl6qYJbtbKiZ72PZBrA2Vmm1q7jVTRjBFeu3OKLe6zmmcuwQPODdE1+IcAZO5YZb4sxRY8EYTy7t9ix7htKqegoLjfHTz1FwdJSwVL4qiLV7EY+RqKui8aiaHFVWKIh1tLW+IpiZuuetS5+7mXG98y9zgzUwtjuvzWy/slotlZgm1ut/RdvdZYmIyiq5quV7aiGN6RtWaJsS9QjdpNpXc5qJxy76ts6piqqJvjQYay7s7ENnw1nni+23W4Yfz0zgx3Yb+lxtbN7oKe12dZpUpVkWRZHM1k3nenbSOj1Ry8K7TN5dm4jCJiJnYzLKXfdF5MUWY+e2c2CbbfbXjTNfL51vw/aH0sSQWfFN/RsF+qI6hKhXbDGNdJFJs6udK9NhqIgzUXzLmbWnNTVGWY4exTXCG7osKYt3LtPi2gudFgHKPDdbTZkdo2KN9Xeb3Nh+qw9T1ax74xJN5plia1znI5NuXg0RqHMWmR2pwmL6b8kZdC5AsuN1nhPJzCO5/wNgnDEF2teGsSR41zmud6tkFRUz3l9QyNXWnam6TfS0DXQxyrsqu127w68RXdc60W8URTERu5fxdnjufsaYdzQyizEpMY2vLu5Zo3XMPKrGGHaejkuNE24o+FaK4UNTMyN0aQqi6serttV5DUGaicUuNWUTE0zfdffCHWnNfI/AOGN0vh/LKhxZDDmRheyYYy/nxAykfWyMSrjlvU1wkpnrHCkjWaxsiRyLwNXRU2ji+IvudYropiqIvxx89KI85dzLmRYsnblnrh3HkmMsmsL23B7rHhrtHutGIbVZpHrQMnmqJYpqZ2zIrZthqq5uuy5HKmnOapm6921ZZ1RGavviLt6xl93VrMbW3dZ4kxLTVNszGz0bhWgwZHbWotFbrbZ65stRC+V7ttqpTU0LGq1vHO2n8apxm77924m3zWamcs3P3Z/brWjzz3P2W+BbnapqbM22YgS75m35sLGQXme325bXQV7pWv2nzvplRsiOZwK3jVRqohzVXfDm1t83REbHYtFjGjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP00sCzyo3txOF69YEbC8Iixov2OwSJERERETRETRECsTMzN8vkOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACb4awq64bFdcGqyh5MUPCjpet6xvY/Kmpw/UjqrXKOPcT9lms7K/HOR6uxjI2NjjajGMRGsY1NERE5CIhXJmZm+Ut9gAEht2GrjXo2R7egkDuFJZE4VT1K3kr3/Q1uE6lLKxxRr07KNNns8Hqq3UJxQYbtlDo5YuhUyeds2juHrG8hDQ4RqTtrbFfdGyjTTaMHop3bPGuZnyAAzdGzYgb1b+OXv/I+UI9pN8o9pN8v1HRjAAAAAAAAAAAAA/nLDDM3ZmiZK3uV7Ucnyp3otKqJvpmY3jiqmKssMPUYetc+qpCsDl7eicqfKLqnyhNs9SlvRsb96j1YJZ1bC5hajCcqarS1TX9UyVFavwqa9gbCy1NUzx+nQRq8BnkMsFUWe5UuqyUr1anb7OPT5brp382Nlh1jaZKo3+JGrwe0pywwdZUpSxK5e2i8DGL1fiibZ0ZqXWzozUom5znuVzl1c5dXKvVqTYi5OiLn1OXIB//VqYIKvAAAAAAAAAAAAAAAAAAAluA8FX3MbGmGMCYZpH1t9xXcqe226BjVdo+d6NWR2nIZG3V73LwNaiqqoiKpzEXy7U0zVN0OujOyjnuOTObdvpUe6prsF3+np2xLo9Xy26djUaq8hdV4CZVkby0i+md41I4mVjKzYj3KmFsO0E7XXTL+6Xe1X2lVybbJKuvnucL9jkox8VYiIvIVWuRF4FROllOusGB1RNnEbJopxXXCdxps0srccuilW03nCslijn5Mbai2V09S9q8HGucyvavCvCicHTVMdtGNGw6nXondPMtwhuLcGbpyxZiYlzGuGJ7JZsO11vtuGK3D9RSU7ampfHNLXslWroqtHLExadU2dnTbXXXVNOLOjNZXTBsHi0iZm90Z0NJHb6KjoIXOdDRQRwROeqK5WxtRqK5URE10Th4CS20OWzd9YXu2F91fmw25074or/W097tFQ5ujJ6Stpo3NexepRr0fGq9zMchEtI15psKputJXQ8TSwlc8LblXDVTdIZad+L7xc79RQSorXJTSyNpoXI1URUbI2m3xvVtcjuQpnsoupT8Epus9638MiU40sy/Mx8wPaSXX6mSkKcrQV8el1g7mnzTjkB7VvhT6qKUl05Ibux45TvIfgxBkJkQ3G2Ks8MbYMs95xNNRxz3bEmII21tPQ0lspWs24YahHQw7EcO056M2+Tx2nAJpi+9xNlRfNUw16ya3aG5bzyzAflTh7DUlouFQ50eFJr3aKOCiu3QZqyKymRj5VjcjY1cxsrWKqImnH8Ydaa6Zm5is8Is65zMLADIlOdHdfbg67ZJYUxZnXVZk0mIaW5Yk43D0VskppGdpWpke3Wd1TIi73rovGcPWEauzuxtVb4NNETVe1Owvurt0XgrD9qwrhXNu+2PDtjgSmtNpppI0igiRVVGMRWKumqr1J0iuYYKbeumLol57mLmvmLm3dKG9Zk4ur8YXW20vQKgrq9zXPip9t0m9t2Wt4Np7l7+cTMzldK66q8cze89OHUAAAAADOYZ5ZMP80qTnzRDmMraLd7eaus6eaVD9VlId7Tj0s2E9LJagnRgAAAD3/CW5bz4xxhSkxthzAMs+G7kyaWz1tZX263yV7KdHLI6hpq2qgnqkTZXtjG/VeBOE7RRMstNjXVF8Q/Jl3uac781rGmJsDYEmulglqX0dHdqqsobZBV1MfToaN1wqKboTIi8GzDtrrqmmqKIpmXFFjXVF8QwdtyLzcu0eZTqDAlymmyfiZNmRb3IyKstcb3vj2pKSR7Z3o1Y3K7e2O2Wor3aMTaOMzLiLOqb8WTKiVzwRiiz4cwji242tYMP47WubhOubLDItWttnbT1SJFG90jNiRyN6Ua3a5LdU4Ti5xNMxETs0uxlkZmtl9j2w5YYywhNYcc4nbQOsVinqKVy1CXOXeKRUmjmfC3bkRWLtPTZcio/ZVFOZpmJuc1WdVM3TGN8Zp5IZlZLVNto8x7NQ2WsustXDS0tLeLVdZGyUKxtqGTsttXVLA5iytTSVGqq67Ouy7RNMxlK7OqjK8nOHQAth4ptyt7kv2hNTzm2Ga12CbhmSnePDcJbknCOI8usE55VmYNRaMmOitdLjmve3R08lfar9ap0pUs9JAr2JJJXSyxLTI/TVquVVXjUd1ijFfsGOmwiaYqvxXY2reVGW9yzfzQwjlxhxJIJsW3aOkbVSaSLR0eqyVFVLso1FbT07Xyv0ROBq6HSIvm5hoozdURDYm97laz0261wlufbBi2pvWDsaOs1ZY8bNiZv89quVvjrpKpkbUVi7Kb4jeoVGoq6arp2zGvXMs2MasimJxS/RW7j6pw1mhnbgnFl+njw5lnlxesyMK4ut8cckN9tlKkfaMfErnbGlS6VI37DnbL2vaiqjdoZjHJNhdVMTsIvSrc8ZVXyzbm7PTPO3V1rtuLamw11Pl9T19uStrXWmz1VCmILhQOlfvcKs6FxQJMkb3sdtbKsXhOaYxTLtZUTFE1bHYfatbrnlLbLVuc8MZz1N4qEv+K8cV+HLXh/Yb0HW22+iZNLV7em1tpO9Gaa6adbyOt2K9hmi6jNbtOsK7mymxVgTc+3uHFHaLxLn3jyuwrbaerazoFSUNDLBTyViqio970lm02NU14EThXU5im+I3bvTY3xTN+WWaxvkFlbR53YDyMwJijGdVim5Y1hwfjiPE9lhtnQZstVT07LhRb3LK58MjZHyMR7UXYajuQ5NU0xfdDmqypzcUxM333JLY9y9lpT0ef2N8Z4zxXJlvkzjqfBNN0VrTBcbvPvc0saXOsZLNDFT0zUY1VVeSqq1FRyIjucxGNzFjTr0zM3RNzSW9wWulvN3pbHXyXWyU1bURWe6TRLTyVNKyRzYZnwqqrGr2Ijlaq8GuhjR5y4mLDgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfKIrlRETVV4EQOJmIi+UipYEgiRvb68L160KxheETbV37DYP0hGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJzhfC61ysuFwYqUaLrBAvJlXq19S9j3o1GpDUhqvXKOPbGdl+yzWVlfjnI9WREaiIiIiImiInIRCupb5Aytts9bdH6U8ezEi6PqH8DE7/ANSvWIRMKw2zweNenHstiyWdlVXkeiWzDtBbtmRW9CalPO+ROQvqVvITsStYVqStbfFkp2UfathZ2FNG7lnzXMwAAAfZjVe9rU5LlRPhRM3EzckaIiIiJyE4EIiIBwAAAAAAAAAAAAAAAAPpJI2JiveuiJ8qcxF7tEXopcKOjub1dWUscqrwNVU0cidUjk0X5U2FhhFpY8cqmPm2TNqmmYxwi1Xg6kk1dR1D6d3UMfx7e9dQqfCqbWx1N2lPH4ieFLBVglM5JuRmrwzdqXVzYUqo07fhXaX4bwO+UNrY6lLC02N07vTyI9eDV07tgXMcxyse1WObwOa5NFTvxsImJi+GCYuf/9apggq8AAAAAAAAAAAAAAAAAADoW3NmdvE/MhsB2K3YTzEs0GJZaCJuKcW1dnubLrXVatToQssslFvjI98RdiJF2Gppprqrlk01URDaWNpY0Rilsc7d57kN7XMfnPbHseitex1Dc1RUXkoqdBDtqynZs2ebPZqb5s4MN7kLPC54/wByxmVaMycrMZSu7TOX07KynWGBXukSinbPDEvSKuXoNURq5zU42RqorklwZrMzfDX6siyrvom+Jb8rxQLcX57YTgw3njhmts1K6WOpq7HiC0yXajhqo0XZlpqi3NnkXZRyoj97jdork2dF4cmrKZypWerKuLqjEnFHdyrk3guPC+QuG58UNt8L2YesNotklis0Mj12ldPJVxQyptOcrnKyB7nO11VNdoTa0xGInC7OiLqWiWWnFNc98KZi3/FeNlpseYTxVVpPcsDKq0kNva1jYmJaZdJXU6MYxqK1yPa/hc/pRyyHSLWYlGowyuKr5xw23x/uxOJ87oCHDV4zky/v1de8Parb4a2gnjqafVUc6F1RbKxqTwq7VUjkcrV4VViKqnaa6KsrPVb2Npx6H5sU8VewBZ6/CGHsqcsblTYKtlfbae/XG4xU1PLBZKaaNtVT2u2U8+974tM1zYVknY1q7OrNOQm2jYFWGxF0UxieoePte5x7wrMj4jbR+XB21dDvn6jZT82/UB4vu9Nf8WYov1GyWKjvd3ra+ljmRGyNjqZ3ysR6Nc5EciOTXRVTXqSNLV1TfMyuhym4qJlFl/lXlngO5ZfYwrbjgnClmsFwrKZtBvEs9toYaWSSLbqmu2HOjVW6oi6clDPFrEQ2FGGU00xF04ofpzL4p7kbmTl5jjL6qwPj60U2NrFX2OoulMy2rLAyvp3wOka1axEdoj+Fqro5OBeSJtYmLivDKKqZi6car/cotgTdR5GtppZZKZuOrT0Hmem8yPYlWzZV7WPejVVOnNRyp1GqpycVHHoQ7DpZG9da5MbxQ/u7N25gDNjAuNMibNhPEFtxFYMWNp6m8VqUvQJ7rPVSxTKze53yaPVurdW970I9paRMXNbhOERXE03bFT4YUAAAAAAAAAzmGeWTD/NKk580Q5jK2i3e3mrrOnmlQ/VZSHe049LNhPSyWoJ0YAAAA3zxnf8Ac/Z+WbKjEmLs7bhlHfMAYKs+Dr/gKXDtfeWuSyQuibUWSWjVKdjKjRHb3O+PYcq6udpw5JmKtik1TRaREzN10XZOIxdFinJDN/KTJTB+YGbFdknfckYLpbpqeKw1l5o7tTV9ctcyroOgLk3iq1crZN+2WvVEftpyDi+JiL3EVUV0xEzdc9eqN2fh6ixRus8zMB3OowvijGjcBQZT2+5Uss9RdYcOVtNDX9pB0DXwp0Io4nrM2WRu2x6xo5zjtm8ssmeIvqmMs3Xb583XObcp4mxduYsSQK/BmEMs0xPjHGuWnQOuqGUt+qKqG5Utno3xUqxPgqa2PWNdd7ZDxsmxwMGapxE2lnM0zkiL5uYnGu6WygzmZlBjm/8AaTwJmDlRmhT3KajvFZUYhmuOGrrc0ute9tdSWula1tBUa7zA9urYlVsau4GImqJucVW1Nd0zimJ3uJq3ul817Zmvmpja72Cz4dpcONxXiCsw7iCzWlLZV3airq50lPVXFzmsmmkfGxr9ZWo5HPfqiK5UOlU3yw21eaqm7ZtezqxAG/27fz5y0zrsu59o8vbzPdqjAOGJrZids1HUUqQ1L46JrWtWdjEemsL+FuqcHWmS0qibrkrCLWmuKbthDw6rzYsMe5Ts+R9ufcExFPmTVY1xI58bW0a06WyO30sTJEcrnLq1Xq1WoiLw8K6adb9duYs3Gq8zu72X3OmdOE8iLRmhi9LIzEebF5tMOHsvqC5UnQizU9HWzJ2l5qzSaN6ufA1I42tTqXIq7KqiqarnNlaRRfOxe90e6zy0nzgyPzqrbJU2K/5a5WV2FLhYLJbY4LdDeIaW4Udr6Ax9C9W07Y61qaqurEYiNTgRU75uL4ll1fTmoq2UInhLdcW+Pco48yQxjQVNdjyK2R4byvxgyFkqxYerq+lqLhbquZ79trIW06rCiNdqmyxNhGIq8RXrtzrTb865pnLsHpdBuz8rrRdKbK21YKiiyAtWW1zy/tuJpbSyTFjkuttVK2dy9C0hYyquGj5WJwORNrk8Cc5uMmwd4wimNdu1267dvGZcc7nnGW56yVyxxbjLGOFMR5XriWtucdpw/TV9JX118rUnjVZZbnAqJDDDHGiozqXL1h1viYiGPNUTRETM4r2DvOa+UuK8J7lnLnEFRi214QyhsuIW4wuNhgpkuUN4vdVLWsmt6VM+9yMZUNgc/aWNysRyNVHbKovibocTXTMUxN90XvebnuqMnanPXcxYtulwxRjq05HUFdDjHNO6Wumhv9/mVs0lua6mjqOOZSybDWukl2+Oe520uqv7ZuL4ZZtqc3TOObti8/3MmfOVGU+IrnmhibFuPrdjG41N0mxtgC20FBW4exTSVe26no3vlnjdErXyOV7pYnonnWrV114oqiMbpY2tNE5qZm/hS0XuVTBW3GvrKaijttNV1Ms1PbolV0dOyR6ubExXaqqMRdlNeExo0vxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGWt9N53vTrI08KGn1JYV1rp3+kywaYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmGFsOLdJUrKtipb4XcDV87XJ26nWJ1K9+NZqQw7VMZmnj08JmsrPNY5yPX2taxrWMajWtREa1E0RETkIiFZmb8aW+7Wue5rGNVznLo1qJqqqvUIhxMxEXyJzZ8Ka7NRdE0Tkso0XwdU7BDQYbqX5DZaOkm2WC7GrQTpjGRsbHGxsbGJoxjU0RE6pEQ0FVU1TfOOU2Iufc6gAAAAP1UTdqob1TUVx0tJxOlpN0M2R0YAAAAAAAAAAAAAAAAfzklZE1XPXROoTqV70cxEy7REywk87p3bTuBqdNb1RJppuSKacy/icuwAA/LU0VJWN2aqnjnTqFc1FVO9LyUM1lb2llN9FUw61URVlh/9epggq8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADYLcoVENNumchpJ3pGx2OrHE1y6rx8tZHGxODq3ORDtRlhlsOllO9dcJMbxx3Z4+Z1Zwe02xB9WU5Cqyy0Npx6d68tOHQAAAAAAAAzOHZGRYgsUsr2xxx3GldJI5URrWpK1VVVXgREQQ5jK2T3b95tGIN1Rm/eLDdaO92iuuFE6iulBPHU00zW26laqxyxOcxyI5FRdF5KHe049LNhExNpNzVM6MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD9NLTrUSInbjeF69Z1Xfwi4XhMWNF+xnIkSIjURETRETRECszMzN8vkOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGfw/Y5b1VoxdWUkOjqqZOq6hqdapDw3C4wei/kU5HezozUvbYYYqeKOCFiRxRNRsbE5CInIQqdVU1TMzllNiLn76Oiqa+dtPSxrJI7kr1DU6ty9Qhgt7eixpzVc3Q70UTXN0PT7PYaa1tSRdJ6xU4+dU6br1DE6hOtKphupCvCJuyU7LTbKysIo3rPGvZgAAAAAAGRt7eOld1SInwv9RitZYrWWUMLAAAAAAAAAAAAAAAAfnnqGQJw8c9eQxDvTRMu9NE1MNLK+Z209deqTqE70Z4piEimmIfzOXIAAAAP/9Cpggq8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB9mNc9zWNTVzl0RA611xREzOSEjp4GwRoxOFeS93VqFXwm3m2rzU5Ng/uGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB+uhop7jVw0dM3almdonVInUuXrEQx21rTZUTVVkhzTTfNz3W122ntVHFR06caxNZJOpe9eS5e9lQwi3qtq5qqTqaYpi5JLXaqm6z73CmzG3ttOqca1PCr1SGuwvC6MHpvqy7CNmzWVlNpN0PVbfbqW2QJBTM06mSRenPXq1UqOE4TXb1Zqqf2Gzs7OKIuh+8ju4AAAAAAABlrenST16t3YIhhtcrBa5X7zExAAAAAAAAAAAAAfCqiIqquiJyVUOWOnrtNWw8PVyL4QzU2ezZabPZsaqq5VVV1VeSqmVmfAAAAAAAP//RqYIKvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZugpt7bvz0496canVJ4sNDqQwrNzmKckcOWRDWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHsmFLH2i6ToTUM0rqtEV6KnDGzkozvfUr4oq+pHC9XV5mnjscOdmmWVGZi/YvRbPZ57tPomsdNGvS8/VdYnVqpoMNw2nBqdnVOSPm2CVZWU2k7p6tSUkFDAympmIyJid/VepVV6lVKjbW1VtVNVU3y2dFEUxdD9JidgAAAAAAAABmqJNKdvWqqmC0yo9plfrMbGAAAAAAAAAAAD8k1ZFFqjelH9UnI7+p3ps5lkps5li5Z5Jl49eN6hqcgz00xDPTTEP4nLkAAAAAAAA//0qmCCrwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMhQ02+u3x6dJsXgTq1DXYfheq6czTx6eEzgV8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmuDrL0Oqu0hUM1paN3SbV5D5U4U783k/CGq1KYXqujMU5Z4n7LNY0Xze9ys9onutQjGorKeNUWon6hqdUnWr1BTsNwynBqL5yzkj5tg2FlZTaTunrNLSwUcEdPTxpHFGmjWp2K9WqlPtbWq1qmqqb5ltKaYpi6H6DG5AAAAAAAAAADOUfBTx9/7FSPXx5GtOPP0nR0AAAAAAAACqiJqq6InJVQ5fjlrYmcDOlHdZyPhTJFnMskWcyx0tVLLqiu2W9ypwIZaaIhlpoiH5zs7AAAAAAAAAAB//9Opggq8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH96eB1RIjE4Gpwvd1SBHwnCIsaL5y7BI2MaxrWNTRrU0RArFdc11TVOWX2DqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/XQ0c1wq4KOnTWWdyNTqkTqVXrEThMdraxZUTVVkhzTF83NisPWFXpTWuhbswwNTfJlTkJ2893WqpRtSGHRRfa15ZyR9o2VjZZqczD2iiooKCnZTU7NljOSvUud1LlXq1KRb29VtXNVWVtqKIoi6H6zC7AAAAAAAAAAAAztJ5d4u9L2KkevKjWnHn6Do6AAAAABy/O+qgj5L0VeqbwneKJl2iiZfjkuDl4I2bPqZ3Cvwh3iy2bJFls34XyySLq96u6zqPhDJERDJFMRkfQ5cgAAAAAAAAAAAAf//UqYIKvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD7sY6RzWMTVzl0RA6WlcUUzVVkhIqeBsEaMbwryXu6tQrGE4RNtXmp3z+4YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD1rAGH5pEbWJEr6uvXe6NipyI9eF3Wa6cnqkK1qaw6mnXZnXacc735uGl4PZTO9ls1abXDaqVsEfHSO46ebThc7xCdQea4ZhdWEV5qcmwjZN5ZWcURcyhEZAAAAAAAAAAAAAM5Rr5F4+s17FSPaceR7Tjz9J0YzkBy/i6ohZ06VvekXXsDtFMy5iiZfnfXxJ01HPX4RDtFlLvFlL8z6+VemNaz5VTvFnDvFlD8r5ZJOnvV3Wa8Hwh3iIh3imIfzOXIAAAAAAAAAAAAAAAA//VqYIKvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADIW3y8L3wvYoGu1KdKt/ps4FfAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG1WXXJt/M1ngrDzblIuO1eJ6bcYFljePXinNmAAAAAAAAAAAAAAzVF5d297XsSPaZUe048/WdGNiK3p3f1M9mkWeR+EyMgAAAAAAAAAAAAAAAAAAAAD//Z" width="3032" height="177" alt="Banner institucional CONAF · Unidad de Información y Análisis" loading="eager" decoding="async" />
+  <div class="banner-titulo">
+    <h1 class="banner-titulo-nombre">CON012 · Canal de ejercicio de derechos — Ley N° 21.719</h1>
+    <p class="banner-titulo-meta">Gobernanza de Datos · Maqueta de propuesta</p>
+  </div>
+</header>
+<div class="contexto">
+  <span class="chip">Etapa SF-02 · Requisitos</span>
+  <span class="chip" id="chipVigencia">Vigencia 01-12-2026</span>
+  <span class="chip">Fecha simulada: 08-09-2026</span>
+  <span class="chip">v0.5 · 10-09-2026 · flujo por perfiles</span>
+  <button class="btn pequeno tema" id="btnTema" type="button" aria-label="Cambiar tema de color">Tema: sistema</button>
+</div>
+<div class="aviso-maqueta" role="note"><b>Maqueta no operacional.</b> Los datos son ficticios y no se envían a ningún servidor. ClaveÚnica está simulada. Sirve para validar el flujo y el alcance con la contraparte y el Departamento de Informática.</div>
+
+<nav class="nav" aria-label="Vistas de la maqueta">
+  <button class="activo" aria-current="page" data-v="v-sitio">1 · Banner en conaf.cl</button>
+  <button data-v="v-ident">2 · Identificación</button>
+  <button data-v="v-form">3 · Formulario</button>
+  <button data-v="v-acuse">4 · Acuse de recibo</button>
+  <button data-v="v-bandeja">5 · Bandeja interna</button>
+  <button data-v="v-flujo">6 · Flujo y plazos</button>
+  <button data-v="v-perfiles">7 · Perfiles</button>
+</nav>
+
+<main id="contenido" tabindex="-1">
+<!-- ============ 1. SITIO ============ -->
+<section id="v-sitio" data-registro="editorial" class="vista activa">
+  <div class="tarjeta" style="margin-bottom:var(--e-4)">
+    <div class="cab"><h2>Qué ve la persona en www.conaf.cl</h2><span class="sem-mini AZUL">Público</span></div>
+    <p class="sec" style="margin:0">Se propone un banner permanente en el carrusel de accesos de la parte inferior de la portada (junto a MESU, Transparencia Activa, Trámites Online y Licitaciones), más un enlace en el pie de página y una casilla dedicada en el bloque de contacto. Los elementos propuestos están destacados en amarillo. Todo ello cumple el deber de información del art. 14 ter letra c) (identificar el medio por el que se reciben las solicitudes) y conduce al canal. El banner es contenido web ordinario: puede publicarse dentro del contrato vigente con la administradora del sitio, sin desarrollo.</p>
+  </div>
+  <div class="sitio-marco"><div class="sitio"><div class="marca-maqueta">MAQUETA · SIMULACIÓN DE LA PORTADA DE CONAF.CL · NO OPERATIVA</div>
+    <div class="cs-top"><span>Quiénes Somos</span><span>Oficina Virtual</span><span>Centro Documental</span><span>Preguntas frecuentes</span><span>Contacto</span><span class="cs-rrss"><i>f</i><i>◎</i><i>▶</i><i>X</i><i>in</i><i>♪</i></span></div>
+    <div class="cs-nav"><span class="cs-logos"><span class="cs-gob"></span><span class="cs-conaf">CONAF</span></span><nav><span class="act">Inicio</span><span>Manejo de Ecosistemas</span><span>Fiscalización</span><span>Parques Nacionales</span><span>Incendios Forestales</span><span>Noticias</span></nav><span class="cs-buscar">Buscar…</span></div>
+    <div class="cs-omit">··· contenido habitual de la portada (destacados, guía de trámites, OIRS, noticias) ···</div>
+    <div class="cs-carrusel">
+      <div class="cs-arrow">‹</div>
+      <div class="cs-tiles">
+        <a class="cs-tile nuevo" href="#" onclick="ir('v-ident');return false"><div class="cs-img dp"><span class="cs-tag">Propuesto</span><div class="cs-ico">🛡</div><b>Datos<br>Personales</b><small>Ejerza sus derechos · Ley N° 21.719</small></div><div class="cs-cap">Datos Personales</div></a>
+        <a class="cs-tile" href="#" onclick="return false"><div class="cs-img mesu"><b class="mesu-w">MESU</b><small>Medición De Satisfacción Usuaria</small></div><div class="cs-cap">MESU</div></a>
+        <a class="cs-tile" href="#" onclick="return false"><div class="cs-img ta"><b>Transparencia<br>Activa</b><small>Ley de Transparencia</small><span class="cs-folder"></span></div><div class="cs-cap">Transparencia Activa</div></a>
+        <a class="cs-tile" href="#" onclick="return false"><div class="cs-img tr"><b><span class="light">Trámites</span><br>Online</b><span class="cs-zig">〰</span></div><div class="cs-cap">Trámites Online</div></a>
+        <a class="cs-tile" href="#" onclick="return false"><div class="cs-img tr"><b>Licita<br>ciones</b><span class="cs-zig">〰</span></div><div class="cs-cap">Licitaciones</div></a>
+      </div>
+      <div class="cs-arrow">›</div>
+    </div>
+    <div class="cs-dots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="cs-footer">
+      <div><h5>Síguenos en nuestras RR. SS.</h5><div class="cs-social"><div class="cs-forestin">🦫</div><div class="cs-soc"><i>f</i><i>◎</i><i>▶</i><i>X</i><i>in</i><i>♪</i></div></div></div>
+      <div><h5>Enlaces de interés</h5><ul><li>Quiénes Somos</li><li>Nuestras autoridades</li><li>Organigrama Institucional</li><li>Club Forestín</li><li>Revista Chile Forestal</li><li>Concursos laborales</li><li>Licitaciones</li></ul></div>
+      <div><h5>Enlaces de interés</h5><ul><li>Consultas Ciudadanas</li><li>Trámites</li><li>Transparencia Activa</li><li>Solicitud de Información Ley de Transparencia</li><li>COSOC</li><li class="nuevo"><a href="#" onclick="ir('v-ident');return false">Protección de datos personales — Ley N° 21.719</a> <span class="cs-tag2">Propuesto</span></li></ul></div>
+      <div class="cs-contacto"><div class="cs-conaf grande">CONAF</div><p>🏠 Corporación Nacional Forestal</p><p>📍 Paseo Bulnes 285, Santiago, Chile.</p><p>📞 +56 (2) 2663 0000</p><p>🔥 Número de emergencias: 130</p><p>✉ consulta.oirs@conaf.cl</p><p class="nuevo">✉ datospersonales@conaf.cl <span class="cs-tag2">Propuesto · casilla aún no creada</span></p><p>📄 Oficina de Partes, Oficina Central: Lunes a jueves, de 8:30 a 13:30 y de 14:30 a 16:30. Viernes, de 8:30 a 13:30 y de 14:30 a 15:30.</p></div>
+    </div>
+    <div class="cs-copy">© Copyright 2026 Conaf - Lazos. All rights reserved.</div>
+  </div></div>
+  <div class="grid2" style="margin-top:var(--e-4)">
+    <div class="tarjeta"><h2>Contenidos que el banner enlaza (art. 14 ter)</h2>
+      <ul class="lista-plana"><li>Política de tratamiento de datos personales, fecha y versión (letra a).</li><li>Responsable de datos y encargado de prevención (letra b).</li><li>Formulario de contacto y casilla dedicada <span class="mono">datospersonales@conaf.cl</span> (letra c).</li><li>Derechos del titular y derecho a reclamar ante la Agencia (letras f y g).</li><li>Período de conservación y convenios de cesión vigentes (letra i; art. 22 inc. final).</li></ul></div>
+    <div class="tarjeta"><h2>Vías de ingreso que convergen al mismo registro</h2>
+      <ul class="lista-plana"><li><b>Formulario electrónico</b> en el sitio web (procedimiento V1, sección 4): este canal, con ClaveÚnica o verificación documental.</li><li><b>Correo electrónico de la Oficina de Partes</b> (V1) y, como propuesta de la UIA, la casilla dedicada <span class="mono">datospersonales@conaf.cl</span>: el responsable registra el caso a mano en la bandeja.</li><li><b>Carta ingresada en Oficina de Partes</b> (V1): se digitaliza y registra; el plazo corre desde el ingreso a CONAF.</li><li><b>OIRS u otros funcionarios</b> (no previsto en V1): se redirige al responsable sin que se altere la fecha de ingreso.</li></ul>
+      <p class="ayuda">La ley exige "un formulario de contacto o un medio electrónico equivalente" (art. 11), no una aplicación; lo que exige con detalle es la gestión del caso.</p></div>
+  </div>
+</section>
+
+<!-- ============ 2. IDENTIFICACIÓN ============ -->
+<section id="v-ident" data-registro="editorial" class="vista">
+  <div class="pasos"><span class="activo">1 Identificación</span><span>2 Solicitud y antecedentes</span><span>3 Acuse</span></div>
+  <div class="contenedor">
+    <div class="columna">
+      <div class="tarjeta"><h2>Quién presenta la solicitud</h2>
+        <div class="campo"><label>Actúo como</label><select id="rol" onchange="cambiaRol()"><option value="titular">Titular de los datos</option><option value="rep">Representante legal o mandatario</option><option value="her">Heredero de titular fallecido</option></select></div>
+        <div id="ayudaRol" class="aviso info">Los derechos son personales; puede ejercerlos usted directamente (art. 4°).</div>
+      </div>
+      <div class="tarjeta"><h2>Por qué pedimos identificarse</h2><p class="sec" style="margin:0;font-size:var(--f-s)">El art. 11 letra a) exige autenticar la identidad de quien solicita, para no entregar sus datos a un tercero. ClaveÚnica entrega RUN y nombre verificados por el Estado. Si no la tiene, puede identificarse con copia de su cédula; la respuesta se demorará lo mismo.</p></div>
+    </div>
+    <div class="columna">
+      <div class="tarjeta">
+        <div class="cab"><h2>Identificación</h2><span class="sem-mini GRIS" id="estadoId">Sin identificar</span></div>
+        <div id="cuBloque">
+          <p class="sec" style="margin:0 0 var(--e-3)">Vía principal</p>
+          <button class="cu" onclick="simularCU()"><span>CU</span> Iniciar sesión con ClaveÚnica</button>
+          <p class="ayuda">Simulación: en producción redirige a accounts.claveunica.gob.cl (OpenID Connect) y vuelve con RUN y nombre. Requiere credenciales institucionales y dominio .gob.cl certificado, o reutilizar la integración de la Oficina Virtual.</p>
+          <details style="margin-top:var(--e-3)"><summary>No tengo ClaveÚnica · vía alternativa</summary>
+            <div class="fila" style="margin-top:var(--e-3)"><div class="campo"><label>RUN o pasaporte</label><input id="altRun" placeholder="12.345.678-9"></div><div class="campo"><label>Nombre completo</label><input id="altNombre"></div></div>
+            <div class="adj">Adjuntar copia de cédula de identidad (ambos lados) · PDF o imagen · máx. 5 MB</div>
+            <p class="ayuda">El encargado verificará la identidad antes de derivar; una solicitud sin identificación suficiente se requiere completar, sin que ello suspenda el plazo legal.</p>
+            <button class="btn" style="margin-top:var(--e-2)" onclick="simularAlt()">Continuar con verificación documental</button>
+            <div id="errAlt" class="aviso crit oculto" role="alert" style="margin-top:var(--e-3)"></div>
+          </details>
+        </div>
+        <div id="cuOk" class="oculto">
+          <div class="aviso ok">Identidad verificada con ClaveÚnica.</div>
+          <dl class="dl" style="margin:var(--e-3) 0"><dt>RUN</dt><dd id="idRun" class="mono">—</dd><dt>Nombre</dt><dd id="idNombre">—</dd><dt>Método</dt><dd id="idMetodo">—</dd></dl>
+          <div class="fila"><div class="campo"><label>Correo electrónico (para el acuse y la respuesta, si elige ese medio)</label><input id="correo" type="email" placeholder="nombre@correo.cl"></div><div class="campo"><label>Teléfono (opcional)</label><input placeholder="+56 9 …"></div></div>
+          <p class="ayuda">ClaveÚnica no entrega correo. Debe indicar al menos un medio para recibir la respuesta (correo o domicilio); se elige en el paso siguiente.</p>
+          <div id="repBloque" class="oculto"><p class="ayuda">Sus datos como representante (nombre y RUN) provienen de su identificación; su correo y teléfono se registran arriba.</p><h3 style="margin:var(--e-3) 0 var(--e-2)">Titular representado</h3><div class="fila"><div class="campo"><label>RUN del titular representado *</label><input id="repRun" placeholder="9.876.543-2"></div><div class="campo"><label>Nombre del titular representado *</label><input id="repNombre"></div></div><div class="adj" id="adjRep">Adjuntar poder simple o documento que acredita la representación</div></div>
+          <div class="acciones" style="margin-top:var(--e-3)"><button class="btn primario" onclick="ir('v-form')">Continuar a la solicitud →</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. FORMULARIO ============ -->
+<section id="v-form" data-registro="editorial" class="vista">
+  <div class="pasos"><span class="hecho">1 Identificación</span><span class="activo">2 Solicitud y antecedentes</span><span>3 Acuse</span></div>
+  <div class="contenedor">
+    <div class="columna">
+      <div class="tarjeta"><h2>Solicitante</h2><dl class="dl"><dt>RUN</dt><dd id="fRun" class="mono">—</dd><dt>Nombre</dt><dd id="fNombre">—</dd><dt>Correo</dt><dd id="fCorreo">—</dd></dl><p class="ayuda" style="margin-top:var(--e-2)">Solicitud dirigida a la Directora Ejecutiva de CONAF, jefa superior del servicio (art. 23 inc. 3°).</p></div>
+      <div class="tarjeta"><h2>Plazos que se activan</h2>
+        <ul class="lista-plana"><li>Acuse de recibo inmediato con número de caso.</li><li>Respuesta en <b>30 días corridos</b>, prorrogables una vez por 30.</li><li>Si pide <b>bloqueo temporal</b>: resolución en <b>2 días hábiles</b>.</li><li>Si se deniega, <b>30 días hábiles</b> para reclamar ante la Agencia.</li></ul></div>
+      <div class="tarjeta"><h2>Información para el titular</h2><p class="sec" style="margin:0 0 var(--e-2);font-size:var(--f-s)">La Corporación Nacional Forestal (CONAF), en su calidad de responsable de datos personales, pone a disposición el presente formulario para facilitar el ejercicio de los derechos reconocidos por la Ley N° 21.719. El titular podrá ejercer los derechos de acceso, rectificación, supresión, oposición, portabilidad y bloqueo del tratamiento, de conformidad con los requisitos y condiciones establecidos en la legislación vigente. Este formulario permite identificar al titular, el derecho que ejerce, los datos personales o tratamiento involucrado y el medio mediante el cual desea recibir la respuesta.</p><p class="sec" style="margin:0;font-size:var(--f-s)">Los datos que ingresa se tratan solo para gestionar su solicitud (art. 20), los conocen el encargado, el área que trata sus datos y Fiscalía, y el expediente se conserva por el plazo que fije la política institucional.</p></div>
+    </div>
+    <div class="columna">
+      <div class="tarjeta">
+        <h2>¿Qué derecho desea ejercer?</h2>
+        <p class="ayuda" style="margin-bottom:var(--e-2)">Puede marcar más de uno. Los campos cambian según el derecho.</p>
+        <div class="derechos">
+          <label class="derecho" data-d="acceso"><input type="checkbox" onchange="marcaDerecho(this)"><span><b>Acceso</b><small>Saber si CONAF trata mis datos, cuáles, con qué fin y a quién los comunica (art. 5°).</small></span></label>
+          <label class="derecho" data-d="rect"><input type="checkbox" onchange="marcaDerecho(this)"><span><b>Rectificación</b><small>Corregir datos inexactos, desactualizados o incompletos (art. 6°).</small></span></label>
+          <label class="derecho" data-d="opos"><input type="checkbox" onchange="marcaDerecho(this)"><span><b>Oposición</b><small>Que CONAF no realice un tratamiento específico de mis datos (art. 8°).</small></span></label>
+          <label class="derecho" data-d="bloq"><input type="checkbox" onchange="marcaDerecho(this)"><span><b>Bloqueo temporal</b><small>Suspender el tratamiento mientras se resuelve mi rectificación, supresión u oposición (art. 8° ter). Debe fundarse.</small></span></label>
+          <label class="derecho cond" data-d="supr"><input type="checkbox" onchange="marcaDerecho(this)"><span><b>Supresión</b><small>Eliminar mis datos (art. 7°). En un órgano público procede en casos acotados (art. 23); Fiscalía evaluará la causal.</small></span></label>
+          <label class="derecho cond" data-d="port"><input type="checkbox" onchange="marcaDerecho(this)"><span><b>Portabilidad</b><small>Copia en formato estructurado (art. 9°). Solo para tratamientos automatizados basados en consentimiento; se evaluará su procedencia.</small></span></label>
+        </div>
+        <div id="avisoBloq" class="aviso warn oculto" style="margin-top:var(--e-3)">El bloqueo temporal acompaña a una solicitud de rectificación, supresión u oposición, o bien reemplaza a la supresión en los casos del art. 7° (art. 8° ter). Marque además uno de esos derechos o indique abajo que lo pide en lugar de la supresión.</div>
+
+        <div id="bd-acceso" class="bloque-derecho oculto"><h3>Acceso</h3><div class="campo"><label>Ámbito de CONAF donde cree que están sus datos (opcional; ayuda a localizarlos)</label><select><option>No lo sé / todos</option><option>Personal y ex funcionarios (GEDEP)</option><option>Trámites forestales / Oficina Virtual</option><option>Denuncias e infracciones forestales</option><option>Áreas Silvestres Protegidas (reservas, visitas)</option><option>Programas y beneficios (entrega de plantas, PPF)</option><option>Proveedores y compras</option><option>OIRS / Transparencia</option></select></div><div class="campo"><label>Detalle (opcional)</label><textarea rows="2" placeholder="Para el acceso basta su identificación; puede precisar qué información le interesa."></textarea></div></div>
+        <div id="bd-rect" class="bloque-derecho oculto"><h3>Rectificación</h3><div class="fila"><div class="campo"><label>Dato actualmente registrado *</label><input placeholder="Ej.: fecha de egreso 30-06-2024"></div><div class="campo"><label>Dato correcto que solicita registrar *</label><input placeholder="Ej.: 31-07-2024"></div></div><div class="fila"><div class="campo"><label>Dato actualmente registrado (2)</label><input></div><div class="campo"><label>Dato correcto que solicita registrar (2)</label><input></div></div><p class="ayuda" style="margin:calc(-1 * var(--e-1)) 0 var(--e-2)">En la versión operativa podrán agregarse más filas.</p><div class="campo"><label>Sistema, trámite o documento en que consta (si lo conoce)</label><input></div><div class="adj">Adjuntar antecedentes que sustentan la corrección *</div></div>
+        <div id="bd-opos" class="bloque-derecho oculto"><h3>Oposición</h3><div class="campo"><label>Tratamiento al que se opone *</label><input placeholder="Ej.: envío de comunicaciones informativas"></div><div class="campo"><label>Causal *</label><select><option>a) El tratamiento se basa en un interés legítimo (requiere fundamento breve)</option><option>b) Fines de marketing directo</option><option>c) Datos obtenidos de fuente de acceso público sin otro fundamento</option><option>Decisión basada exclusivamente en tratamiento automatizado o elaboración de perfiles (art. 8° bis)</option><option>Tratamiento contrario al Título IV (órganos públicos)</option></select></div><div class="campo"><label>Fundamento</label><textarea rows="2"></textarea></div></div>
+        <div id="bd-bloq" class="bloque-derecho oculto"><h3>Bloqueo temporal</h3><div class="campo"><label>Tratamiento cuyo bloqueo solicita *</label><input></div><div class="campo"><label>Fundamento del bloqueo *</label><textarea id="bloqFund" rows="2" placeholder="La ley exige que la solicitud de bloqueo sea fundada; se resuelve en 2 días hábiles."></textarea></div><label class="opcion"><input type="checkbox" id="bloqAlt"><span>Solicito el bloqueo <b>en lugar de la supresión</b> de mis datos (art. 8° ter inc. 2°).</span></label><p class="ayuda">El bloqueo suspende el tratamiento, pero no afecta el almacenamiento de los datos. Si CONAF lo rechaza, puede reclamar ante la Agencia dentro de 30 días hábiles.</p></div>
+        <div id="bd-supr" class="bloque-derecho oculto"><h3>Supresión</h3><div class="campo"><label>Datos cuya supresión solicita *</label><input></div><div class="campo"><label>Causal invocada *</label><select><option>Los datos ya no son necesarios para el fin</option><option>Fueron obtenidos o tratados ilícitamente</option><option>Datos caducos</option><option>Sentencia, resolución de la Agencia u obligación legal</option><option>Oposición acogida sin otro fundamento</option></select></div><div class="campo"><label>Fundamento de la solicitud *</label><textarea rows="2"></textarea></div><div class="aviso warn" style="font-size:var(--f-xs)">Cuando los datos se tratan para el cumplimiento de una función pública, la supresión no procede (art. 7° inc. 2°; art. 23). Recibirá una respuesta fundada en cualquier caso.</div></div>
+        <div id="bd-port" class="bloque-derecho oculto"><h3>Portabilidad</h3><div class="campo"><label>Datos que solicita portar *</label><input></div><p class="ayuda" style="margin:0 0 var(--e-2)">Responsable al cual desea transferir los datos, si corresponde:</p><div class="fila3"><div class="campo"><label>Nombre / Razón social</label><input></div><div class="campo"><label>Correo electrónico</label><input></div><div class="campo"><label>Formato requerido</label><select><option>CSV</option><option>JSON</option><option>XML</option><option>Otro</option></select></div></div></div>
+
+        <h2 style="margin-top:var(--e-4)">Documentos y antecedentes que acompaña</h2>
+        <p class="ayuda" style="margin:0 0 var(--e-2)">Marque los documentos que presenta junto con esta solicitud:</p>
+        <div class="docs"><label><input type="checkbox"> Documento que acredita representación o mandato</label><label><input type="checkbox"> Antecedentes que fundamentan la rectificación</label><label><input type="checkbox"> Antecedentes que fundamentan la supresión</label><label><input type="checkbox"> Antecedentes que fundamentan la oposición</label><label><input type="checkbox"> Antecedentes relacionados con el bloqueo</label><label><input type="checkbox"> Antecedentes relacionados con portabilidad</label><label><input type="checkbox"> Otros documentos</label></div>
+        <div class="campo"><label>Detalle</label><input placeholder="Describa brevemente los documentos adjuntos"></div>
+        <div class="adj" style="margin:var(--e-2) 0">Adjuntar documentos · PDF, JPG, PNG · máx. 10 MB en total</div>
+        <h2 style="margin-top:var(--e-4)">Medio para recibir la respuesta</h2>
+        <div class="fila"><div class="campo"><label>Seleccione el medio *</label><select id="medio" onchange="cambiaMedio(this.value)"><option value="correo">Correo electrónico</option><option value="carta">Domicilio (carta)</option><option value="pres">Presencial en Oficina de CONAF</option></select></div><div class="campo oculto" id="ofi"><label>Oficina de CONAF ubicada en *</label><select><option>Oficina Central · Paseo Bulnes 285, Santiago</option><option>Dirección Regional…</option><option>Oficina Provincial…</option></select></div></div>
+        <div class="fila3 oculto" id="dom"><div class="campo"><label>Domicilio *</label><input></div><div class="campo"><label>Comuna *</label><input></div><div class="campo"><label>Región *</label><select><option>Metropolitana de Santiago</option><option>Arica y Parinacota</option><option>Tarapacá</option><option>Antofagasta</option><option>Atacama</option><option>Coquimbo</option><option>Valparaíso</option><option>O'Higgins</option><option>Maule</option><option>Ñuble</option><option>Biobío</option><option>La Araucanía</option><option>Los Ríos</option><option>Los Lagos</option><option>Aysén</option><option>Magallanes</option></select></div></div>
+        <h2 style="margin-top:var(--e-4)">Declaración del titular o representante</h2>
+        <label class="opcion declaracion"><input type="checkbox" id="decl"><span>Declaro que los antecedentes proporcionados en este formulario son verdaderos y corresponden a mi solicitud de ejercicio de derechos sobre datos personales. Asimismo, declaro conocer que CONAF podrá adoptar las medidas necesarias para verificar mi identidad y, cuando corresponda, la representación invocada, con el objeto de resguardar la seguridad y confidencialidad de los datos personales.</span></label>
+        <div class="acciones"><button class="btn" onclick="ir('v-ident')">← Volver</button><button class="btn primario" id="btnEnviar" onclick="enviar()">Enviar solicitud</button></div>
+        <div id="errForm" role="alert" class="aviso crit oculto" style="margin-top:var(--e-3)"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. ACUSE ============ -->
+<section id="v-acuse" data-registro="editorial" class="vista">
+  <div class="pasos"><span class="hecho">1 Identificación</span><span class="hecho">2 Solicitud y antecedentes</span><span class="activo">3 Acuse</span></div>
+  <div class="contenedor">
+    <div class="columna">
+      <div class="acuse"><div class="muted" style="font-size:var(--f-xs)">Número de caso</div><div class="num mono" id="acNum">DP-2026-000000</div><div style="font-size:var(--f-s);margin-top:var(--e-2)">Solicitud recibida el <b id="acFecha">—</b>. <span id="acCopia">Se envió copia íntegra al correo indicado.</span></div></div>
+      <div class="tarjeta"><h2>Qué ocurre ahora</h2>
+        <div class="linea"><div class="hito hecho"><b>Acuse de recibo</b><small>Hoy · art. 11 inc. 2°</small></div><div class="hito actual"><b>Recepción y admisibilidad</b><small>El responsable de datos registra y verifica su identidad; Fiscalía resuelve si la solicitud procede</small></div><div class="hito"><b>Análisis por el área que trata sus datos</b></div><div class="hito"><b>Respuesta escrita</b><small>Plazo máximo: <b id="acPlazo">—</b> (30 días corridos, prorrogable una vez)</small></div></div></div>
+    </div>
+    <div class="columna">
+      <div class="tarjeta"><h2>Resumen de su solicitud</h2><dl class="dl" id="acResumen"></dl></div>
+      <div id="acBloq" class="aviso crit oculto">Su solicitud de bloqueo temporal será resuelta dentro de <b>2 días hábiles</b> (<span id="acPlazoBloq"></span>). Mientras no se resuelva, CONAF no tratará los datos indicados; el bloqueo no afecta su almacenamiento. Si se rechaza, se le informará el fundamento y podrá reclamar ante la Agencia dentro de 30 días hábiles.</div>
+      <div class="tarjeta"><h2>Sus derechos durante el trámite</h2><p class="sec" style="margin:0;font-size:var(--f-s)">Si CONAF no responde dentro del plazo o deniega su solicitud, puede reclamar ante la Agencia de Protección de Datos Personales dentro de 30 días hábiles (art. 11 inc. 4° y 5°; art. 41). Puede consultar el estado indicando su número de caso y RUN en la casilla <span class="mono">datospersonales@conaf.cl</span>.</p></div>
+      <div class="acciones"><button class="btn" onclick="ir('v-sitio')">Volver al sitio</button><button class="btn verde" onclick="ir('v-bandeja')">Ver cómo llega a la bandeja interna →</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. BANDEJA ============ -->
+<section id="v-bandeja" data-registro="operativo" class="vista">
+  <div class="tarjeta cabecera-bandeja" style="margin-bottom:var(--e-4)"><div><h2 style="margin:0">Bandeja de gestión</h2><div class="ayuda" id="perfilDesc">—</div></div><div class="selector"><label for="selPerfil">Ver como</label><select id="selPerfil" class="control" onchange="cambiaPerfil(this.value)"><option value="jefatura">Jefatura unidad receptora</option><option value="encargado">Encargado/a de recepción</option><option value="fiscalia">Fiscalía</option><option value="gerencia">Gerencia responsable (GEDEP)</option><option value="admin">Administrador de plataforma</option></select><span class="sem-mini AZUL">Interno</span></div></div>
+  <div id="adminPanel" class="oculto"></div>
+  <div class="tarjeta guia" id="guia" style="margin-bottom:var(--e-4)"><div class="cab"><h2 style="margin:0">Recorrido guiado por perfiles</h2><span class="sem-mini AZUL">Demostración funcional</span></div>
+    <p class="sec" style="margin:0 0 var(--e-2);font-size:var(--f-s)">Los botones de acción de cada caso cambian su estado, su responsable y su expediente. Para mostrar el flujo completo: envíe una solicitud desde la pestaña 3 (o use el caso <span class="mono">DP-2026-000123</span>) y siga la secuencia de perfiles. El panel indica en cada momento qué perfil debe actuar.</p>
+    <div class="acciones" id="guiaPasos"></div>
+    <div id="guiaSig" class="ayuda" style="margin-top:var(--e-2)"></div></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="contenedor bandeja">
+    <div class="columna">
+      <div class="tarjeta">
+        <div class="filtros"><select id="fEstado" class="control" aria-label="Filtrar por estado" onchange="pinta()"><option value="">Todos los estados</option></select><select id="fDer" class="control" aria-label="Filtrar por derecho" onchange="pinta()"><option value="">Todos los derechos</option><option>Acceso</option><option>Rectificación</option><option>Oposición</option><option>Supresión</option><option>Portabilidad</option><option>Bloqueo temporal</option></select><input id="fTxt" class="control" aria-label="Buscar caso, RUN o nombre" placeholder="Buscar caso, RUN o nombre" oninput="pinta()" style="flex:1;min-width:10rem"></div>
+        <div class="desplaza-x"><table class="casos"><thead><tr><th>Caso</th><th>Ingreso</th><th>Solicitante</th><th>Derecho(s)</th><th>Estado</th><th>Responsable</th><th>Vence · plazo</th></tr></thead><tbody id="tbody"></tbody></table></div>
+        <div class="leyenda"><span class="sem-mini VERDE">≥ 10 días</span><span class="sem-mini AMARILLO">3–9 días</span><span class="sem-mini ROJO">≤ 2 días o vencido</span><span class="sem-mini GRIS">Cerrado</span> · Días corridos al vencimiento legal (art. 11). Los casos con bloqueo pendiente se ordenan primero.</div>
+      </div>
+    </div>
+    <div class="columna" id="detalle"><div class="tarjeta vacio"><p><b>Ningún caso seleccionado</b></p><p>Seleccione un caso de la bandeja para ver su expediente.</p></div></div>
+  </div>
+</section>
+
+<!-- ============ 6. FLUJO ============ -->
+<section id="v-flujo" data-registro="operativo" class="vista">
+  <div class="grid2">
+    <div class="tarjeta"><h2>Flujo de gestión propuesto</h2>
+      <div class="linea">
+        <div class="hito hecho"><b>0 · Ingreso</b><small>Web (ClaveÚnica o documental), casilla dedicada u Oficina de Partes. Número de caso y acuse automático. Plazo legal: día 0. Solicitud dirigida a la Directora Ejecutiva (art. 23 inc. 3°).</small></div>
+        <div class="hito hecho"><b>1 · Recepción y registro · Responsable de datos</b><small>Según V1, sección 6: registrar fecha de ingreso; asignar número único; identificar al titular y verificar su identidad y representación; identificar el derecho y la base de datos, sistema o tratamiento; acusar recibo. Plazo interno: 1 día hábil.</small></div>
+        <div class="hito hecho"><b>2 · Admisibilidad · Fiscalía</b><small>Según lo informado en la reunión del 08/09/2026, un responsable en Fiscalía resuelve en primera instancia si la solicitud procede (Título IV, causales del art. 23). Resultado: admisible / requiere antecedentes / no procede (respuesta fundada). Plazo interno: 2 días hábiles.</small></div>
+        <div class="hito hecho"><b>2b · Bloqueo temporal (si se pidió)</b><small>Circuito abreviado paralelo: responsable de datos + Fiscalía resuelven en 2 días hábiles; no afecta el almacenamiento; el rechazo fundado se comunica electrónicamente a la Agencia y es reclamable en 30 días hábiles (art. 41 a).</small></div>
+        <div class="hito hecho"><b>3 · Derivación · Responsable de datos</b><small>Asigna a la gerencia o departamento que trata los datos, según el catálogo de bases. Puede ser multiárea; el responsable consolida. Plazo interno: 1 día hábil.</small></div>
+        <div class="hito hecho"><b>4 · Análisis y propuesta · Gerencia responsable</b><small>Localiza los datos, ejecuta o propone la acción y redacta la propuesta de Carta Oficial sobre plantilla. Plazo interno: 8 días hábiles.</small></div>
+        <div class="hito hecho"><b>5 · Revisión jurídica · Fiscalía</b><small>Revisa fundamento y textos obligatorios (causal, derecho a reclamar). Plazo interno: 2 días hábiles.</small></div>
+        <div class="hito hecho"><b>6 · Firma · Directora Ejecutiva</b><small>Carta Oficial. Propuesta de la UIA, no exigida por la ley: evaluar delegación de firma para accesos simples mediante resolución. Plazo interno: 2 días hábiles.</small></div>
+        <div class="hito hecho"><b>7 · Respuesta y cierre · Responsable de datos</b><small>Envío al medio indicado; respaldo de fecha, destinatario y contenido íntegro (art. 11 inc. 3°); comunicación a cesionarios si corresponde; cierre del expediente. Total de plazos internos: 16 días hábiles (≈ 22–24 corridos), con holgura para feriados, requerimiento de antecedentes y prórroga excepcional.</small></div>
+      </div>
+    </div>
+    <div class="columna">
+      <div class="tarjeta"><h2>Responsables (procedimiento V1, sección 3)</h2><p class="ayuda" style="margin:0 0 var(--e-2)">Los perfiles de la plataforma y su matriz de permisos están en la pestaña 7.</p><table class="casos"><thead><tr><th>Responsable</th><th>Función según V1</th><th>Rol en la maqueta</th></tr></thead><tbody>
+<tr><td>Responsable de datos de CONAF</td><td>Recibir, registrar fecha de ingreso, acusar recibo, derivar a la gerencia o departamento responsable del tratamiento.</td><td>"Encargado de protección de datos" en la bandeja = el "responsable de datos de CONAF" de V1 (rol operativo, cargo por definir). Distinto del delegado de protección de datos del art. 50, cuya designación es voluntaria, y del encargado de prevención del art. 14 ter b).</td></tr>
+<tr><td>Fiscalía</td><td>Revisar la carta de respuesta previo a la firma de la Directora Ejecutiva. Según lo acordado en reunión, resuelve además en primera instancia si la solicitud procede.</td><td>Etapas 2 (admisibilidad, según reunión del 08/09) y 5 (revisión jurídica).</td></tr>
+<tr><td>Gerencia / Dpto. responsable del tratamiento</td><td>Analizar, verificar antecedentes, determinar procedencia, resolver y elaborar propuesta de respuesta mediante Carta Oficial.</td><td>Etapa 4 (análisis y propuesta); decisiones acoge / acoge parcialmente / rechaza.</td></tr>
+<tr><td>Directora Ejecutiva</td><td>Firma la Carta Oficial de respuesta.</td><td>Etapa 6 (firma).</td></tr>
+<tr><td>Delegado de Protección de Datos Personales</td><td>Asesorar en la aplicación de la normativa y participar en casos que requieran interpretación.</td><td>Perfil de supervisión y reportes (designación pendiente).</td></tr>
+</tbody></table></div>
+<div class="tarjeta"><h2>Contenido de la Carta Oficial de respuesta (V1, sección 8)</h2><div class="acciones" style="font-size:var(--f-xs)"><span class="sem-mini GRIS">Identificación de la solicitud</span><span class="sem-mini GRIS">Derecho ejercido</span><span class="sem-mini GRIS">Datos o tratamiento involucrado</span><span class="sem-mini GRIS">Análisis efectuado</span><span class="sem-mini GRIS">Fundamento jurídico</span><span class="sem-mini GRIS">Decisión adoptada</span><span class="sem-mini GRIS">Acciones ejecutadas o por ejecutar</span><span class="sem-mini GRIS">Fecha de ejecución</span></div><p class="ayuda" style="margin-bottom:var(--e-2)">En solicitudes de <b>acceso</b> acogidas, la respuesta incluye además lo exigido por el art. 5°: los datos tratados y su origen; la finalidad; las categorías o identidad de los destinatarios; el período de conservación; los intereses legítimos, si aplican; y la lógica aplicada en decisiones automatizadas. En <b>denegaciones de un órgano público</b>, la causal se elige entre las del art. 23 inc. 2° (impedir o entorpecer funciones fiscalizadoras, investigativas, de protección a víctimas y testigos o sancionatorias; afectar el secreto legal) o la improcedencia del derecho (arts. 7° inc. 2°, 9°, 21 y 23).</p><p class="ayuda">Decisiones posibles: <b>acogida totalmente</b>, <b>acogida parcialmente</b> (fundamentando la parte acogida y la rechazada) o <b>rechazada</b> (causal y antecedentes). En rechazo total o parcial se informa el plazo de 30 días hábiles para reclamar ante la Agencia (V1, sección 9). Las plantillas del sistema incorporan estos ocho elementos.</p></div>
+<div class="tarjeta"><h2>Reglas de plazo que el sistema controla</h2>
+        <table class="casos"><thead><tr><th>Regla</th><th>Valor</th><th>Fuente</th></tr></thead><tbody>
+        <tr><td>Acuse de recibo</td><td>Inmediato</td><td>art. 11 inc. 2°</td></tr>
+        <tr><td>Respuesta</td><td>30 días corridos desde el ingreso</td><td>art. 11 inc. 2°</td></tr>
+        <tr><td>Prórroga</td><td>Una sola vez, hasta 30 días corridos (ley); comunicada al titular antes del vencimiento (procedimiento V1, sección 9)</td><td>art. 11 inc. 2°; V1 s. 9</td></tr>
+        <tr><td>Bloqueo temporal</td><td>2 días hábiles; no afecta el almacenamiento; rechazo fundado se comunica electrónicamente a la Agencia y es reclamable en 30 días hábiles</td><td>art. 8° ter; art. 11 inc. 6°; art. 41 a)</td></tr>
+        <tr><td>Reclamo del titular</td><td>30 días hábiles; se informa en toda denegación</td><td>art. 11 inc. 4°; art. 41</td></tr>
+        <tr><td>Requerimiento de antecedentes</td><td>No suspende el plazo (criterio propuesto)</td><td>art. 11 (sin regla expresa)</td></tr>
+        <tr><td>Gratuidad</td><td>Todas las solicitudes son gratuitas; el art. 10 (cobro de costos directos) no figura entre las normas aplicables a los órganos públicos</td><td>art. 21 inc. 3°; V1 s. 1</td></tr>
+        <tr><td>Respaldo de la respuesta</td><td>Fecha, destinatario y contenido íntegro, inmutables</td><td>art. 11 inc. 3°</td></tr>
+        </tbody></table></div>
+      <div class="tarjeta"><h2>Estados del caso</h2><div class="acciones"><span class="sem-mini AZUL">Ingresada</span><span class="sem-mini AZUL">En admisibilidad</span><span class="sem-mini AMARILLO">Requiere antecedentes</span><span class="sem-mini VERDE">Admisible</span><span class="sem-mini AZUL">Derivada</span><span class="sem-mini AZUL">En análisis</span><span class="sem-mini AZUL">En revisión jurídica</span><span class="sem-mini AZUL">En firma</span><span class="sem-mini VERDE">Firmada</span><span class="sem-mini AMARILLO">Prorrogada</span><span class="sem-mini GRIS">Respondida</span><span class="sem-mini GRIS">No admitida</span><span class="sem-mini ROJO">Reclamada ante la Agencia</span></div></div>
+      <div class="tarjeta"><h2>Alternativas de implementación</h2><table class="casos"><thead><tr><th>Opción</th><th>Identidad</th><th>Costo</th></tr></thead><tbody><tr><td>A · Módulo en Oficina Virtual CONAF</td><td>ClaveÚnica ya certificada</td><td>HH Informática</td></tr><tr><td>B · Desarrollo UIA (este flujo) en infraestructura CONAF</td><td>ClaveÚnica (requiere .gob.cl) o documental</td><td>HH UIA + hosting</td></tr><tr><td>C · Lazos en conaf.cl</td><td>ClaveÚnica no certificable en .conaf.cl</td><td>80 HH · $3.280.000 + IVA</td></tr><tr><td>D · Canal mínimo transitorio</td><td>Documental</td><td>Sin desarrollo</td></tr></tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. PERFILES ============ -->
+<section id="v-perfiles" data-registro="operativo" class="vista">
+  <div class="tarjeta" style="margin-bottom:var(--e-4)"><div class="cab"><h2>Perfiles de la plataforma</h2><span class="sem-mini AMARILLO">Propuesta · flujo interno pendiente de definir</span></div>
+    <p class="sec" style="margin:0">Se definen seis perfiles: uno externo (persona solicitante) y cinco internos. La asignación de personas a perfiles, en particular si la jefatura de la unidad receptora opera los casos o delega la recepción en un encargado de su unidad, y si la firma de respuestas se realiza dentro de la plataforma, depende del flujo de trabajo que la contraparte aún debe definir. La matriz de permisos aplica el principio de necesidad de conocer (art. 14 bis): cada perfil ve solo los casos y datos que su etapa requiere.</p></div>
+  <div class="perfiles">
+    <div class="tarjeta perfil"><div class="cab"><h3>Persona solicitante</h3><span class="sem-mini VERDE">Externo</span></div><dl class="dl"><dt>Quién</dt><dd>Titular de los datos, su representante o mandatario, o heredero.</dd><dt>Acceso</dt><dd>ClaveÚnica (vía principal) o verificación documental; sin cuenta en la plataforma.</dd><dt>Puede</dt><dd>Presentar solicitudes; recibir acuse y respuesta; consultar el estado de sus propios casos (autenticado); aportar antecedentes requeridos.</dd><dt>No puede</dt><dd>Ver casos de terceros ni el expediente interno (notas, propuestas, revisiones).</dd></dl></div>
+    <div class="tarjeta perfil"><div class="cab"><h3>Jefatura de la unidad receptora</h3><span class="sem-mini AZUL">Interno</span></div><dl class="dl"><dt>Quién</dt><dd>Jefa de la Unidad de Participación Ciudadana y Transparencia (Leslie Escobar), unidad que recibirá los requerimientos según lo informado por la contraparte.</dd><dt>Ve</dt><dd>Todos los casos, con RUN enmascarado por defecto; indicadores y reportes; bitácora.</dd><dt>Puede</dt><dd>Asignar y reasignar encargados; autorizar la prórroga única; escalar vencimientos; exportar reportes para la Dirección Ejecutiva y la Agencia; cerrar expedientes.</dd><dt>Pendiente</dt><dd>Si además opera la recepción (perfil siguiente) o la delega; si es la responsable institucional ante la Agencia (art. 14 ter letra b).</dd></dl></div>
+    <div class="tarjeta perfil"><div class="cab"><h3>Encargado/a de recepción</h3><span class="sem-mini AZUL">Interno</span></div><dl class="dl"><dt>Quién</dt><dd>Profesional de la unidad receptora designado por su jefatura ("responsable de datos de CONAF" en el procedimiento V1).</dd><dt>Ve</dt><dd>Todos los casos abiertos; RUN completo solo al verificar identidad, con registro.</dd><dt>Puede</dt><dd>Registrar solicitudes recibidas por correo o carta; verificar identidad y representación; identificar ámbito; enviar acuse; pasar a admisibilidad; derivar a la gerencia; requerir antecedentes; enviar la respuesta firmada y guardar el respaldo; comunicar a cesionarios.</dd><dt>No puede</dt><dd>Decidir admisibilidad ni el fondo; firmar respuestas; modificar plazos.</dd></dl></div>
+    <div class="tarjeta perfil"><div class="cab"><h3>Fiscalía</h3><span class="sem-mini AZUL">Interno</span></div><dl class="dl"><dt>Quién</dt><dd>Abogado/a responsable designado por Fiscalía (informado en la reunión del 08/09/2026).</dd><dt>Ve</dt><dd>Casos en admisibilidad, en revisión jurídica y con bloqueo temporal pendiente; expediente completo de esos casos.</dd><dt>Puede</dt><dd>Declarar admisible o no procedente (con causal art. 23 o improcedencia del derecho); resolver el bloqueo temporal en 2 días hábiles; revisar la propuesta de Carta Oficial y devolverla con observaciones o darla por conforme.</dd><dt>No puede</dt><dd>Derivar, analizar el fondo ni enviar la respuesta.</dd></dl></div>
+    <div class="tarjeta perfil"><div class="cab"><h3>Gerencia responsable</h3><span class="sem-mini AZUL">Interno</span></div><dl class="dl"><dt>Quién</dt><dd>Analista designado por la gerencia o departamento que trata los datos (GEDEP, Fiscalización, ASP, Fomento, etc.), uno por ámbito del catálogo de bases.</dd><dt>Ve</dt><dd>Solo los casos derivados a su ámbito; datos del titular necesarios para localizar la información.</dd><dt>Puede</dt><dd>Localizar los datos; ejecutar o proponer la acción; registrar la decisión (acoge, acoge parcialmente, rechaza) y la propuesta de Carta Oficial; solicitar prórroga a la jefatura.</dd><dt>No puede</dt><dd>Ver casos de otros ámbitos; cambiar plazos; enviar la respuesta.</dd></dl></div>
+    <div class="tarjeta perfil"><div class="cab"><h3>Administrador de plataforma</h3><span class="sem-mini GRIS">Técnico</span></div><dl class="dl"><dt>Quién</dt><dd>UIA o Departamento de Informática, según se acuerde la operación.</dd><dt>Ve</dt><dd>Parámetros, usuarios, bitácora técnica e indicadores agregados; <b>no ve el contenido de los casos</b> (separación de funciones).</dd><dt>Puede</dt><dd>Parametrizar derechos ofrecidos, plazos, feriados, ámbitos y plantillas; crear y desactivar usuarios y asignar perfiles; gestionar la integración con ClaveÚnica; respaldos y retención.</dd><dt>No puede</dt><dd>Abrir expedientes ni actuar sobre casos.</dd></dl></div>
+  </div>
+  <div class="tarjeta" style="margin-top:var(--e-4)"><h2>Matriz de permisos (propuesta)</h2>
+    <div class="desplaza-x"><table class="casos matriz"><thead><tr><th>Acción</th><th>Solicitante</th><th>Jefatura</th><th>Encargado/a</th><th>Fiscalía</th><th>Gerencia</th><th>Administrador</th></tr></thead><tbody>
+    <tr><td>Presentar solicitud / aportar antecedentes</td><td>●</td><td>–</td><td>○ registra las recibidas por otros canales</td><td>–</td><td>–</td><td>–</td></tr>
+    <tr><td>Consultar estado</td><td>● solo los propios</td><td>● todos</td><td>● todos</td><td>● de su etapa</td><td>● de su ámbito</td><td>○ solo agregados</td></tr>
+    <tr><td>Ver RUN completo y adjuntos de identidad</td><td>● propios</td><td>○ con registro</td><td>● al verificar</td><td>○ con registro</td><td>○ con registro</td><td>–</td></tr>
+    <tr><td>Verificar identidad y representación</td><td>–</td><td>–</td><td>●</td><td>–</td><td>–</td><td>–</td></tr>
+    <tr><td>Resolver admisibilidad</td><td>–</td><td>–</td><td>–</td><td>●</td><td>–</td><td>–</td></tr>
+    <tr><td>Resolver bloqueo temporal (2 d.h.)</td><td>–</td><td>○ escala</td><td>○ prepara</td><td>●</td><td>–</td><td>–</td></tr>
+    <tr><td>Derivar / reasignar</td><td>–</td><td>●</td><td>●</td><td>–</td><td>–</td><td>–</td></tr>
+    <tr><td>Analizar y registrar decisión</td><td>–</td><td>–</td><td>–</td><td>–</td><td>●</td><td>–</td></tr>
+    <tr><td>Revisión jurídica de la Carta Oficial</td><td>–</td><td>–</td><td>–</td><td>●</td><td>–</td><td>–</td></tr>
+    <tr><td>Firmar la respuesta</td><td colspan="6" class="muted">Directora Ejecutiva (jefa superior del servicio, art. 23 inc. 3°) o firma delegada por resolución · pendiente de definir si ocurre dentro o fuera de la plataforma</td></tr>
+    <tr><td>Enviar respuesta y guardar respaldo</td><td>–</td><td>○</td><td>●</td><td>–</td><td>–</td><td>–</td></tr>
+    <tr><td>Autorizar prórroga (única)</td><td>–</td><td>●</td><td>–</td><td>–</td><td>○ solicita</td><td>–</td></tr>
+    <tr><td>Reportes e indicadores</td><td>–</td><td>●</td><td>○</td><td>○ de su etapa</td><td>○ de su ámbito</td><td>● agregados</td></tr>
+    <tr><td>Parámetros, usuarios, feriados, plantillas</td><td>–</td><td>○ propone</td><td>–</td><td>○ propone textos</td><td>–</td><td>●</td></tr>
+    <tr><td>Bitácora de accesos y cambios</td><td>–</td><td>● lectura</td><td>–</td><td>–</td><td>–</td><td>● lectura</td></tr>
+    </tbody></table></div>
+    <p class="ayuda">● realiza · ○ participa o lectura limitada · – sin acceso. La bitácora registra toda lectura de RUN completo y adjuntos de identidad. Un mismo funcionario puede tener más de un perfil solo si la jefatura lo autoriza y queda registrado.</p></div>
+  <div class="grid2" style="margin-top:var(--e-4)">
+    <div class="tarjeta"><h2>Definiciones pendientes de la contraparte</h2><ul class="lista-plana"><li>Si la jefatura de la unidad receptora opera la recepción o designa un encargado (y su suplente).</li><li>Quién es el responsable institucional ante la Agencia y si se designará delegado de protección de datos (art. 50).</li><li>Nombre del abogado o abogada responsable en Fiscalía y su suplente.</li><li>Un analista responsable por ámbito del catálogo de bases de datos.</li><li>Si la firma de la Directora Ejecutiva se registra en la plataforma o fuera de ella (gestor documental).</li><li>Quién administra la plataforma: UIA o Informática.</li></ul></div>
+    <div class="tarjeta"><h2>Cómo se ve en la bandeja</h2><p class="sec" style="margin:0;font-size:var(--f-s)">En la pestaña 5, el selector "Ver como" muestra la bandeja desde cada perfil interno: los casos visibles, los botones de acción y el nivel de detalle cambian según la matriz. El perfil de administrador muestra los parámetros en lugar de los casos. La persona solicitante corresponde a las pestañas 2 a 4.</p><div class="acciones" style="margin-top:var(--e-3)"><button class="btn pequeno" onclick="cambiaPerfil('fiscalia');ir('v-bandeja')">Ver como Fiscalía</button><button class="btn pequeno" onclick="cambiaPerfil('gerencia');ir('v-bandeja')">Ver como Gerencia</button><button class="btn pequeno" onclick="cambiaPerfil('admin');ir('v-bandeja')">Ver como Administrador</button></div></div>
+  </div>
+</section>
+</main>
+
+<div class="pie">CON012 · Formulario de contacto Ley N° 21.719 · Solicitante: Unidad de Participación Ciudadana y Transparencia · UIA – Gobernanza de Datos · Maqueta de propuesta, sin datos reales.</div>
+
+<script>
+// ---------- navegación ----------
+function ir(id){if(id==='v-form'){document.getElementById('fRun').textContent=S.run||'—';document.getElementById('fNombre').textContent=(S.nombre||'—')+(S.rol!=='titular'?' ('+(S.rol==='rep'?'representante':'heredero')+')':'');document.getElementById('fCorreo').textContent=document.getElementById('correo').value||'—';}document.querySelectorAll('.vista').forEach(v=>v.classList.toggle('activa',v.id===id));document.querySelectorAll('.nav button').forEach(b=>{const on=b.dataset.v===id;b.classList.toggle('activo',on);if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>ir(b.dataset.v)));
+
+// ---------- identificación ----------
+const S={rol:'titular',run:null,nombre:null,metodo:null,correo:null,derechos:[]};
+function cambiaRol(){S.rol=document.getElementById('rol').value;const a=document.getElementById('ayudaRol');const t={titular:'Los derechos son personales; puede ejercerlos usted directamente (art. 4°).',rep:'Debe identificarse usted con su propia ClaveÚnica o cédula y acompañar el poder o documento que acredita la representación (art. 11 letra a).',her:'Los herederos pueden ejercer los derechos del causante, salvo prohibición expresa de éste o de la ley (art. 4° inc. 3° y 4°). Adjunte el certificado que acredite su calidad.'};a.textContent=t[S.rol];document.getElementById('repBloque').classList.toggle('oculto',S.rol==='titular');document.getElementById('adjRep').textContent=S.rol==='her'?'Adjuntar posesión efectiva o certificado equivalente':'Adjuntar poder simple o documento que acredita la representación';}
+function identOk(run,nombre,metodo){S.run=run;S.nombre=nombre;S.metodo=metodo;document.getElementById('idRun').textContent=run;document.getElementById('idNombre').textContent=nombre;document.getElementById('idMetodo').textContent=metodo;document.getElementById('cuBloque').classList.add('oculto');document.getElementById('cuOk').classList.remove('oculto');const e=document.getElementById('estadoId');e.textContent=metodo.startsWith('Clave')?'Verificado':'Pendiente de verificación documental';e.className='sem-mini '+(metodo.startsWith('Clave')?'VERDE':'AMARILLO');document.getElementById('cuOk').querySelector('.aviso').textContent=metodo.startsWith('Clave')?'Identidad verificada con ClaveÚnica.':'Identificación recibida; el encargado la verificará con la copia de la cédula antes de derivar.';}
+function simularCU(){const b=document.querySelector('.cu');b.textContent='Redirigiendo a ClaveÚnica…';b.setAttribute('aria-busy','true');b.disabled=true;setTimeout(()=>identOk('12.345.678-9','MARÍA JOSÉ PÉREZ SOTO','ClaveÚnica (OpenID Connect) · simulado'),900);}
+function simularAlt(){const r=document.getElementById('altRun').value||'—';const n=document.getElementById('altNombre').value||'—';const ea=document.getElementById('errAlt');if(r==='—'||n==='—'){ea.textContent='Ingrese RUN o pasaporte y nombre para continuar (simulación).';ea.classList.remove('oculto');return;}ea.classList.add('oculto');identOk(r,n.toUpperCase(),'Verificación documental (copia de cédula)');}
+
+// ---------- formulario ----------
+const NOM={acceso:'Acceso',rect:'Rectificación',opos:'Oposición',bloq:'Bloqueo temporal',supr:'Supresión',port:'Portabilidad'};
+function marcaDerecho(cb){const lab=cb.closest('.derecho');const d=lab.dataset.d;lab.classList.toggle('sel',cb.checked);document.getElementById('bd-'+d).classList.toggle('oculto',!cb.checked);S.derechos=[...document.querySelectorAll('.derecho input:checked')].map(i=>i.closest('.derecho').dataset.d);const bloqSolo=S.derechos.includes('bloq')&&!S.derechos.some(x=>['rect','supr','opos'].includes(x))&&!document.getElementById('bloqAlt').checked;document.getElementById('avisoBloq').classList.toggle('oculto',!bloqSolo);}
+document.addEventListener('change',e=>{if(e.target.id==='bloqAlt')marcaDerecho(document.querySelector('.derecho[data-d="bloq"] input'));});
+function cambiaMedio(v){document.getElementById('dom').classList.toggle('oculto',v!=='carta');document.getElementById('ofi').classList.toggle('oculto',v!=='pres');}
+function enviar(){const err=document.getElementById('errForm');const faltas=[];if(!S.run){faltas.push('Debe identificarse (paso 1).');}
+ S.correo=document.getElementById('correo').value.trim();const medio=document.getElementById('medio').value;S.medio=medio;
+ if(S.correo&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.correo))faltas.push('El correo electrónico no tiene un formato válido.');
+ if(medio==='correo'&&!S.correo)faltas.push('Indique un correo electrónico o elija otro medio de respuesta.');
+ if(medio==='carta'){const d=[...document.querySelectorAll('#dom input')];S.domicilio=d.map(i=>i.value.trim()).join(', ')+', '+document.querySelector('#dom select').value;if(d.some(i=>!i.value.trim()))faltas.push('Indique domicilio y comuna para la respuesta por carta.');}
+ if(medio==='pres'){S.oficina=document.querySelector('#ofi select').value;}
+ if(S.rol!=='titular'){S.repRun=document.getElementById('repRun').value.trim();S.repNombre=document.getElementById('repNombre').value.trim();if(!S.repRun||!S.repNombre)faltas.push('Indique RUN y nombre del titular representado (paso 1).');}
+ if(S.derechos.length===0)faltas.push('Marque al menos un derecho.');
+ S.derechos.forEach(d=>{const req=[...document.querySelectorAll('#bd-'+d+' input:not([type=checkbox]),#bd-'+d+' textarea')].filter(el=>{const l=el.closest('.campo')?.querySelector('label');return l&&l.textContent.trim().endsWith('*');});if(req.some(el=>!el.value.trim()))faltas.push('Complete los campos obligatorios (*) de '+NOM[d]+'.');});
+ if(S.derechos.includes('bloq')&&!S.derechos.some(x=>['rect','supr','opos'].includes(x))&&!document.getElementById('bloqAlt').checked)faltas.push('El bloqueo temporal acompaña a una rectificación, supresión u oposición, o se pide en lugar de la supresión.');
+ if(!document.getElementById('decl').checked)faltas.push('Debe aceptar la declaración.');
+ if(faltas.length){err.innerHTML=faltas.map(esc).join('<br>');err.classList.remove('oculto');err.scrollIntoView({block:'center'});return;}err.classList.add('oculto');
+ const hoy=new Date(HOY);const num='DP-'+hoy.getFullYear()+'-'+String(124+CASOS.filter(x=>x.nuevo).length).padStart(6,'0');const venc=addDias(hoy,30);
+ const medioTxt=medio==='correo'?'Correo: '+S.correo:medio==='carta'?'Carta: '+S.domicilio:'Presencial: '+S.oficina;
+ const c={num,ingreso:hoy,nombre:S.rol==='titular'?S.nombre:S.repNombre.toUpperCase(),run:S.rol==='titular'?S.run:S.repRun,rep:S.rol==='titular'?null:{nombre:S.nombre,run:S.run,tipo:S.rol==='rep'?'representante o mandatario':'heredero'},medio:medioTxt,correo:S.correo,derechos:S.derechos.map(d=>NOM[d]),estado:'Ingresada',resp:'Encargado PD',venc,bloqueo:S.derechos.includes('bloq'),metodo:S.metodo,hitos:[['Ingreso web · acuse enviado',hoy]],nuevo:true};if(c.bloqueo){c.vencBloq=addHabiles(hoy,2);}CASOS.unshift(c);
+ document.getElementById('acNum').textContent=num;document.getElementById('acFecha').textContent=fmt(hoy)+' (fecha simulada)';document.getElementById('acPlazo').textContent=fmt(venc);
+ document.getElementById('acCopia').textContent=S.correo?'Se envió copia íntegra al correo '+S.correo+'.':'Conserve este número; la respuesta se enviará por '+medioTxt+'.';
+ document.getElementById('acResumen').innerHTML=`<dt>Titular</dt><dd>${esc(c.nombre)} · <span class="mono">${esc(c.run)}</span></dd>${c.rep?`<dt>Presentada por</dt><dd>${esc(c.rep.nombre)} (${c.rep.tipo}) · <span class="mono">${esc(c.rep.run)}</span></dd>`:''}<dt>Identificación</dt><dd>${esc(S.metodo)}</dd><dt>Derecho(s)</dt><dd>${esc(c.derechos.join(', '))}</dd><dt>Respuesta por</dt><dd>${esc(medioTxt)}</dd><dt>Estado</dt><dd><span class="sem-mini AZUL">Ingresada</span></dd>`;
+ document.getElementById('acBloq').classList.toggle('oculto',!c.bloqueo);if(c.bloqueo)document.getElementById('acPlazoBloq').textContent=fmt(c.vencBloq);
+ const bt=document.getElementById('btnEnviar');bt.setAttribute('aria-busy','true');bt.textContent='Enviando solicitud…';pinta();
+ setTimeout(()=>{bt.removeAttribute('aria-busy');bt.textContent='Solicitud enviada';bt.disabled=true;ir('v-acuse');},700);}
+
+
+// ---------- perfiles ----------
+const PERFILES={
+ jefatura:{n:'Jefatura de la unidad receptora',d:'Ve todos los casos; asigna, autoriza prórrogas, escala vencimientos y emite reportes. No resuelve admisibilidad ni el fondo.',filtro:c=>true},
+ encargado:{n:'Encargado/a de recepción',d:'Registra, verifica identidad, deriva y envía la respuesta firmada. Ve todos los casos abiertos.',filtro:c=>true},
+ fiscalia:{n:'Fiscalía',d:'Solo casos en admisibilidad, en revisión jurídica o con bloqueo temporal pendiente.',filtro:c=>!c.cerrado&&(['En admisibilidad','En revisión jurídica','Requiere antecedentes'].includes(c.estado)||(c.bloqueo&&!c.bloqResuelto))},
+ gerencia:{n:'Gerencia responsable (GEDEP)',d:'Solo casos derivados a su ámbito (simulado: Personal y ex funcionarios / GEDEP).',filtro:c=>!c.cerrado&&(c.ambito||'').includes('GEDEP')&&['Derivada','Prorrogada'].includes(c.estado)},
+ admin:{n:'Administrador de plataforma',d:'Parámetros, usuarios y bitácora técnica; sin acceso al contenido de los casos.',filtro:c=>false}
+};
+let PERFIL='jefatura';
+function cambiaPerfil(v){PERFIL=v;document.getElementById('selPerfil').value=v;const pf=PERFILES[v];document.getElementById('perfilDesc').innerHTML='Viendo como <b>'+esc(pf.n)+'</b> · '+esc(pf.d)+' · <a href="#" onclick="ir(\'v-perfiles\');return false">ver matriz de permisos</a>';
+ const ap=document.getElementById('adminPanel');const bandeja=document.querySelector('#v-bandeja .contenedor.bandeja');const kp=document.getElementById('kpis');
+ if(v==='admin'){ap.classList.remove('oculto');bandeja.classList.add('oculto');kp.classList.add('oculto');ap.innerHTML=`<div class="grid2"><div class="tarjeta"><h2>Parámetros del canal</h2><table class="casos"><tbody><tr><td>Derechos ofrecidos</td><td>Acceso ● Rectificación ● Oposición ● Bloqueo ● Supresión ◐ (condicionado) Portabilidad ◐ (condicionado) · <span class="muted">según pronunciamiento de Fiscalía</span></td></tr><tr><td>Plazo de respuesta</td><td>30 días corridos · prórroga única 30 · bloqueo 2 días hábiles</td></tr><tr><td>Plazos internos por etapa</td><td>1 · 2 · 1 · 8 · 2 · 2 días hábiles (propuesta)</td></tr><tr><td>Feriados cargados</td><td>2026: 18-09, 19-09, 12-10, 31-10, 01-11, 08-12, 25-12 · 2027: 01-01 …</td></tr><tr><td>Ámbitos (catálogo de bases)</td><td>8 configurados · pendiente catálogo definitivo</td></tr><tr><td>Plantillas de Carta Oficial</td><td>Acoge · Acoge parcialmente · Rechaza (art. 23 / improcedencia) · Bloqueo · Prórroga</td></tr><tr><td>Retención del expediente</td><td>Por definir (política institucional) · copia de cédula: eliminar tras verificación</td></tr><tr><td>Integración ClaveÚnica</td><td>Credenciales institucionales · redirect URI · estado: <span class="sem-mini AMARILLO">pendiente Informática</span></td></tr></tbody></table></div><div class="tarjeta"><h2>Usuarios y perfiles</h2><table class="casos"><thead><tr><th>Usuario</th><th>Perfil</th><th>Ámbito</th><th>Estado</th></tr></thead><tbody><tr><td>Jefa Unidad Participación Ciudadana y Transparencia</td><td>Jefatura</td><td>—</td><td><span class="sem-mini VERDE">activo</span></td></tr><tr><td>Encargado/a de recepción (por designar)</td><td>Encargado/a</td><td>—</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr><tr><td>Abogado/a responsable (por designar)</td><td>Fiscalía</td><td>—</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr><tr><td>Analista GEDEP (por designar)</td><td>Gerencia</td><td>Personal y ex funcionarios</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr><tr><td>Analista ASP (por designar)</td><td>Gerencia</td><td>Áreas Silvestres Protegidas</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr></tbody></table><h3 style="margin:var(--e-3) 0 var(--e-2)">Bitácora técnica (últimos eventos)</h3><div class="linea"><div class="hito hecho"><b>Lectura de RUN completo · caso DP-2026-000123 · perfil Encargado</b><small>08-09-2026 · registrado</small></div><div class="hito hecho"><b>Cambio de estado · DP-2026-000122 · Derivada</b><small>08-09-2026</small></div><div class="hito hecho"><b>Actualización de feriados 2027</b><small>01-09-2026</small></div></div><p class="ayuda">El administrador no accede al contenido de los casos; la bitácora muestra quién accedió, no qué contiene el expediente.</p></div></div>`;}
+ else{ap.classList.add('oculto');bandeja.classList.remove('oculto');kp.classList.remove('oculto');document.getElementById('detalle').innerHTML='<div class="tarjeta vacio"><p><b>Ningún caso seleccionado</b></p><p>Seleccione un caso de la bandeja para ver su expediente.</p></div>';}
+ pinta();}
+// ---------- máquina de estados (demostración funcional) ----------
+// Cada acción: [código, etiqueta, perfil que la ejecuta, estado(s) en que aplica, primaria]
+const ACC=[
+ ['verif','Identidad verificada → a admisibilidad (Fiscalía)','encargado',['Ingresada'],1],
+ ['reqid','Requerir identificación al solicitante','encargado',['Ingresada'],0],
+ ['ambito','Asignar ámbito (base de datos)','encargado',['Ingresada'],0],
+ ['adm','Admisible → derivar','fiscalia',['En admisibilidad'],1],
+ ['reqant','Requerir antecedentes (no suspende el plazo)','fiscalia',['En admisibilidad'],0],
+ ['noproc','No procede (causal art. 23 / improcedencia)','fiscalia',['En admisibilidad'],0],
+ ['bloqok','Resolver bloqueo temporal: acoger','fiscalia',['*bloqueo'],1],
+ ['bloqno','Rechazar bloqueo (fundar y comunicar a la Agencia)','fiscalia',['*bloqueo'],0],
+ ['antrec','Registrar antecedentes recibidos → admisibilidad','encargado',['Requiere antecedentes'],1],
+ ['antno','Resolver con lo disponible → admisibilidad','fiscalia',['Requiere antecedentes'],0],
+ ['derivar','Derivar a gerencia responsable','encargado',['Admisible'],1],
+ ['acoge','Acoger totalmente → propuesta de Carta Oficial','gerencia',['Derivada','Prorrogada'],1],
+ ['parcial','Acoger parcialmente → propuesta','gerencia',['Derivada','Prorrogada'],0],
+ ['rechaza','Rechazar (causal art. 23 / improcedencia) → propuesta','gerencia',['Derivada','Prorrogada'],0],
+ ['pideprorr','Solicitar prórroga a la jefatura','gerencia',['Derivada'],0],
+ ['prorr','Autorizar prórroga única (+30 días corridos; comunicar al titular)','jefatura',['Derivada','En admisibilidad','Requiere antecedentes'],0],
+ ['reasig','Reasignar responsable','jefatura',['*abierto'],0],
+ ['escala','Escalar vencimiento','jefatura',['*abierto'],0],
+ ['conforme','Conforme → a firma','fiscalia',['En revisión jurídica'],1],
+ ['devolver','Devolver con observaciones a la gerencia','fiscalia',['En revisión jurídica'],0],
+ ['firma','Registrar firma de la Directora Ejecutiva','jefatura',['En firma'],1],
+ ['enviar','Enviar respuesta, guardar respaldo y cerrar','encargado',['Firmada'],1],
+ ['cesion','Comunicar a cesionarios','encargado',['Firmada'],0],
+];
+const RESP={Ingresada:'Encargado PD','En admisibilidad':'Fiscalía · Abogado(a) 1','Requiere antecedentes':'Encargado PD',Admisible:'Encargado PD',Derivada:'Gerencia responsable',Prorrogada:'Gerencia responsable','En revisión jurídica':'Fiscalía · Abogado(a) 1','En firma':'Jefatura · Directora Ejecutiva',Firmada:'Encargado PD'};
+function aplica(a,c){const st=a[3];if(st.includes('*bloqueo'))return c.bloqueo&&!c.bloqResuelto&&!c.cerrado;if(st.includes('*abierto'))return !c.cerrado;return st.includes(c.estado);}
+function accionesPerfil(c){if(c.cerrado)return '';const mias=ACC.filter(a=>a[2]===PERFIL&&aplica(a,c));
+ let html='';
+ if(PERFIL==='encargado'&&c.estado==='Ingresada')html+=`<div class="aviso info" style="width:100%;font-size:var(--f-xs)"><b>Recepción y registro (V1, sección 6):</b> ☑ fecha de ingreso · ☑ número único · ☐ identidad y representación verificadas · ☐ derecho identificado · ${c.ambito?'☑':'☐'} base de datos o sistema identificado · ☑ acuse enviado</div>`;
+ if(PERFIL==='fiscalia'&&c.estado==='En admisibilidad')html+=`<div class="aviso info" style="width:100%;font-size:var(--f-xs)"><b>Revisión de admisibilidad (V1, sección 7):</b> ☑ solicitante es el titular o está facultado · ☑ datos o tratamientos identificados · ☑ derecho indicado · ☐ antecedentes acompañados</div>`;
+ html+=mias.map(a=>`<button class="btn ${a[4]?'verde ':''}pequeno" onclick="accion('${c.num}','${a[0]}')">${a[1]}</button>`).join('');
+ if(!mias.length){const sig=ACC.find(a=>aplica(a,c)&&a[4]);html+=`<span class="muted" style="font-size:var(--f-xs)">Sin acciones para este perfil en la etapa "${esc(c.estado)}". ${sig?'Siguiente paso: <b>'+esc(PERFILES[sig[2]].n)+'</b> → '+esc(sig[1])+'. <a href="#" onclick="cambiaPerfil(\''+sig[2]+'\');ver(\''+c.num+'\');return false">Cambiar a ese perfil</a>':''}</span>`;}
+ return html;}
+function accion(num,code){const c=CASOS.find(x=>x.num===num);const hoy=new Date(HOY);const P=PERFILES[PERFIL].n;const h=(t)=>c.hitos.push([t+' · '+P,hoy]);
+ switch(code){
+  case 'verif':c.estado='En admisibilidad';h('Identidad y representación verificadas · pasa a admisibilidad');break;
+  case 'reqid':c.estado='Requiere antecedentes';h('Se requiere identificación al solicitante (el plazo sigue corriendo)');break;
+  case 'ambito':c.ambito=c.ambito||'Personal y ex funcionarios (GEDEP)';h('Ámbito asignado: '+c.ambito);break;
+  case 'adm':c.estado='Admisible';h('Admisible · procede el derecho (Título IV, art. 23)');break;
+  case 'reqant':c.estado='Requiere antecedentes';h('Se requieren antecedentes al titular (no suspende el plazo de 30 días)');break;
+  case 'noproc':c.estado='En firma';c.decision='Rechazada · no procede (art. 23 inc. 2° / improcedencia) · aviso de reclamo 30 d.h.';h('No procede · propuesta de Carta Oficial de rechazo fundado');break;
+  case 'bloqok':c.bloqResuelto=true;h('Bloqueo temporal acogido en '+habilesEntre(c.ingreso,hoy)+' d.h. · tratamiento suspendido, almacenamiento intacto');break;
+  case 'bloqno':c.bloqResuelto=true;h('Bloqueo temporal rechazado · fundado · comunicado electrónicamente a la Agencia · titular informado de reclamo (30 d.h.)');break;
+  case 'antrec':c.estado='En admisibilidad';h('Antecedentes recibidos · vuelve a admisibilidad');break;
+  case 'antno':c.estado='En admisibilidad';h('Se resuelve con lo disponible');break;
+  case 'derivar':c.estado='Derivada';c.ambito=c.ambito||'Personal y ex funcionarios (GEDEP)';h('Derivada a '+c.ambito);break;
+  case 'acoge':c.estado='En revisión jurídica';c.decision='Acogida totalmente';h('Decisión: acogida totalmente · propuesta de Carta Oficial registrada');break;
+  case 'parcial':c.estado='En revisión jurídica';c.decision='Acogida parcialmente';h('Decisión: acogida parcialmente (fundada la parte rechazada) · propuesta registrada');break;
+  case 'rechaza':c.estado='En revisión jurídica';c.decision='Rechazada · causal art. 23 / improcedencia';h('Decisión: rechazada con causal y antecedentes · propuesta registrada');break;
+  case 'pideprorr':c.prorrPedida=true;h('Prórroga solicitada a la jefatura');break;
+  case 'prorr':if(c.prorroga){alert('La prórroga es única (art. 11 inc. 2°).');return;}c.prorroga=true;c.venc=addDias(c.venc,30);c.estado=c.estado==='Derivada'?'Prorrogada':c.estado;h('Prórroga única autorizada · nuevo vencimiento '+fmt(c.venc)+' · comunicada al titular');break;
+  case 'reasig':c.resp='Reasignado · '+RESP[c.estado];h('Responsable reasignado');pinta();ver(num);return;
+  case 'escala':h('Vencimiento escalado a la jefatura de la gerencia responsable');pinta();ver(num);return;
+  case 'conforme':c.estado='En firma';h('Revisión jurídica conforme · textos obligatorios verificados');break;
+  case 'devolver':c.estado='Derivada';h('Devuelta a la gerencia con observaciones');break;
+  case 'firma':c.estado='Firmada';h('Carta Oficial firmada por la Directora Ejecutiva');break;
+  case 'enviar':c.estado='Respondida';c.cerrado=true;c.resp='—';h('Respuesta enviada por '+(c.medio||'correo')+' · respaldo (fecha, destinatario, contenido íntegro) almacenado · expediente cerrado');if(c.decision&&c.decision.startsWith('Rechazada'))c.hitos.push(['Aviso al titular: 30 días hábiles para reclamar ante la Agencia',hoy]);break;
+  case 'cesion':h('Cambios comunicados a cesionarios (art. 6° inc. 2°; art. 11 inc. 7°)');pinta();ver(num);return;
+ }
+ if(RESP[c.estado]&&!c.cerrado)c.resp=RESP[c.estado];pinta();ver(num);}
+
+function renderGuia(){const pasos=[['encargado','1 Recepción: verificar identidad'],['fiscalia','2 Admisibilidad (y bloqueo)'],['encargado','3 Derivar a gerencia'],['gerencia','4 Analizar y decidir'],['fiscalia','5 Revisión jurídica'],['jefatura','6 Firma DE / prórroga'],['encargado','7 Enviar y cerrar']];
+ document.getElementById('guiaPasos').innerHTML=pasos.map(p=>`<button class="btn pequeno${PERFIL===p[0]?' primario':''}" onclick="cambiaPerfil('${p[0]}')">${p[1]} · <i style="font-style:normal;opacity:.8">${PERFILES[p[0]].n.split(' ')[0]}</i></button>`).join('');
+ const c=CASOS.find(x=>x.nuevo)||CASOS.find(x=>x.num==='DP-2026-000123');if(!c)return;const sig=ACC.find(a=>aplica(a,c)&&a[4]);
+ document.getElementById('guiaSig').innerHTML=c.cerrado?`Caso <span class="mono">${esc(c.num)}</span>: expediente cerrado (${esc(c.decision||'respondido')}).`:`Caso <span class="mono">${esc(c.num)}</span> en estado <b>${esc(c.estado)}</b>${c.bloqueo&&!c.bloqResuelto?' <span class="sem-mini ROJO">bloqueo pendiente</span>':''} · siguiente paso: <b>${sig?esc(PERFILES[sig[2]].n):'—'}</b> → ${sig?esc(sig[1]):''} ${sig?`<a href="#" onclick="cambiaPerfil('${sig[2]}');ver('${c.num}');return false">ir</a>`:''}`;}
+// ---------- utilidades de fecha ----------
+const HOY=new Date(2026,8,8); // fecha simulada de la demostración (se muestra en pantalla)
+const FERIADOS=new Set(['2026-09-18','2026-09-19','2026-10-12','2026-10-31','2026-11-01','2026-12-08','2026-12-25','2027-01-01']);
+function esHabil(x){const k=x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');return x.getDay()!==0&&x.getDay()!==6&&!FERIADOS.has(k);}
+function habilesEntre(a,b){let x=new Date(a),k=0;while(x<b){x.setDate(x.getDate()+1);if(esHabil(x))k++;}return k;}
+function esc(t){return String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function colorEstado(c){return c.cerrado?'GRIS':c.estado==='Requiere antecedentes'||c.estado==='Prorrogada'?'AMARILLO':c.estado==='Reclamada ante la Agencia'?'ROJO':c.estado==='Admisible'||c.estado==='Firmada'?'VERDE':'AZUL';}
+function d(y,m,dd){return new Date(y,m-1,dd);}function addDias(f,n){const x=new Date(f);x.setDate(x.getDate()+n);return x;}
+function addHabiles(f,n){const x=new Date(f);let k=0;while(k<n){x.setDate(x.getDate()+1);if(esHabil(x))k++;}return x;}
+function mask(r){r=String(r||'');return r.length>5?'**.***.'+r.slice(-5):r;}
+function fmt(f){return f.toLocaleDateString('es-CL',{day:'2-digit',month:'2-digit',year:'numeric'});}
+function dias(a,b){return Math.round((b-a)/86400000);}
+
+// ---------- casos de demostración ----------
+const CASOS=[
+ {num:'DP-2026-000123',ingreso:d(2026,9,7),nombre:'JUAN ANDRÉS ROJAS MUÑOZ',run:'8.765.432-1',derechos:['Rectificación','Bloqueo temporal'],estado:'En admisibilidad',resp:'Fiscalía · Abogado(a) 1',bloqueo:true,vencBloq:addHabiles(d(2026,9,7),2),metodo:'ClaveÚnica',ambito:'Personal y ex funcionarios (GEDEP)',hitos:[['Ingreso web · acuse enviado',d(2026,9,7)],['Bloqueo temporal solicitado · alerta a Fiscalía',d(2026,9,7)]]},
+ {num:'DP-2026-000122',ingreso:d(2026,9,4),nombre:'CAROLINA ANDREA FUENTES LARA',run:'15.222.333-4',derechos:['Acceso'],estado:'Derivada',resp:'GEDEP · Analista 1',metodo:'ClaveÚnica',ambito:'Personal y ex funcionarios (GEDEP)',hitos:[['Ingreso web · acuse enviado',d(2026,9,4)],['Identidad verificada · Responsable de datos',d(2026,9,4)],['Admisible · Fiscalía',d(2026,9,7)],['Derivada a GEDEP',d(2026,9,8)]]},
+ {num:'DP-2026-000121',ingreso:d(2026,8,31),nombre:'PEDRO PABLO GONZÁLEZ IBÁÑEZ',run:'6.111.222-3',derechos:['Supresión'],estado:'Requiere antecedentes',resp:'Encargado PD',metodo:'Documental',ambito:'Denuncias e infracciones forestales',hitos:[['Ingreso por casilla datospersonales@ · registrado a mano',d(2026,8,31)],['Fiscalía: falta acreditar causal; se requiere al titular (no suspende plazo)',d(2026,9,3)]]},
+ {num:'DP-2026-000120',ingreso:d(2026,8,20),nombre:'ANA LUISA MARTÍNEZ VEGA',run:'11.333.444-5',derechos:['Acceso','Rectificación'],estado:'En revisión jurídica',resp:'Fiscalía · Abogado(a) 1',metodo:'ClaveÚnica',ambito:'Programas y beneficios (entrega de plantas)',hitos:[['Ingreso web · acuse enviado',d(2026,8,20)],['Admisible',d(2026,8,24)],['Derivada a Gerencia de Desarrollo y Fomento Forestal',d(2026,8,25)],['Propuesta de respuesta recibida',d(2026,9,7)]]},
+ {num:'DP-2026-000119',ingreso:d(2026,8,12),nombre:'RODRIGO ESTEBAN SILVA PARRA',run:'13.555.666-7',derechos:['Oposición'],estado:'En firma',resp:'Dirección Ejecutiva',metodo:'ClaveÚnica',ambito:'OIRS / Transparencia',hitos:[['Ingreso web',d(2026,8,12)],['Admisible',d(2026,8,14)],['Derivada a Secretaría de Asuntos Institucionales',d(2026,8,17)],['Propuesta recibida',d(2026,9,1)],['Revisión jurídica conforme',d(2026,9,4)]]},
+ {num:'DP-2026-000118',ingreso:d(2026,8,5),nombre:'MARCELA PAZ TORRES ARAYA',run:'9.888.777-5',derechos:['Acceso'],estado:'Prorrogada',resp:'ASP · Analista 2',prorroga:true,metodo:'Documental',ambito:'Áreas Silvestres Protegidas',hitos:[['Ingreso por Oficina de Partes · redirigido al Encargado',d(2026,8,5)],['Admisible',d(2026,8,10)],['Derivada a Gerencia de Áreas Silvestres Protegidas',d(2026,8,11)],['Prórroga comunicada al titular (datos en 4 regiones)',d(2026,9,2)]]},
+ {num:'DP-2026-000117',ingreso:d(2026,7,28),nombre:'FRANCISCO JAVIER LEIVA PINTO',run:'7.444.555-6',derechos:['Rectificación'],estado:'Respondida',resp:'—',cerrado:true,decision:'Acogida totalmente · rectificación ejecutada · respuesta enviada 21-08-2026',metodo:'ClaveÚnica',ambito:'Trámites forestales / Oficina Virtual',hitos:[['Ingreso web',d(2026,7,28)],['Admisible',d(2026,7,30)],['Derivada a Gerencia de Fiscalización',d(2026,7,31)],['Propuesta recibida',d(2026,8,14)],['Revisión jurídica conforme',d(2026,8,18)],['Carta Oficial firmada',d(2026,8,20)],['Respuesta enviada · respaldo almacenado · cesionario informado',d(2026,8,21)]]},
+ {num:'DP-2026-000116',ingreso:d(2026,7,22),nombre:'GLORIA INÉS CASTRO REYES',run:'10.999.888-K',derechos:['Portabilidad'],estado:'No admitida',resp:'—',cerrado:true,decision:'Rechazada · improcedencia del derecho (arts. 21 y 23) · aviso de reclamo informado',metodo:'ClaveÚnica',ambito:'Personal y ex funcionarios (GEDEP)',hitos:[['Ingreso web',d(2026,7,22)],['Fiscalía: no procede (tratamiento no basado en consentimiento, art. 9°); respuesta fundada con aviso de reclamo',d(2026,7,29)],['Respuesta enviada',d(2026,7,30)]]},
+];
+CASOS.forEach(c=>{c.venc=c.venc||addDias(c.ingreso,c.prorroga?60:30);});
+
+function semaforo(c){if(c.cerrado)return['GRIS','Cerrado'];const n=dias(HOY,c.venc);if(c.bloqueo&&!c.bloqResuelto&&!c.cerrado){const nb=dias(HOY,c.vencBloq);return['ROJO','Bloq. '+(nb<0?'venc.':habilesEntre(HOY,c.vencBloq)+' d.h.')];}return[n<=2?'ROJO':n<=9?'AMARILLO':'VERDE',n<0?'Vencido '+(-n)+' d.':n+' días'];}
+function pinta(){const est=document.getElementById('fEstado');const sel=est.value;est.innerHTML='<option value="">Todos los estados</option>'+[...new Set(CASOS.map(c=>c.estado))].map(e=>`<option${e===sel?' selected':''}>${esc(e)}</option>`).join('');
+ const fe=est.value,fd=document.getElementById('fDer').value,ft=document.getElementById('fTxt').value.toLowerCase();
+ const lista=CASOS.filter(c=>PERFILES[PERFIL].filtro(c)).filter(c=>(!fe||c.estado===fe)&&(!fd||c.derechos.includes(fd))&&(!ft||(c.num+c.run+c.nombre).toLowerCase().includes(ft))).sort((a,b)=>Number(!!b.bloqueo&&!b.cerrado)-Number(!!a.bloqueo&&!a.cerrado)||Number(!!a.cerrado)-Number(!!b.cerrado)||a.venc-b.venc);
+ document.getElementById('tbody').innerHTML=lista.map(c=>{const[s,t]=semaforo(c);return`<tr tabindex="0" onclick="ver('${c.num}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();ver('${c.num}')}" id="tr-${c.num}"><td class="mono">${esc(c.num)}${c.nuevo?'<br><span class="sem-mini VERDE">nuevo</span>':''}</td><td class="tabular">${fmt(c.ingreso)}</td><td style="min-width:7.5rem">${esc(c.nombre)}${c.rep?' <span class="sem-mini GRIS">vía '+esc(c.rep.tipo.split(' ')[0])+'</span>':''}<div class="muted mono" style="font-size:var(--f-xs)">${mask(c.run)}</div></td><td>${esc(c.derechos.join(', '))}</td><td><span class="sem-mini ${colorEstado(c)}">${esc(c.estado)}</span></td><td>${esc(c.resp)}</td><td class="tabular" style="white-space:nowrap">${fmt(c.venc)}<br><span class="sem-mini ${s}">${t}</span></td></tr>`;}).join('');
+ const ab=CASOS.filter(c=>!c.cerrado&&PERFILES[PERFIL].filtro(c));const k=[['Casos abiertos',ab.length,''],['Bloqueos pendientes',ab.filter(c=>c.bloqueo&&!c.bloqResuelto).length,'rojo'],['Vencen en ≤ 9 días',ab.filter(c=>dias(HOY,c.venc)<=9).length,'amar'],['En Fiscalía',ab.filter(c=>c.resp.startsWith('Fiscalía')).length,''],['Cumplimiento de plazo (cerrados)',(()=>{const ce=CASOS.filter(c=>c.cerrado);const ok=ce.filter(c=>{const f=c.hitos[c.hitos.length-1][1];return f<=c.venc;}).length;return ce.length?Math.round(100*ok/ce.length)+' %':'—';})(),'']];
+ renderGuia();document.getElementById('kpis').innerHTML=k.map(x=>`<div class="kpi ${x[2]}"><div class="v">${x[1]}</div><div class="l">${x[0]}</div></div>`).join('');}
+function ver(num){const c=CASOS.find(x=>x.num===num);document.querySelectorAll('table.casos tr').forEach(t=>t.classList.remove('sel'));document.getElementById('tr-'+num)?.classList.add('sel');const[s,t]=semaforo(c);const n=dias(HOY,c.venc);
+ const acciones=accionesPerfil(c);
+ document.getElementById('detalle').innerHTML=`<div class="tarjeta"><div class="cab"><h2 class="mono" style="text-transform:none">${esc(c.num)}</h2><span class="sem-mini ${colorEstado(c)}">${esc(c.estado)}</span></div>
+ <div class="plazo ${s}"><div class="n tabular">${c.cerrado?'✓':n<0?'-'+(-n):n}</div><div><b>${c.cerrado?'Expediente cerrado':n<0?'Plazo legal vencido':'días corridos para responder'}</b><div class="d">Ingreso ${fmt(c.ingreso)} · vence ${fmt(c.venc)}${c.prorroga?' (prorrogado)':''}</div></div></div>
+ ${c.bloqueo&&!c.bloqResuelto&&!c.cerrado?`<div class="aviso crit" style="margin-top:var(--e-2)"><b>Bloqueo temporal pendiente</b> · resolver antes del ${fmt(c.vencBloq)} (2 días hábiles). Mientras tanto no se tratan los datos requeridos (el almacenamiento no se afecta). Si se rechaza: fundar, comunicar electrónicamente a la Agencia e informar al titular su derecho a reclamar en 30 días hábiles.</div>`:''}
+ <dl class="dl" style="margin:var(--e-3) 0"><dt>Titular</dt><dd>${esc(c.nombre)}<br><span class="mono muted">${mask(c.run)} <a href="#" onclick="this.textContent='${esc(c.run)}';return false" style="font-size:var(--f-xs)">mostrar RUN</a></span></dd>${c.rep?`<dt>Presentada por</dt><dd>${esc(c.rep.nombre)} (${esc(c.rep.tipo)})<br><span class="mono muted">${mask(c.rep.run)}</span> · poder: ☐ acreditado</dd>`:''}<dt>Identificación</dt><dd>${esc(c.metodo)}</dd><dt>Derecho(s)</dt><dd>${esc(c.derechos.join(', '))}</dd><dt>Respuesta por</dt><dd>${esc(c.medio||'Correo electrónico')}</dd><dt>Ámbito</dt><dd>${esc(c.ambito||'Por determinar')}</dd><dt>Responsable actual</dt><dd>${esc(c.resp)}</dd>${c.cerrado?`<dt>Decisión</dt><dd>${esc(c.decision||'—')}</dd>`:`<dt>Prórroga</dt><dd>${c.prorroga?'Usada (única)':'Disponible (una vez, 30 días corridos)'}</dd>`}</dl>
+ <div class="acciones" style="margin-bottom:var(--e-3)">${acciones}${c.cerrado?'':'<button class="btn pequeno">Nota interna</button>'}</div>
+ <h3 style="margin-bottom:var(--e-2)">Expediente</h3><div class="linea">${c.hitos.map(h=>`<div class="hito hecho"><b>${esc(h[0])}</b><small>${fmt(h[1])}</small></div>`).join('')}${c.cerrado?'':`<div class="hito actual"><b>Etapa pendiente: ${esc(c.estado)}</b><small>Responsable: ${esc(c.resp)}</small></div>`}</div>
+ <div class="adj" style="margin-top:var(--e-2)">Adjuntos: solicitud original (PDF), acuse, antecedentes del titular${c.cerrado?', Carta Oficial firmada, evidencia de envío':''}</div></div>`;}
+cambiaPerfil('jefatura');
+
+// ---------- accesibilidad y tema (estándar UI) ----------
+(function(){let n=0;const asoc=()=>document.querySelectorAll('.campo').forEach(c=>{const l=c.querySelector('label');const i=c.querySelector('input:not([type=checkbox]),select,textarea');if(l&&i&&!l.htmlFor){if(!i.id)i.id='cmp-'+(++n);l.htmlFor=i.id;}});asoc();new MutationObserver(asoc).observe(document.getElementById('contenido'),{childList:true,subtree:true});})();
+(function(){const orden=['sistema','claro','oscuro'];let i=0;const b=document.getElementById('btnTema');b.addEventListener('click',()=>{i=(i+1)%3;const t=orden[i];if(t==='sistema')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',t);b.textContent='Tema: '+t;});})();
+</script>
+</body>
+</html>
