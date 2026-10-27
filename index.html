@@ -690,7 +690,7 @@ table.compacta td.num, table.compacta th.num { text-align: right; }
   <span class="chip">Etapa SF-02 · Requisitos</span>
   <span class="chip" id="chipVigencia">Vigencia 01-12-2026</span>
   <span class="chip">Fecha simulada: 20-10-2026</span>
-  <span class="chip">v1.10 · 27-10-2026</span>
+  <span class="chip">v1.11 · 27-10-2026</span>
   <button class="btn pequeno tema" id="btnTema" type="button" aria-label="Cambiar tema de color">Tema: sistema</button>
 </div>
 <div class="aviso-maqueta" role="note"><b>Maqueta no operacional</b></div>
@@ -1045,7 +1045,7 @@ table.compacta td.num, table.compacta th.num { text-align: right; }
 
 </main>
 
-<div class="pie">CON012 · Formulario de contacto Ley N° 21.719 · Solicitante: Unidad de Participación Ciudadana y Transparencia · UIA – Gobernanza de Datos · Maqueta de propuesta v1.10, sin datos reales · Los RUN de ejemplo tienen dígito verificador inválido a propósito.</div>
+<div class="pie">CON012 · Formulario de contacto Ley N° 21.719 · Solicitante: Unidad de Participación Ciudadana y Transparencia · UIA – Gobernanza de Datos · Maqueta de propuesta v1.11, sin datos reales · Los RUN de ejemplo tienen dígito verificador inválido a propósito.</div>
 
 <script>
 // ---------- navegación ----------
@@ -1301,10 +1301,10 @@ function pintaTablero(){const box=document.getElementById('vistaTablero');if(!bo
   <div class="kpi-t"><span class="l">Reclamos ante la Agencia</span><span class="v">${recl}</span><span class="c">Desde el 01-05-2026</span>${estadoKpi(!recl,recl?'Requiere seguimiento':'Sin reclamos')}</div>
  </div>
  <div class="fila-t">
-  <div class="tarjeta"><div class="cab"><h2>Riesgo de vencimiento</h2><span class="sem-mini ROJO">${criticos.length} críticos</span></div>
+  <div class="tarjeta" style="grid-column:1/-1"><div class="cab"><h2>Riesgo de vencimiento</h2><span class="sem-mini ROJO">${criticos.length} críticos</span></div>
    <p class="lectura">${criticos.length?`<b>${criticos.length} casos</b> vencen en 3 días o menos o tienen un bloqueo pendiente. Están en manos de: ${Object.entries(enQuien).map(([k,n])=>esc(k)+' ('+n+')').join(', ')}.`:'Ningún caso vence en los próximos 3 días.'}</p>
    <div class="riesgo">${riesgo.map(({c,d})=>{const[sm]=semaforo(c);const bl=c.bloqueo&&!c.bloqResuelto;const txt=bl?'Bloqueo: '+d+(d===1?' día hábil':' días hábiles'):d<0?'Vencido hace '+(-d)+' días':'Vence en '+d+' días';return `<div class="r"><span class="mono">${esc(c.num)}</span><span class="quien">${esc(c.estado)}<small>${esc(c.resp)}</small></span><span class="dias-barra ${sm}" title="${esc(txt)} · vence el ${fmt(bl?c.vencBloq:c.venc)}"><span>${esc(txt)}</span><span class="pista"><span class="relleno" style="display:block;width:${Math.max(4,Math.min(100,100*(bl?d/2:d/30)))}%"></span></span></span><button class="btn pequeno" type="button" onclick="cambiaPerfil('jefatura');ver('${c.num}')">Abrir</button></div>`;}).join('')}</div>
-   <p class="decide"><b>Para decidir:</b> escalar o reasignar los casos con 3 días o menos; autorizar la prórroga única solo con causa y antes del vencimiento.</p></div>
+   <p class="decide"><b>Para decidir:</b> escalar o reasignar los casos con 3 días o menos; autorizar la prórroga única solo con causa y antes del vencimiento.</p><div class="grid2" style="margin-top:var(--e-3)"><div><h3 style="margin-bottom:var(--e-2)">Sin ámbito asignado</h3>${(()=>{const sa=ab.filter(c=>!c.ambito);return `<p class="lectura"><b>${sa.length}</b> solicitudes abiertas no tienen gerencia responsable asignada.</p>`+(sa.length?`<ul class="lista-plana">${sa.map(c=>`<li>${esc(c.num)} · ingresada el ${fmt(c.ingreso)} · ${esc(c.estado)}</li>`).join('')}</ul>`:'')})()}</div><div><h3 style="margin-bottom:var(--e-2)">Vencidos por ámbito</h3>${(()=>{const v=ab.filter(c=>dias(HOY,c.venc)<0);const g={};v.forEach(c=>{const k=AMB_CORTO[c.ambito]||c.ambito||'Sin ámbito';g[k]=(g[k]||0)+1;});const e=Object.entries(g).sort((a,b)=>b[1]-a[1]);return `<p class="lectura"><b>${v.length}</b> solicitudes vencidas.</p>`+(e.length?`<table class="compacta"><thead><tr><th>Ámbito (gerencia que responde)</th><th class="num">Vencidas</th></tr></thead><tbody>${e.map(([k,n])=>`<tr><td>${esc(k)}</td><td class="num">${n}</td></tr>`).join('')}</tbody></table>`:'')})()}</div></div></div>
 
  </div>
  <div class="tarjeta"><div class="cab"><h2>Qué se pide y por dónde llega</h2><span class="ayuda" style="margin:0">${base.length} solicitudes desde el 01-05-2026</span></div>
