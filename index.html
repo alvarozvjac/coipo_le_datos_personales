@@ -475,6 +475,98 @@ fieldset.grupo legend { font-size: var(--f-xs); font-weight: 600; color: var(--t
 #acta li small { display: block; color: var(--texto-tenue); }
 .borrador { font-size: var(--f-xs); white-space: pre-wrap; background: var(--fondo); border: 1px dashed var(--borde-control); border-radius: var(--r-m); padding: var(--e-3); margin: var(--e-2) 0; font-family: var(--mono); }
 
+/* Pestaña 5: gestión interna */
+.sub-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-2); margin-bottom: var(--e-4); }
+.sub-tabs button { display: grid; gap: 2px; text-align: left; padding: var(--e-3) var(--e-4); border: 1px solid var(--borde-control); border-radius: var(--r-m); background: var(--superficie); color: var(--texto); cursor: pointer; }
+.sub-tabs button b { font-size: var(--f-m); color: var(--verde-institucional); }
+.sub-tabs button small { color: var(--texto-tenue); font-size: var(--f-xs); }
+.sub-tabs button[aria-selected='true'] { border-color: var(--verde-institucional); box-shadow: inset 0 -4px 0 var(--verde-institucional); background: color-mix(in srgb, var(--verde-institucional) 6%, var(--superficie)); }
+.sub-tabs button:hover { border-color: var(--verde-institucional); }
+.perfiles-sel { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--e-2); }
+.perfiles-sel button { display: grid; gap: 2px; text-align: left; padding: var(--e-2) var(--e-3); border: 1px solid var(--borde-control); border-radius: var(--r-m); background: var(--superficie); color: var(--texto); cursor: pointer; min-width: 0; }
+.perfiles-sel button b { font-size: var(--f-s); }
+.perfiles-sel button small { font-size: var(--f-xs); color: var(--texto-tenue); }
+.perfiles-sel button .n { font-variant-numeric: tabular-nums; font-size: var(--f-xs); font-weight: 700; color: var(--verde-institucional); }
+.perfiles-sel button[aria-pressed='true'] { border-color: var(--verde-institucional); box-shadow: inset 0 0 0 1px var(--verde-institucional); background: color-mix(in srgb, var(--verde-institucional) 7%, var(--superficie)); }
+.grupo-tareas { display: grid; gap: var(--e-2); margin-bottom: var(--e-4); }
+.grupo-tareas > h3 { display: flex; gap: var(--e-2); align-items: center; font-size: var(--f-xs); text-transform: uppercase; letter-spacing: .06em; color: var(--texto-tenue); }
+.tarea { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--e-1) var(--e-3); align-items: center; border: 1px solid var(--borde-sutil); border-radius: var(--r-m); padding: var(--e-3); background: var(--superficie); }
+.tarea.sel { border-color: var(--verde-institucional); box-shadow: inset 0 0 0 1px var(--verde-institucional); }
+.tarea .que { font-weight: 700; }
+.tarea .meta { display: flex; flex-wrap: wrap; gap: var(--e-1) var(--e-2); font-size: var(--f-xs); color: var(--texto-tenue); align-items: center; }
+.tarea .btn { grid-row: span 2; }
+#todosCasos > summary { font-size: var(--f-s); }
+/* tablero */
+.tablero { display: grid; gap: var(--e-4); }
+.tablero .periodo { font-size: var(--f-xs); color: var(--texto-tenue); margin: 0; }
+.kpi-fila { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--e-3); }
+.kpi-t { background: var(--superficie); border: 1px solid var(--borde-sutil); border-radius: var(--r-m); padding: var(--e-3) var(--e-4); display: grid; gap: 2px; }
+.kpi-t .l { font-size: var(--f-xs); color: var(--texto-tenue); font-weight: 600; }
+.kpi-t .v { font-size: var(--f-3xl); font-weight: 700; line-height: 1.1; color: var(--texto); font-variant-numeric: tabular-nums; }
+.kpi-t .v small { font-size: var(--f-m); font-weight: 600; color: var(--texto-tenue); }
+.kpi-t .c { font-size: var(--f-xs); color: var(--texto-tenue); }
+.kpi-t .estado { justify-self: start; margin-top: var(--e-1); }
+.lectura { margin: 0 0 var(--e-3); font-size: var(--f-s); }
+.decide { margin: var(--e-3) 0 0; font-size: var(--f-xs); color: var(--texto-tenue); border-top: 1px solid var(--borde-sutil); padding-top: var(--e-2); }
+.decide b { color: var(--texto); }
+.fila-t { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--e-4); align-items: start; }
+.riesgo { display: grid; gap: 0; }
+.riesgo .r { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr) minmax(6rem, 9rem) auto; gap: var(--e-3); align-items: center; padding: var(--e-2) 0; border-bottom: 1px solid var(--borde-sutil); font-size: var(--f-s); }
+.riesgo .r:last-child { border-bottom: 0; }
+.riesgo .quien { min-width: 0; }
+.riesgo .quien small { display: block; color: var(--texto-tenue); font-size: var(--f-xs); }
+.dias-barra { display: grid; gap: 2px; font-size: var(--f-xs); font-variant-numeric: tabular-nums; }
+.dias-barra .pista { height: 8px; border-radius: 4px; background: var(--borde-sutil); overflow: hidden; }
+.dias-barra .relleno { height: 100%; border-radius: 4px; background: var(--c); }
+.dias-barra.VERDE { --c: var(--verde-institucional); } .dias-barra.AMARILLO { --c: var(--aviso); } .dias-barra.ROJO { --c: var(--error); }
+.etapas { display: grid; gap: var(--e-2); }
+.etapa-f { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr) 4.5rem; gap: var(--e-2); align-items: center; font-size: var(--f-s); }
+.etapa-f .nom small { display: block; font-size: var(--f-xs); color: var(--texto-tenue); }
+.etapa-f .pista { position: relative; height: 14px; background: var(--fondo); border-radius: 4px; }
+.etapa-f .barra { height: 100%; border-radius: 0 4px 4px 0; background: var(--verde-institucional); }
+.etapa-f .barra.sobre { background: var(--aviso); background-image: repeating-linear-gradient(45deg, transparent 0 4px, color-mix(in srgb, var(--superficie) 45%, transparent) 4px 6px); }
+.etapa-f .meta-plazo { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--texto); }
+.etapa-f .val { font-variant-numeric: tabular-nums; font-size: var(--f-xs); text-align: right; }
+.etapa-f .val b { font-size: var(--f-s); }
+.leyenda-t { display: flex; flex-wrap: wrap; gap: var(--e-3); font-size: var(--f-xs); color: var(--texto-tenue); margin-top: var(--e-2); align-items: center; }
+.leyenda-t i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: var(--e-1); }
+.leyenda-t i.ok { background: var(--verde-institucional); }
+.leyenda-t i.mal { background: var(--error); background-image: repeating-linear-gradient(45deg, transparent 0 3px, color-mix(in srgb, var(--superficie) 55%, transparent) 3px 5px); }
+.leyenda-t i.curso { background: transparent; border: 1.5px solid var(--borde-control); }
+.leyenda-t i.meta { width: 2px; height: 14px; border-radius: 0; background: var(--texto); }
+.leyenda-t i.sobre { background: var(--aviso); }
+.meses { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--e-3); align-items: end; height: 220px; padding-top: var(--e-4); border-bottom: 1px solid var(--borde-control); }
+.mes { display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; height: 100%; gap: 2px; position: relative; }
+.mes .tot { text-align: center; font-size: var(--f-xs); font-weight: 700; font-variant-numeric: tabular-nums; }
+.mes .seg { border-radius: 2px; }
+.mes .tot + .seg { border-radius: 4px 4px 2px 2px; }
+.mes .seg.ok { background: var(--verde-institucional); }
+.mes .seg.mal { background: var(--error); background-image: repeating-linear-gradient(45deg, transparent 0 3px, color-mix(in srgb, var(--superficie) 55%, transparent) 3px 5px); }
+.mes .seg.curso { background: transparent; border: 1.5px solid var(--borde-control); }
+.meses-et { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--e-3); font-size: var(--f-xs); color: var(--texto-tenue); text-align: center; margin-top: var(--e-1); }
+.meses-et span b { display: block; color: var(--texto); font-variant-numeric: tabular-nums; }
+.composicion { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e-4); }
+.hbar { display: grid; grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr) 4.2rem; gap: var(--e-2); align-items: center; font-size: var(--f-xs); margin-bottom: var(--e-2); }
+.hbar .et { overflow-wrap: anywhere; }
+.hbar .pista { height: 10px; background: var(--fondo); border-radius: 4px; }
+.hbar .barra { height: 100%; border-radius: 0 4px 4px 0; background: var(--verde-institucional); }
+.hbar .n { text-align: right; font-variant-numeric: tabular-nums; }
+.hbar .n b { color: var(--texto); }
+table.compacta { width: 100%; border-collapse: collapse; font-size: var(--f-xs); margin-top: var(--e-3); }
+table.compacta th { text-align: left; color: var(--texto-tenue); font-weight: 600; padding: var(--e-1) var(--e-2); border-bottom: 1px solid var(--borde-control); }
+table.compacta td { padding: var(--e-1) var(--e-2); border-bottom: 1px solid var(--borde-sutil); font-variant-numeric: tabular-nums; }
+table.compacta td.num, table.compacta th.num { text-align: right; }
+@media (max-width: 1099.98px) { .perfiles-sel { grid-template-columns: repeat(3, minmax(0, 1fr)); } .fila-t { grid-template-columns: 1fr; } }
+@media (max-width: 899.98px) { .kpi-fila { grid-template-columns: repeat(2, minmax(0, 1fr)); } .composicion { grid-template-columns: 1fr; } }
+@media (max-width: 559.98px) {
+  .sub-tabs, .perfiles-sel { grid-template-columns: 1fr; }
+  .riesgo .r { grid-template-columns: minmax(0, 1fr) auto; }
+  .riesgo .r .quien, .riesgo .r .dias-barra { grid-column: 1 / -1; }
+  .etapa-f { grid-template-columns: 7rem minmax(0, 1fr) 3.8rem; }
+  .meses { gap: var(--e-1); } .meses-et { gap: var(--e-1); }
+  .tarea { grid-template-columns: 1fr; } .tarea .btn { grid-row: auto; justify-self: start; }
+}
+
 /* ── Teléfono ──────────────────────────────────────────────────────────────────── */
 @media (max-width: 559.98px) {
   .fila, .fila3, .derechos, .docs, .perfiles { grid-template-columns: 1fr; }
@@ -586,7 +678,7 @@ fieldset.grupo legend { font-size: var(--f-xs); font-weight: 600; color: var(--t
   <span class="chip">Etapa SF-02 · Requisitos</span>
   <span class="chip" id="chipVigencia">Vigencia 01-12-2026</span>
   <span class="chip">Fecha simulada: 20-10-2026</span>
-  <span class="chip">v0.9 · 27-10-2026</span>
+  <span class="chip">v1.0 · 27-10-2026</span>
   <button class="btn pequeno tema" id="btnTema" type="button" aria-label="Cambiar tema de color">Tema: sistema</button>
 </div>
 <div class="aviso-maqueta" role="note"><b>Maqueta no operacional</b></div>
@@ -596,7 +688,7 @@ fieldset.grupo legend { font-size: var(--f-xs); font-weight: 600; color: var(--t
   <button data-v="v-ident">2 · Identificación</button>
   <button data-v="v-form">3 · Formulario</button>
   <button data-v="v-acuse">4 · Acuse de recibo</button>
-  <button data-v="v-bandeja">5 · Bandeja interna</button>
+  <button data-v="v-bandeja">5 · Gestión interna</button>
   <button data-v="v-flujo">6 · Flujo y plazos</button>
   <button data-v="v-perfiles">7 · Perfiles</button>
   <button data-v="v-vias">8 · Vías de ingreso</button>
@@ -747,30 +839,38 @@ fieldset.grupo legend { font-size: var(--f-xs); font-weight: 600; color: var(--t
       <div id="acIdent" class="aviso warn oculto">Para recibir la respuesta deberá acreditar su identidad: exhiba su cédula en una oficina de CONAF o envíe una copia indicando su número de caso. Esto no suspende el plazo de respuesta de CONAF.</div>
       <div id="acBloq" class="aviso crit oculto">Su solicitud de bloqueo temporal será resuelta dentro de <b>2 días hábiles</b> (<span id="acPlazoBloq"></span>). Mientras no se resuelva, CONAF no tratará los datos indicados; el bloqueo no afecta su almacenamiento. Si se rechaza, se le informará el fundamento y podrá reclamar ante la Agencia dentro de 30 días hábiles.</div>
       <div class="tarjeta"><h2>Sus derechos durante el trámite</h2><p class="sec" style="margin:0;font-size:var(--f-s)">Si CONAF no responde dentro del plazo o deniega su solicitud, puede reclamar ante la Agencia de Protección de Datos Personales dentro de 30 días hábiles (art. 11 inc. 4° y 5°; art. 41). Puede consultar el estado indicando su número de caso y RUN en la casilla <span class="mono">datospersonales@conaf.cl</span>.</p></div>
-      <div class="acciones"><button class="btn" onclick="ir('v-sitio')">Volver al sitio</button><button class="btn verde" onclick="ir('v-bandeja')">Ver cómo llega a la bandeja interna →</button></div>
+      <div class="acciones"><button class="btn" onclick="ir('v-sitio')">Volver al sitio</button><button class="btn verde" onclick="ir('v-bandeja')">Ver cómo llega a la gestión interna →</button></div>
     </div>
   </div>
 </section>
 
-<!-- ============ 5. BANDEJA ============ -->
+<!-- ============ 5. GESTIÓN INTERNA ============ -->
 <section id="v-bandeja" data-registro="operativo" class="vista">
-  <div class="tarjeta cabecera-bandeja" style="margin-bottom:var(--e-4)"><div><h2 style="margin:0">Bandeja de gestión</h2><div class="ayuda" id="perfilDesc">—</div></div><div class="selector"><label for="selPerfil">Ver como</label><select id="selPerfil" class="control" onchange="cambiaPerfil(this.value)"><option value="jefatura">Jefatura unidad receptora</option><option value="encargado">Encargado/a de recepción</option><option value="fiscalia">Fiscalía</option><option value="gerencia">Gerencia responsable (GEDEP)</option><option value="admin">Administrador de plataforma</option></select><span class="sem-mini AZUL">Interno</span></div></div>
-  <div id="adminPanel" class="oculto"></div>
-  <div class="tarjeta guia" id="guia" style="margin-bottom:var(--e-4)"><div class="cab"><h2 style="margin:0">Recorrido guiado por perfiles</h2><span class="sem-mini AZUL">Demostración funcional</span></div>
-    <p class="sec" style="margin:0 0 var(--e-2);font-size:var(--f-s)">Los botones de acción de cada caso cambian su estado, su responsable y su expediente. Para mostrar el flujo completo: envíe una solicitud desde la pestaña 3 (o use el caso <span class="mono">DP-2026-000123</span>) y siga la secuencia de perfiles. El panel indica en cada momento qué perfil debe actuar.</p>
-    <div class="acciones" id="guiaPasos"></div>
-    <div id="guiaSig" class="ayuda" style="margin-top:var(--e-2)"></div></div>
-  <div class="kpis" id="kpis"></div>
-  <div class="contenedor bandeja">
-    <div class="columna">
-      <div class="tarjeta">
-        <div class="acciones oculto" id="barraRegistro" style="margin-bottom:var(--e-3);align-items:center"><button class="btn verde pequeno" type="button" onclick="abreRegistro()">+ Registrar solicitud recibida por otra vía</button><span class="ayuda" style="margin:0">Correo de Oficina de Partes, casilla dedicada, carta u OIRS.</span></div>
-        <div class="filtros"><select id="fEstado" class="control" aria-label="Filtrar por estado" onchange="pinta()"><option value="">Todos los estados</option></select><select id="fDer" class="control" aria-label="Filtrar por derecho" onchange="pinta()"><option value="">Todos los derechos</option><option>Acceso</option><option>Rectificación</option><option>Oposición</option><option>Supresión</option><option>Portabilidad</option><option>Bloqueo temporal</option></select><select id="fVia" class="control" aria-label="Filtrar por vía de ingreso" onchange="pinta()"><option value="">Todas las vías</option><option value="web">Formulario web</option><option value="correoOP">Correo de Oficina de Partes</option><option value="casilla">Casilla dedicada</option><option value="carta">Carta en Oficina de Partes</option><option value="oirs">OIRS u otro funcionario</option></select><input id="fTxt" class="control" aria-label="Buscar caso, RUN o nombre" placeholder="Buscar caso, RUN o nombre" oninput="pinta()" style="flex:1;min-width:10rem"></div>
-        <div class="desplaza-x"><table class="casos"><thead><tr><th>Caso</th><th>Ingreso · vía</th><th>Solicitante</th><th>Derecho(s)</th><th>Estado</th><th>Responsable</th><th>Vence · plazo</th></tr></thead><tbody id="tbody"></tbody></table></div>
-        <div class="leyenda"><span class="sem-mini VERDE">≥ 10 días</span><span class="sem-mini AMARILLO">3–9 días</span><span class="sem-mini ROJO">≤ 2 días o vencido</span><span class="sem-mini GRIS">Cerrado</span> · Días corridos al vencimiento legal (art. 11). Los casos con bloqueo pendiente se ordenan primero.</div>
+  <div class="sub-tabs" role="tablist" aria-label="Vistas de gestión interna">
+    <button type="button" role="tab" id="subTablero" aria-selected="true" onclick="muestraSub('tablero')"><b>Tablero de control</b><small>Cómo vamos y dónde actuar</small></button>
+    <button type="button" role="tab" id="subTareas" aria-selected="false" onclick="muestraSub('tareas')"><b>Mis tareas</b><small>Lo que le toca a cada persona</small></button>
+  </div>
+
+  <div id="vistaTablero" role="tabpanel" aria-labelledby="subTablero"></div>
+
+  <div id="vistaTareas" role="tabpanel" aria-labelledby="subTareas" class="oculto">
+    <div class="tarjeta" style="margin-bottom:var(--e-4)"><h2 style="margin-bottom:var(--e-2)">¿Quién está trabajando?</h2><div class="perfiles-sel" id="perfilesSel" role="group" aria-label="Perfil"></div><p class="ayuda" id="perfilDesc"></p></div>
+    <div id="adminPanel" class="oculto"></div>
+    <div class="kpis oculto" id="kpis"></div>
+    <div class="contenedor bandeja">
+      <div class="columna">
+        <div class="tarjeta"><div class="cab"><h2 id="tituloTareas">Mis tareas</h2><span id="cuentaTareas" class="sem-mini AZUL"></span></div>
+          <div class="acciones oculto" id="barraRegistro" style="margin-bottom:var(--e-3);align-items:center"><button class="btn verde pequeno" type="button" onclick="abreRegistro()">+ Registrar solicitud recibida por otra vía</button><span class="ayuda" style="margin:0">Correo de Oficina de Partes, casilla dedicada, carta u OIRS.</span></div>
+          <div id="listaTareas"></div>
+        </div>
+        <details class="tarjeta" id="todosCasos"><summary id="resTodos">Todos los casos de mi alcance</summary>
+          <div style="margin-top:var(--e-3)"><div class="filtros"><select id="fEstado" class="control" aria-label="Filtrar por estado" onchange="pinta()"><option value="">Todos los estados</option></select><select id="fDer" class="control" aria-label="Filtrar por derecho" onchange="pinta()"><option value="">Todos los derechos</option><option>Acceso</option><option>Rectificación</option><option>Oposición</option><option>Supresión</option><option>Portabilidad</option><option>Bloqueo temporal</option></select><select id="fVia" class="control" aria-label="Filtrar por vía de ingreso" onchange="pinta()"><option value="">Todas las vías</option><option value="web">Formulario web</option><option value="correoOP">Correo de Oficina de Partes</option><option value="casilla">Casilla dedicada</option><option value="carta">Carta en Oficina de Partes</option><option value="oirs">OIRS u otro funcionario</option></select><input id="fTxt" class="control" aria-label="Buscar caso, RUN o nombre" placeholder="Buscar caso, RUN o nombre" oninput="pinta()" style="flex:1;min-width:10rem"></div></div>
+          <div class="desplaza-x"><table class="casos"><thead><tr><th>Caso</th><th>Ingreso · vía</th><th>Solicitante</th><th>Derecho(s)</th><th>Estado</th><th>Responsable</th><th>Vence · plazo</th></tr></thead><tbody id="tbody"></tbody></table></div>
+          <div class="leyenda"><span class="sem-mini VERDE">≥ 10 días</span><span class="sem-mini AMARILLO">3–9 días</span><span class="sem-mini ROJO">≤ 2 días o vencido</span><span class="sem-mini GRIS">Cerrado</span> · Días corridos al vencimiento legal (art. 11). Los casos con bloqueo pendiente se ordenan primero.</div>
+        </details>
       </div>
+      <div class="columna" id="detalle"><div class="tarjeta vacio"><p><b>Ningún caso seleccionado</b></p><p>Abra una tarea para ver su expediente y actuar.</p></div></div>
     </div>
-    <div class="columna" id="detalle"><div class="tarjeta vacio"><p><b>Ningún caso seleccionado</b></p><p>Seleccione un caso de la bandeja para ver su expediente.</p></div></div>
   </div>
 </section>
 
@@ -863,7 +963,7 @@ fieldset.grupo legend { font-size: var(--f-xs); font-weight: 600; color: var(--t
     <p class="ayuda">● realiza · ○ participa o lectura limitada · – sin acceso. La bitácora registra toda lectura de RUN completo y adjuntos de identidad. Un mismo funcionario puede tener más de un perfil solo si la jefatura lo autoriza y queda registrado.</p></div>
   <div class="grid2" style="margin-top:var(--e-4)">
     <div class="tarjeta"><h2>Definiciones pendientes de la contraparte</h2><ul class="lista-plana"><li>Si la jefatura de la unidad receptora opera la recepción o designa un encargado (y su suplente).</li><li>Quién es el responsable institucional ante la Agencia y si se designará delegado de protección de datos (art. 50).</li><li>Nombre del abogado o abogada responsable en Fiscalía y su suplente.</li><li>Un analista responsable por ámbito del catálogo de bases de datos.</li><li>Si la firma de la Directora Ejecutiva se registra en la plataforma o fuera de ella (gestor documental).</li><li>Quién administra la plataforma: UIA o Informática.</li></ul></div>
-    <div class="tarjeta"><h2>Cómo se ve en la bandeja</h2><p class="sec" style="margin:0;font-size:var(--f-s)">En la pestaña 5, el selector "Ver como" muestra la bandeja desde cada perfil interno: los casos visibles, los botones de acción y el nivel de detalle cambian según la matriz. El perfil de administrador muestra los parámetros en lugar de los casos. La persona solicitante corresponde a las pestañas 2 a 4.</p><div class="acciones" style="margin-top:var(--e-3)"><button class="btn pequeno" onclick="cambiaPerfil('fiscalia');ir('v-bandeja')">Ver como Fiscalía</button><button class="btn pequeno" onclick="cambiaPerfil('gerencia');ir('v-bandeja')">Ver como Gerencia</button><button class="btn pequeno" onclick="cambiaPerfil('admin');ir('v-bandeja')">Ver como Administrador</button></div></div>
+    <div class="tarjeta"><h2>Cómo se ve en la gestión interna</h2><p class="sec" style="margin:0;font-size:var(--f-s)">En la pestaña 5, «Mis tareas» muestra a cada perfil interno solo lo que le corresponde hacer; los casos visibles, las acciones y el nivel de detalle cambian según la matriz. El «Tablero de control» muestra cifras agregadas, sin datos de titulares. El perfil de administrador muestra los parámetros en lugar de los casos. La persona solicitante corresponde a las pestañas 2 a 4.</p><div class="acciones" style="margin-top:var(--e-3)"><button class="btn pequeno" onclick="verComo('fiscalia')">Tareas de Fiscalía</button><button class="btn pequeno" onclick="verComo('gerencia')">Tareas de Gerencia</button><button class="btn pequeno" onclick="verComo('admin')">Vista del administrador</button></div></div>
   </div>
 </section>
 
@@ -897,7 +997,7 @@ fieldset.grupo legend { font-size: var(--f-xs); font-weight: 600; color: var(--t
       <div class="destino">
         <h3>Mismo flujo para todas</h3>
         <p class="ayuda" style="margin:0 0 var(--e-2)">Recepción, admisibilidad, derivación, análisis, revisión jurídica, firma y respuesta (pestaña 6).</p>
-        <button class="btn pequeno" type="button" onclick="cambiaPerfil('encargado');ir('v-bandeja')">Ver la bandeja</button>
+        <button class="btn pequeno" type="button" onclick="verComo('encargado')">Ver las tareas del encargado</button>
       </div>
     </div>
   </div>
@@ -927,7 +1027,7 @@ fieldset.grupo legend { font-size: var(--f-xs); font-weight: 600; color: var(--t
 
 </main>
 
-<div class="pie">CON012 · Formulario de contacto Ley N° 21.719 · Solicitante: Unidad de Participación Ciudadana y Transparencia · UIA – Gobernanza de Datos · Maqueta de propuesta v0.9, sin datos reales · Los RUN de ejemplo tienen dígito verificador inválido a propósito.</div>
+<div class="pie">CON012 · Formulario de contacto Ley N° 21.719 · Solicitante: Unidad de Participación Ciudadana y Transparencia · UIA – Gobernanza de Datos · Maqueta de propuesta v1.0, sin datos reales · Los RUN de ejemplo tienen dígito verificador inválido a propósito.</div>
 
 <script>
 // ---------- navegación ----------
@@ -983,10 +1083,10 @@ const PERFILES={
  admin:{n:'Administrador de plataforma',d:'Parámetros, usuarios y bitácora técnica; sin acceso al contenido de los casos.',filtro:c=>false}
 };
 let PERFIL='jefatura';
-function cambiaPerfil(v){PERFIL=v;document.getElementById('selPerfil').value=v;const pf=PERFILES[v];document.getElementById('perfilDesc').innerHTML='Viendo como <b>'+esc(pf.n)+'</b> · '+esc(pf.d)+' · <a href="#" onclick="ir(\'v-perfiles\');return false">ver matriz de permisos</a>';
+function cambiaPerfil(v){PERFIL=v;marcaPerfil(v);const pf=PERFILES[v];document.getElementById('perfilDesc').innerHTML=esc(pf.d)+' · <a href="#" onclick="ir(\'v-perfiles\');return false">ver matriz de permisos</a>';
  const ap=document.getElementById('adminPanel');const bandeja=document.querySelector('#v-bandeja .contenedor.bandeja');const kp=document.getElementById('kpis');
  if(v==='admin'){ap.classList.remove('oculto');bandeja.classList.add('oculto');kp.classList.add('oculto');ap.innerHTML=`<div class="grid2"><div class="tarjeta"><h2>Parámetros del canal</h2><table class="casos"><tbody><tr><td>Derechos ofrecidos</td><td>${derechosOfrecidosTxt()} · <span class="muted">propuesta, sujeta a definición de Fiscalía</span></td></tr><tr><td>Plazo de respuesta</td><td>30 días corridos · prórroga única 30 · bloqueo 2 días hábiles</td></tr><tr><td>Plazos internos por etapa</td><td>1 · 2 · 1 · 8 · 2 · 2 días hábiles (propuesta) · total 16</td></tr><tr><td>Asistencia de IA para borradores</td><td>${CFG.ia==='si'?'<span class="sem-mini VERDE">habilitada · revisión humana obligatoria</span>':'<span class="sem-mini GRIS">deshabilitada</span>'}</td></tr><tr><td>Feriados cargados</td><td>2026: 12-10, 31-10, 01-11, 08-12, 25-12 · 2027: 01-01 … (carga manual)</td></tr><tr><td>Ámbitos (catálogo de bases)</td><td>8 configurados · pendiente catálogo definitivo</td></tr><tr><td>Plantillas de Carta Oficial</td><td>Acoge · Acoge parcialmente · Rechaza (art. 23 / improcedencia) · Bloqueo · Prórroga</td></tr><tr><td>Retención del expediente</td><td>Por definir (política institucional) · copia de cédula: eliminar tras verificación</td></tr><tr><td>Verificación de identidad</td><td>Copia de cédula ● · Correo verificado ${CFG.ident==='no'?'○ no ofrecido':'● con acreditación al entregar'} · ClaveÚnica <span class="sem-mini GRIS">etapa posterior</span></td></tr></tbody></table></div><div class="tarjeta"><h2>Usuarios y perfiles</h2><table class="casos"><thead><tr><th>Usuario</th><th>Perfil</th><th>Ámbito</th><th>Estado</th></tr></thead><tbody><tr><td>Jefa Unidad Participación Ciudadana y Transparencia</td><td>Jefatura</td><td>—</td><td><span class="sem-mini VERDE">activo</span></td></tr><tr><td>Encargado/a de recepción (por designar)</td><td>Encargado/a</td><td>—</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr><tr><td>Abogado/a responsable (por designar)</td><td>Fiscalía</td><td>—</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr><tr><td>Analista GEDEP (por designar)</td><td>Gerencia</td><td>Personal y ex funcionarios</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr><tr><td>Analista ASP (por designar)</td><td>Gerencia</td><td>Áreas Silvestres Protegidas</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr></tbody></table><h3 style="margin:var(--e-3) 0 var(--e-2)">Bitácora técnica (últimos eventos)</h3><div class="linea"><div class="hito hecho"><b>Lectura de RUN completo · caso DP-2026-000123 · perfil Encargado</b><small>20-10-2026 · registrado</small></div><div class="hito hecho"><b>Cambio de estado · DP-2026-000122 · Derivada</b><small>20-10-2026</small></div><div class="hito hecho"><b>Actualización de feriados 2027</b><small>13-10-2026</small></div></div><p class="ayuda">El administrador no accede al contenido de los casos; la bitácora muestra quién accedió, no qué contiene el expediente.</p></div></div>`;}
- else{ap.classList.add('oculto');bandeja.classList.remove('oculto');kp.classList.remove('oculto');document.getElementById('detalle').innerHTML='<div class="tarjeta vacio"><p><b>Ningún caso seleccionado</b></p><p>Seleccione un caso de la bandeja para ver su expediente.</p></div>';}
+ else{ap.classList.add('oculto');bandeja.classList.remove('oculto');document.getElementById('detalle').innerHTML='<div class="tarjeta vacio"><p><b>Ningún caso seleccionado</b></p><p>Seleccione un caso de la bandeja para ver su expediente.</p></div>';}
  pinta();}
 // ---------- máquina de estados (demostración funcional) ----------
 // Cada acción: [código, etiqueta, perfil que la ejecuta, estado(s) en que aplica, primaria]
@@ -1058,10 +1158,7 @@ function accion(num,code){const c=CASOS.find(x=>x.num===num);const hoy=new Date(
  }
  if(RESP[c.estado]&&!c.cerrado)c.resp=RESP[c.estado];pinta();ver(num);}
 
-function renderGuia(){const pasos=[['encargado','1 Recepción: verificar identidad'],['fiscalia','2 Admisibilidad (y bloqueo)'],['encargado','3 Derivar a gerencia'],['gerencia','4 Analizar y decidir'],['fiscalia','5 Revisión jurídica'],['jefatura','6 Firma DE / prórroga'],['encargado','7 Enviar y cerrar']];
- document.getElementById('guiaPasos').innerHTML=pasos.map(p=>`<button class="btn pequeno${PERFIL===p[0]?' primario':''}" onclick="cambiaPerfil('${p[0]}')">${p[1]} · <i style="font-style:normal;opacity:.8">${PERFILES[p[0]].n.split(' ')[0]}</i></button>`).join('');
- const c=CASOS.find(x=>x.nuevo)||CASOS.find(x=>x.num==='DP-2026-000123');if(!c)return;const sig=ACC.find(a=>aplica(a,c)&&a[4]);
- document.getElementById('guiaSig').innerHTML=c.cerrado?`Caso <span class="mono">${esc(c.num)}</span>: expediente cerrado (${esc(c.decision||'respondido')}).`:`Caso <span class="mono">${esc(c.num)}</span> en estado <b>${esc(c.estado)}</b>${c.bloqueo&&!c.bloqResuelto?' <span class="sem-mini ROJO">bloqueo pendiente</span>':''} · siguiente paso: <b>${sig?esc(PERFILES[sig[2]].n):'—'}</b> → ${sig?esc(sig[1]):''} ${sig?`<a href="#" onclick="cambiaPerfil('${sig[2]}');ver('${c.num}');return false">ir</a>`:''}`;}
+function renderGuia(){}
 // ---------- utilidades de fecha ----------
 const HOY=new Date(2026,9,20); // fecha simulada de la demostración (se muestra en pantalla)
 const DESFASE=42; // los casos de ejemplo se escribieron con fechas de septiembre; se desplazan 6 semanas (conserva el día de la semana)
@@ -1091,14 +1188,130 @@ const CASOS=[
 CASOS.forEach(c=>{c.venc=c.venc||addDias(c.ingreso,c.prorroga?60:30);});
 const VIA_EJ={'DP-2026-000121':'casilla','DP-2026-000118':'carta','DP-2026-000120':'correoOP','DP-2026-000119':'oirs'};CASOS.forEach(c=>{c.via=c.via||VIA_EJ[c.num]||'web';});CASOS.find(c=>c.num==='DP-2026-000120').folio='OP-2026-004391';
 
+// ---------- historial de demostración (cifras ficticias, semilla fija) ----------
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function dvRun(n){let s=0,m=2;for(const ch of String(n).split('').reverse()){s+=Number(ch)*m;m=m<7?m+1:2;}const r=11-s%11;return r===11?'0':r===10?'K':String(r);}
+function fmtRun(n,dv){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+'-'+dv;}
+const ETAPAS=[['recepcion','Recepción y registro','Encargado/a',1],['admisibilidad','Admisibilidad','Fiscalía',2],['derivacion','Derivación','Encargado/a',1],['analisis','Análisis en gerencia','Gerencias',8],['revision','Revisión jurídica','Fiscalía',2],['firma','Firma','Dirección Ejecutiva',2]];
+const ETAPA_DE={'Ingresada':'recepcion','Requiere antecedentes':'admisibilidad','En admisibilidad':'admisibilidad','Admisible':'derivacion','Derivada':'analisis','Prorrogada':'analisis','En revisión jurídica':'revision','En firma':'firma','Firmada':'firma'};
+const ESTADO_ETAPA={recepcion:'Ingresada',admisibilidad:'En admisibilidad',derivacion:'Admisible',analisis:'Derivada',revision:'En revisión jurídica',firma:'En firma'};
+const AMB_CORTO={'Personal y ex funcionarios (GEDEP)':'Personal (GEDEP)','Programas y beneficios (entrega de plantas)':'Plantas y beneficios','Áreas Silvestres Protegidas':'Áreas Silvestres Protegidas','Trámites forestales / Oficina Virtual':'Trámites forestales','Denuncias e infracciones forestales':'Denuncias forestales','OIRS / Transparencia':'OIRS / Transparencia','Proveedores y compras':'Proveedores'};
+(function generaHistorial(){const R=rng(21719);const pick=l=>{let x=R(),acc=0;for(const [v,w] of l){acc+=w;if(x<acc)return v;}return l[l.length-1][0];};const ent=(a,b)=>a+Math.floor(R()*(b-a+1));
+ const NOM=['CAMILA','JAVIERA','CONSTANZA','FRANCISCA','VALENTINA','IGNACIO','MATÍAS','SEBASTIÁN','FELIPE','TOMÁS','PATRICIA','LUIS','ELENA','JORGE','SOFÍA','DIEGO','ROSA','HÉCTOR'];
+ const APE=['GONZÁLEZ','MUÑOZ','ROJAS','DÍAZ','PÉREZ','SOTO','CONTRERAS','SILVA','MARTÍNEZ','SEPÚLVEDA','MORALES','RODRÍGUEZ','LÓPEZ','FUENTES','HERNÁNDEZ','TORRES','ARAYA','FLORES','ESPINOZA','VALENZUELA'];
+ const AMB=[['Personal y ex funcionarios (GEDEP)',.34],['Programas y beneficios (entrega de plantas)',.16],['Áreas Silvestres Protegidas',.14],['Trámites forestales / Oficina Virtual',.14],['Denuncias e infracciones forestales',.1],['OIRS / Transparencia',.07],['Proveedores y compras',.05]];
+ const DER=[[['Acceso'],.46],[['Rectificación'],.17],[['Acceso','Rectificación'],.08],[['Oposición'],.1],[['Supresión'],.09],[['Rectificación','Bloqueo temporal'],.05],[['Portabilidad'],.05]];
+ const VIA=[['web',.56],['correoOP',.14],['casilla',.12],['carta',.1],['oirs',.08]];
+ const POR_MES=[[4,7],[5,9],[6,8],[7,11],[8,12],[9,9]];const lista=[];
+ POR_MES.forEach(([m,k])=>{for(let i=0;i<k;i++){const ing=new Date(2026,m,ent(1,m===9?16:28));if(ing>HOY)continue;lista.push(ing);}});
+ lista.sort((a,b)=>a-b);
+ lista.forEach((ing,i)=>{const amb=pick(AMB);const ged=amb.includes('GEDEP');const via=pick(VIA);const ders=pick(DER);
+  const dur={recepcion:ent(0,2),admisibilidad:ent(1,3),derivacion:ent(0,1),analisis:ged?ent(6,13):ent(3,9),revision:ent(1,3),firma:ent(1,4)};
+  if(ged&&R()<.22)dur.analisis+=ent(5,9);
+  const prorroga=dur.analisis>=13&&R()<.6;const venc=addDias(ing,prorroga?60:30);
+  let f=new Date(ing),estado=null,t={};for(const [k] of ETAPAS){t[k]=new Date(f);const fin=addHabiles(f,dur[k]);if(fin>HOY&&!estado){estado=ESTADO_ETAPA[k];}f=fin;}
+  const n=ent(6100000,19900000);const dv=dvRun(n);const dvMal=dv==='0'?'1':dv==='K'?'2':String((Number(dv)+3)%10);
+  const c={num:'DP-2026-'+String(50+i).padStart(6,'0'),ingreso:ing,nombre:NOM[ent(0,NOM.length-1)]+' '+APE[ent(0,APE.length-1)]+' '+APE[ent(0,APE.length-1)],run:fmtRun(n,dvMal),derechos:ders,metodo:'Documental',ambito:amb,via,venc,prorroga,dur,t,hist:true,hitos:[['Ingreso por '+VIAS[via].n,ing]]};
+  if(estado){c.estado=prorroga&&estado==='Derivada'?'Prorrogada':estado;c.resp=RESP[c.estado]||'Encargado PD';if(['Derivada','Prorrogada'].includes(c.estado))c.resp=(AMB_CORTO[amb]||amb)+' · Analista';}
+  else{c.cerrado=true;c.cierre=f;c.estado=R()<.08?'No admitida':'Respondida';c.resp='—';c.decision=c.estado==='No admitida'?'Rechazada · no procede':R()<.8?'Acogida totalmente':'Acogida parcialmente';if((f>venc||c.decision.startsWith('Rechazada'))&&R()<.5)c.reclamo=true;
+   c.hitos.push(['Respuesta enviada · expediente cerrado',f]);}
+  CASOS.push(c);});})();
+function cierreDe(c){return c.cierre||c.hitos[c.hitos.length-1][1];}
+function etapaActual(c){return ETAPA_DE[c.estado];}
+function num1(x){return x.toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1});}
+function pct(a,b){return b?Math.round(100*a/b):0;}
+
+// ---------- perfiles y subvistas ----------
+const PERF_SEL=[['jefatura','Jefatura receptora','Supervisa plazos, firma y prórrogas'],['encargado','Encargado/a de recepción','Registra, deriva y responde'],['fiscalia','Fiscalía','Admisibilidad, bloqueos y revisión'],['gerencia','Gerencia (GEDEP)','Analiza y propone la respuesta'],['admin','Administrador','Parámetros y usuarios']];
+let SUB='tablero';
+function marcaPerfil(v){const el=document.getElementById('perfilesSel');if(!el)return;el.innerHTML=PERF_SEL.map(([k,n,d])=>{const c=k==='admin'?null:CASOS.filter(x=>tareaDe(x,k)).length;return `<button type="button" aria-pressed="${k===v}" onclick="cambiaPerfil('${k}')"><b>${esc(n)}</b><small>${esc(d)}</small>${c===null?'':`<span class="n">${c} ${c===1?'tarea':'tareas'}</span>`}</button>`;}).join('');}
+function muestraSub(t){SUB=t;document.getElementById('vistaTablero').classList.toggle('oculto',t!=='tablero');document.getElementById('vistaTareas').classList.toggle('oculto',t!=='tareas');document.getElementById('subTablero').setAttribute('aria-selected',t==='tablero');document.getElementById('subTareas').setAttribute('aria-selected',t==='tareas');if(t==='tablero')pintaTablero();else{marcaPerfil(PERFIL);pintaTareas();}}
+function verComo(p){cambiaPerfil(p);ir('v-bandeja');muestraSub('tareas');}
+
+// ---------- mis tareas ----------
+const TAREA={'encargado|Ingresada':'Revisar la identificación y pasar a admisibilidad','encargado|Requiere antecedentes':'Registrar los antecedentes recibidos','encargado|Admisible':'Derivar a la gerencia que trata los datos','encargado|Firmada':'Enviar la respuesta al titular y cerrar','fiscalia|En admisibilidad':'Resolver si la solicitud es admisible','fiscalia|Requiere antecedentes':'Resolver con los antecedentes disponibles','fiscalia|En revisión jurídica':'Revisar la propuesta de Carta Oficial','fiscalia|Reclamada ante la Agencia':'Preparar el informe para la Agencia','gerencia|Derivada':'Analizar el caso y proponer la respuesta','gerencia|Prorrogada':'Analizar el caso y proponer la respuesta (plazo prorrogado)','jefatura|En firma':'Gestionar la firma de la Carta Oficial'};
+function tareaDe(c,p){p=p||PERFIL;if(p==='admin'||!PERFILES[p].filtro(c))return null;if(c.estado==='Reclamada ante la Agencia')return p==='fiscalia'?TAREA['fiscalia|Reclamada ante la Agencia']:null;if(c.cerrado)return null;
+ const PER=PERFIL;PERFIL=p;const mias=ACC.filter(a=>a[2]===p&&a[4]&&aplica(a,c));PERFIL=PER;
+ if(p==='fiscalia'&&c.bloqueo&&!c.bloqResuelto)return 'Resolver el bloqueo temporal antes del '+fmt(c.vencBloq);
+ if(mias.length){if(mias[0][0]==='acredita')return 'Registrar la identidad acreditada antes de enviar';return TAREA[p+'|'+c.estado]||mias[0][1];}
+ if(p==='jefatura'&&dias(HOY,c.venc)<=3)return 'Caso en riesgo de vencimiento: escalar o reasignar';return null;}
+function pintaTareas(){const box=document.getElementById('listaTareas');if(!box)return;const adm=PERFIL==='admin';
+ document.getElementById('todosCasos').classList.toggle('oculto',adm);box.closest('.tarjeta').classList.toggle('oculto',adm);if(adm)return;
+ const t=CASOS.map(c=>({c,q:tareaDe(c)})).filter(x=>x.q).sort((a,b)=>{const ba=a.c.bloqueo&&!a.c.bloqResuelto,bb=b.c.bloqueo&&!b.c.bloqResuelto;return Number(bb)-Number(ba)||a.c.venc-b.c.venc;});
+ document.getElementById('tituloTareas').textContent='Tareas de '+PERF_SEL.find(x=>x[0]===PERFIL)[1];
+ document.getElementById('cuentaTareas').textContent=t.length+(t.length===1?' pendiente':' pendientes');
+ const alcance=CASOS.filter(c=>PERFILES[PERFIL].filtro(c));document.getElementById('resTodos').textContent='Todos los casos de mi alcance ('+alcance.length+')';
+ if(!t.length){const otros={};CASOS.filter(c=>!c.cerrado).forEach(c=>{const k=c.resp.split(' · ')[0];otros[k]=(otros[k]||0)+1;});
+  box.innerHTML=`<div class="vacio"><p><b>No tiene tareas pendientes</b></p><p>Los casos abiertos están hoy en manos de: ${Object.entries(otros).map(([k,n])=>esc(k)+' ('+n+')').join(', ')}.</p></div>`;return;}
+ const G=[['ROJO','Urgente · vence en 2 días o menos, o bloqueo pendiente'],['AMARILLO','Esta semana · vence en 3 a 9 días'],['VERDE','Con holgura · 10 días o más']];
+ box.innerHTML=G.map(([k,tit])=>{const xs=t.filter(x=>semaforo(x.c)[0]===k);if(!xs.length)return '';return `<div class="grupo-tareas"><h3><span class="sem-mini ${k}">${xs.length}</span>${tit}</h3>${xs.map(({c,q})=>{const[sm,tx]=semaforo(c);return `<div class="tarea" data-caso="${esc(c.num)}"><div class="que">${esc(q)}</div><button class="btn pequeno verde" type="button" onclick="ver('${c.num}')">Abrir</button><div class="meta"><span class="sem-mini ${sm}">${esc(tx)}</span><span class="mono">${esc(c.num)}</span><span>${esc(c.derechos.join(', '))}</span><span>Ingreso ${fmt(c.ingreso)} · ${esc(VIAS[c.via||'web'].c)}</span></div></div>`;}).join('')}</div>`;}).join('');}
+
+// ---------- tablero de control ----------
+function pintaTablero(){const box=document.getElementById('vistaTablero');if(!box||SUB!=='tablero')return;
+ const ini=new Date(2026,4,1);const ab=CASOS.filter(c=>!c.cerrado||c.estado==='Reclamada ante la Agencia');
+ const ce=CASOS.filter(c=>c.cerrado&&c.estado!=='Reclamada ante la Agencia'&&cierreDe(c)>=ini);
+ const aTiempo=ce.filter(c=>cierreDe(c)<=c.venc).length;const pctT=pct(aTiempo,ce.length);
+ const tProm=ce.length?ce.reduce((s,c)=>s+dias(c.ingreso,cierreDe(c)),0)/ce.length:0;
+ const v7=ab.filter(c=>dias(HOY,c.venc)<=7).length;const venc=ab.filter(c=>dias(HOY,c.venc)<0).length;
+ const recl=CASOS.filter(c=>c.reclamo||c.estado==='Reclamada ante la Agencia').length;const prorr=CASOS.filter(c=>c.prorroga&&c.ingreso>=ini).length;
+ // riesgo
+ const riesgo=ab.map(c=>({c,d:(c.bloqueo&&!c.bloqResuelto)?habilesEntre(HOY,c.vencBloq):dias(HOY,c.venc)})).sort((a,b)=>Number(!!(b.c.bloqueo&&!b.c.bloqResuelto))-Number(!!(a.c.bloqueo&&!a.c.bloqResuelto))||a.d-b.d).slice(0,7);
+ const criticos=ab.filter(c=>dias(HOY,c.venc)<=3||(c.bloqueo&&!c.bloqResuelto));const enQuien={};criticos.forEach(c=>{const k=c.resp.split(' · ')[0];enQuien[k]=(enQuien[k]||0)+1;});
+ // etapas
+ const conDur=ce.filter(c=>c.dur);const prom=k=>conDur.length?conDur.reduce((s,c)=>s+c.dur[k],0)/conDur.length:0;
+ const etRows=ETAPAS.map(([k,n,q,plazo])=>({k,n,q,plazo,p:prom(k),ahora:ab.filter(c=>etapaActual(c)===k).length}));
+ const maxE=Math.max(...etRows.map(e=>Math.max(e.p,e.plazo)))*1.15;
+ const ambs={};CASOS.filter(c=>c.ingreso>=ini&&c.ambito).forEach(c=>{const k=AMB_CORTO[c.ambito]||c.ambito;const o=ambs[k]=ambs[k]||{n:0,ab:0,an:[],fuera:0};o.n++;if(!c.cerrado)o.ab++;if(c.dur&&c.cerrado)o.an.push(c.dur.analisis);if(c.cerrado&&cierreDe(c)>c.venc)o.fuera++;});
+ const ambRows=Object.entries(ambs).map(([k,o])=>({k,...o,pa:o.an.length?o.an.reduce((a,b)=>a+b,0)/o.an.length:null})).sort((a,b)=>(b.pa??0)-(a.pa??0));
+ // meses
+ const MES=['may','jun','jul','ago','sept','oct'];const meses=MES.map((m,i)=>{const xs=CASOS.filter(c=>c.ingreso.getMonth()===4+i&&c.ingreso.getFullYear()===2026);const ok=xs.filter(c=>c.cerrado&&c.estado!=='Reclamada ante la Agencia'&&cierreDe(c)<=c.venc).length;const mal=xs.filter(c=>(c.cerrado&&cierreDe(c)>c.venc)||(!c.cerrado&&dias(HOY,c.venc)<0)).length;return {m,ok,mal,curso:xs.length-ok-mal,tot:xs.length};});
+ const maxM=Math.max(...meses.map(x=>x.tot),1);const totM=meses.reduce((s,x)=>s+x.tot,0);
+ const mejorMes=meses.slice(0,5).map(x=>({...x,p:pct(x.ok,x.ok+x.mal)})).filter(x=>x.ok+x.mal).sort((a,b)=>a.p-b.p)[0];
+ // composición
+ const base=CASOS.filter(c=>c.ingreso>=ini);const cuenta=f=>{const o={};base.forEach(c=>[].concat(f(c)).forEach(k=>o[k]=(o[k]||0)+1));return Object.entries(o).sort((a,b)=>b[1]-a[1]);};
+ const porDer=cuenta(c=>c.derechos);const porVia=cuenta(c=>VIAS[c.via||'web'].n);const porAmb=cuenta(c=>AMB_CORTO[c.ambito]||c.ambito||'Por determinar');
+ const hb=(rows)=>{const mx=Math.max(...rows.map(r=>r[1]),1);return rows.map(([k,n])=>`<div class="hbar" title="${esc(k)}: ${n} solicitudes (${pct(n,base.length)} %)"><span class="et">${esc(k)}</span><div class="pista"><div class="barra" style="width:${100*n/mx}%"></div></div><span class="n"><b>${n}</b> · ${pct(n,base.length)} %</span></div>`).join('');};
+ const estadoKpi=(ok,txt)=>`<span class="sem-mini ${ok?'VERDE':'AMARILLO'} estado">${txt}</span>`;
+ box.innerHTML=`<div class="tablero">
+ <p class="periodo">Período: 01-05-2026 al ${fmt(HOY)} (fecha simulada) · Cifras de demostración · El tablero muestra solo cifras agregadas y números de caso; no muestra datos de titulares.</p>
+ <div class="kpi-fila">
+  <div class="kpi-t"><span class="l">Casos abiertos</span><span class="v">${ab.length}</span><span class="c">${v7} ${v7===1?'vence':'vencen'} en los próximos 7 días${venc?' · '+venc+' vencidos':''}</span>${estadoKpi(!venc,venc?'Hay casos vencidos':'Sin casos vencidos')}</div>
+  <div class="kpi-t"><span class="l">Respondidos dentro de plazo</span><span class="v">${pctT}<small> %</small></span><span class="c">${aTiempo} de ${ce.length} respondidos · meta legal 100 %</span>${estadoKpi(pctT>=100,pctT>=100?'Cumple la meta':'Bajo la meta')}</div>
+  <div class="kpi-t"><span class="l">Tiempo promedio de respuesta</span><span class="v">${num1(tProm)}<small> días</small></span><span class="c">Días corridos · plazo legal 30 · ${prorr} prórrogas usadas</span>${estadoKpi(tProm<=22,tProm<=22?'Con holgura':'Cerca del límite')}</div>
+  <div class="kpi-t"><span class="l">Reclamos ante la Agencia</span><span class="v">${recl}</span><span class="c">Desde el 01-05-2026</span>${estadoKpi(!recl,recl?'Requiere seguimiento':'Sin reclamos')}</div>
+ </div>
+ <div class="fila-t">
+  <div class="tarjeta"><div class="cab"><h2>Riesgo de vencimiento</h2><span class="sem-mini ROJO">${criticos.length} críticos</span></div>
+   <p class="lectura">${criticos.length?`<b>${criticos.length} casos</b> vencen en 3 días o menos o tienen un bloqueo pendiente. Están en manos de: ${Object.entries(enQuien).map(([k,n])=>esc(k)+' ('+n+')').join(', ')}.`:'Ningún caso vence en los próximos 3 días.'}</p>
+   <div class="riesgo">${riesgo.map(({c,d})=>{const[sm]=semaforo(c);const bl=c.bloqueo&&!c.bloqResuelto;const txt=bl?'Bloqueo: '+d+(d===1?' día hábil':' días hábiles'):d<0?'Vencido hace '+(-d)+' días':'Vence en '+d+' días';return `<div class="r"><span class="mono">${esc(c.num)}</span><span class="quien">${esc(c.estado)}<small>${esc(c.resp)}</small></span><span class="dias-barra ${sm}" title="${esc(txt)} · vence el ${fmt(bl?c.vencBloq:c.venc)}"><span>${esc(txt)}</span><span class="pista"><span class="relleno" style="display:block;width:${Math.max(4,Math.min(100,100*(bl?d/2:d/30)))}%"></span></span></span><button class="btn pequeno" type="button" onclick="cambiaPerfil('jefatura');ver('${c.num}')">Abrir</button></div>`;}).join('')}</div>
+   <p class="decide"><b>Para decidir:</b> escalar o reasignar los casos con 3 días o menos; autorizar la prórroga única solo con causa y antes del vencimiento.</p></div>
+  <div class="tarjeta"><div class="cab"><h2>Dónde se demoran los casos</h2></div>
+   <p class="lectura">${(()=>{const sob=etRows.filter(e=>e.p>e.plazo);const amb=ambRows.filter(r=>r.pa!==null&&r.pa>8);const a=sob.length?sob.map(e=>'<b>'+esc(e.n)+'</b> ('+num1(e.p)+' d.h., plazo '+e.plazo+')').join(' y ')+(sob.length===1?' supera':' superan')+' su plazo interno.':'Todas las etapas están dentro de su plazo interno en promedio.';const b=amb.length?' En análisis, <b>'+esc(amb[0].k)+'</b> promedia '+num1(amb[0].pa)+' días hábiles, sobre el plazo de 8.':'';return a+b;})()}</p>
+   <div class="etapas">${etRows.map(e=>{const sobre=e.p>e.plazo;return `<div class="etapa-f" title="${esc(e.n)}: ${num1(e.p)} días hábiles en promedio · plazo interno ${e.plazo} · ${e.ahora} casos hoy en la etapa"><span class="nom">${esc(e.n)}<small>${esc(e.q)} · ${e.ahora} hoy</small></span><span class="pista"><span class="barra${sobre?' sobre':''}" style="display:block;width:${100*e.p/maxE}%"></span><span class="meta-plazo" style="left:${100*e.plazo/maxE}%"></span></span><span class="val"><b>${num1(e.p)}</b> d.h.${sobre?' ▲':''}</span></div>`;}).join('')}</div>
+   <div class="leyenda-t"><span><i class="ok"></i>Promedio dentro del plazo</span><span><i class="sobre"></i>Promedio sobre el plazo ▲</span><span><i class="meta"></i>Plazo interno de la etapa</span></div>
+   <div class="desplaza-x"><table class="compacta"><thead><tr><th>Ámbito (gerencia que responde)</th><th class="num">Solicitudes</th><th class="num">Abiertas</th><th class="num">Análisis prom. (d.h.)</th><th class="num">Fuera de plazo</th></tr></thead><tbody>${ambRows.map(r=>`<tr><td>${esc(r.k)}</td><td class="num">${r.n}</td><td class="num">${r.ab}</td><td class="num">${r.pa===null?'—':num1(r.pa)+(r.pa>8?' ▲':'')}</td><td class="num">${r.fuera}</td></tr>`).join('')}</tbody></table></div>
+   <p class="decide"><b>Para decidir:</b> reforzar o reasignar analistas en los ámbitos con análisis sobre 8 días hábiles; revisar con esas gerencias la localización de los datos.</p></div>
+ </div>
+ <div class="tarjeta"><div class="cab"><h2>Solicitudes por mes y resultado de plazo</h2><span class="ayuda" style="margin:0">Por mes de ingreso</span></div>
+  <p class="lectura">Desde mayo ingresaron <b>${totM} solicitudes</b>.${mejorMes?` El mes con menor cumplimiento fue ${mejorMes.m} (${mejorMes.p} % dentro de plazo).`:''} Octubre registra ${meses[5].tot} solicitudes al ${fmt(HOY)}.</p>
+  <div class="meses" role="img" aria-label="Solicitudes por mes: ${meses.map(x=>x.m+' '+x.tot).join(', ')}">${meses.map(x=>`<div class="mes" title="${x.m}: ${x.tot} solicitudes · ${x.ok} a tiempo · ${x.mal} fuera de plazo o vencidas · ${x.curso} en curso"><span class="tot">${x.tot}</span>${x.curso?`<span class="seg curso" style="height:${85*x.curso/maxM}%"></span>`:''}${x.mal?`<span class="seg mal" style="height:${85*x.mal/maxM}%"></span>`:''}${x.ok?`<span class="seg ok" style="height:${85*x.ok/maxM}%"></span>`:''}</div>`).join('')}</div>
+  <div class="meses-et">${meses.map(x=>`<span><b>${x.m}</b>${x.ok+x.mal?x.ok+' de '+(x.ok+x.mal)+' a tiempo':'en curso'}</span>`).join('')}</div>
+  <div class="leyenda-t"><span><i class="ok"></i>Respondida a tiempo</span><span><i class="mal"></i>Respondida fuera de plazo o vencida</span><span><i class="curso"></i>En curso</span></div>
+  <p class="decide"><b>Para decidir:</b> anticipar dotación en los meses de mayor ingreso y revisar las causas de cada respuesta fuera de plazo.</p></div>
+ <div class="tarjeta"><div class="cab"><h2>Qué se pide y por dónde llega</h2><span class="ayuda" style="margin:0">${base.length} solicitudes desde el 01-05-2026</span></div>
+  <div class="composicion"><div><h3 style="margin-bottom:var(--e-2)">Por derecho</h3>${hb(porDer)}<p class="ayuda">Una solicitud puede ejercer más de un derecho.</p></div><div><h3 style="margin-bottom:var(--e-2)">Por vía de ingreso</h3>${hb(porVia)}</div><div><h3 style="margin-bottom:var(--e-2)">Por ámbito de datos</h3>${hb(porAmb)}</div></div>
+  <p class="decide"><b>Para decidir:</b> priorizar plantillas de respuesta para los derechos más pedidos y capacitar a los ámbitos que concentran solicitudes.</p></div>
+ </div>`;}
+
+
 function semaforo(c){if(c.estado==='Reclamada ante la Agencia')return['ROJO','Reclamo Agencia'];if(c.cerrado)return['GRIS','Cerrado'];const n=dias(HOY,c.venc);if(c.bloqueo&&!c.bloqResuelto&&!c.cerrado){const nb=dias(HOY,c.vencBloq);return['ROJO','Bloq. '+(nb<0?'venc.':habilesEntre(HOY,c.vencBloq)+' d.h.')];}return[n<=2?'ROJO':n<=9?'AMARILLO':'VERDE',n<0?'Vencido '+(-n)+' d.':n+' días'];}
 function pinta(){document.getElementById('barraRegistro').classList.toggle('oculto',PERFIL!=='encargado');const est=document.getElementById('fEstado');const sel=est.value;est.innerHTML='<option value="">Todos los estados</option>'+[...new Set(CASOS.map(c=>c.estado))].map(e=>`<option${e===sel?' selected':''}>${esc(e)}</option>`).join('');
  const fe=est.value,fd=document.getElementById('fDer').value,fv=document.getElementById('fVia').value,ft=document.getElementById('fTxt').value.toLowerCase();
  const lista=CASOS.filter(c=>PERFILES[PERFIL].filtro(c)).filter(c=>(!fe||c.estado===fe)&&(!fd||c.derechos.includes(fd))&&(!fv||(c.via||'web')===fv)&&(!ft||(c.num+c.run+c.nombre).toLowerCase().includes(ft))).sort((a,b)=>Number(!!b.bloqueo&&!b.cerrado)-Number(!!a.bloqueo&&!a.cerrado)||Number(!!a.cerrado)-Number(!!b.cerrado)||a.venc-b.venc);
  document.getElementById('tbody').innerHTML=lista.map(c=>{const[s,t]=semaforo(c);return`<tr tabindex="0" onclick="ver('${c.num}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();ver('${c.num}')}" id="tr-${c.num}"><td class="mono">${esc(c.num)}${c.nuevo?'<br><span class="sem-mini VERDE">nuevo</span>':''}</td><td class="tabular">${fmt(c.ingreso)}<br><span class="chip" title="Vía de ingreso">${esc(VIAS[c.via||'web'].c)}</span></td><td style="min-width:7.5rem">${esc(c.nombre)}${c.rep?' <span class="sem-mini GRIS">vía '+esc(c.rep.tipo.split(' ')[0])+'</span>':''}<div class="muted mono" style="font-size:var(--f-xs)">${mask(c.run)}</div></td><td>${esc(c.derechos.join(', '))}</td><td><span class="sem-mini ${colorEstado(c)}">${esc(c.estado)}</span></td><td>${esc(c.resp)}</td><td class="tabular" style="white-space:nowrap">${fmt(c.venc)}<br><span class="sem-mini ${s}">${t}</span></td></tr>`;}).join('');
  const ab=CASOS.filter(c=>!c.cerrado&&PERFILES[PERFIL].filtro(c));const k=[['Casos abiertos',ab.length,''],['Bloqueos pendientes',ab.filter(c=>c.bloqueo&&!c.bloqResuelto).length,'rojo'],['Vencen en ≤ 9 días',ab.filter(c=>dias(HOY,c.venc)<=9).length,'amar'],['En Fiscalía',ab.filter(c=>c.resp.startsWith('Fiscalía')).length,''],['Cumplimiento de plazo (cerrados)',(()=>{const ce=CASOS.filter(c=>c.cerrado);const ok=ce.filter(c=>{const f=c.hitos[c.hitos.length-1][1];return f<=c.venc;}).length;return ce.length?Math.round(100*ok/ce.length)+' %':'—';})(),'']];
- renderGuia();pintaVias();document.getElementById('kpis').innerHTML=k.map(x=>`<div class="kpi ${x[2]}"><div class="v">${x[1]}</div><div class="l">${x[0]}</div></div>`).join('');}
-function ver(num){const c=CASOS.find(x=>x.num===num);document.querySelectorAll('table.casos tr').forEach(t=>t.classList.remove('sel'));document.getElementById('tr-'+num)?.classList.add('sel');const[s,t]=semaforo(c);const n=dias(HOY,c.venc);
+ renderGuia();pintaVias();pintaTareas();pintaTablero();document.getElementById('kpis').innerHTML=k.map(x=>`<div class="kpi ${x[2]}"><div class="v">${x[1]}</div><div class="l">${x[0]}</div></div>`).join('');}
+function ver(num){if(SUB!=='tareas')muestraSub('tareas');const c=CASOS.find(x=>x.num===num);document.querySelectorAll('.tarea').forEach(t=>t.classList.toggle('sel',t.dataset.caso===num));document.querySelectorAll('table.casos tr').forEach(t=>t.classList.remove('sel'));document.getElementById('tr-'+num)?.classList.add('sel');const[s,t]=semaforo(c);const n=dias(HOY,c.venc);
  const acciones=accionesPerfil(c);
  document.getElementById('detalle').innerHTML=`<div class="tarjeta"><div class="cab"><h2 class="mono" style="text-transform:none">${esc(c.num)}</h2><span class="sem-mini ${colorEstado(c)}">${esc(c.estado)}</span></div>
  <div class="plazo ${s}"><div class="n tabular">${c.cerrado?'✓':n<0?'-'+(-n):n}</div><div><b>${c.cerrado?'Expediente cerrado':n<0?'Plazo legal vencido':'días corridos para responder'}</b><div class="d">Ingreso ${fmt(c.ingreso)} · vence ${fmt(c.venc)}${c.prorroga?' (prorrogado)':''}</div></div></div>
@@ -1114,7 +1327,7 @@ function iso(f){return f.getFullYear()+'-'+String(f.getMonth()+1).padStart(2,'0'
 function desdeISO(t){const [y,m,dd]=t.split('-').map(Number);return new Date(y,m-1,dd);}
 function pintaVias(){Object.keys(VIAS).forEach(v=>{const el=document.getElementById('cnt-'+v);if(!el)return;const n=CASOS.filter(c=>(c.via||'web')===v).length;el.textContent=n+(n===1?' caso':' casos')+' en la bandeja';});}
 let RM_EJ=null;
-function abreRegistro(via,ej){if(PERFIL!=='encargado')cambiaPerfil('encargado');RM_EJ=null;document.querySelectorAll('table.casos tr').forEach(t=>t.classList.remove('sel'));
+function abreRegistro(via,ej){if(PERFIL!=='encargado')cambiaPerfil('encargado');if(SUB!=='tareas')muestraSub('tareas');RM_EJ=null;document.querySelectorAll('table.casos tr').forEach(t=>t.classList.remove('sel'));
  document.getElementById('detalle').innerHTML=`<div class="tarjeta" id="formRegistro"><div class="cab"><h2>Registrar solicitud recibida por otra vía</h2><span class="sem-mini AZUL">Encargado/a de recepción</span></div>
  <p class="ayuda" style="margin:0 0 var(--e-3)">El plazo legal corre desde la fecha en que la solicitud llegó a CONAF, no desde este registro.</p>
  <div class="campo"><label>Vía de ingreso *</label><select id="rmVia" onchange="cambiaViaRm()"><option value="">Seleccione…</option>${['correoOP','casilla','carta','oirs'].map(v=>`<option value="${v}">${VIAS[v].n}</option>`).join('')}</select></div>
@@ -1148,7 +1361,7 @@ function ejemploRm(){const g=id=>document.getElementById(id);const v=g('rmVia').
  g('rmMedio').value=v==='carta'?'carta':'correo';cambiaMedioRm();g('rmCont').value=v==='carta'?'Los Aromos 1234, Talca, Maule':'claudia.morales@correo.cl';
  RM_EJ={carta:'carta_timbrada_OP-2026-004812.pdf',correoOP:'correo_oficina_partes.eml',casilla:'correo_casilla_datospersonales.eml',oirs:'derivacion_oirs_maule.pdf'}[v];
  g('ayRmDoc').textContent='Ejemplo cargado: '+RM_EJ+' (simulado; en la maqueta el archivo no se adjunta).';}
-function simulaVia(v){cambiaPerfil('encargado');ir('v-bandeja');abreRegistro(v,true);}
+function simulaVia(v){verComo('encargado');abreRegistro(v,true);}
 function guardaRegistro(){const g=id=>document.getElementById(id);const via=g('rmVia').value,fecha=g('rmFecha').value,hora=g('rmHora').value,folio=g('rmFolio').value.trim(),func=g('rmFunc').value.trim();
  const f=g('rmDoc').files;const doc=f.length?f[0].name:RM_EJ;const run=g('rmRun').value.trim(),nombre=g('rmNombre').value.trim(),cal=g('rmCalidad').value,pres=g('rmPres').value.trim(),ident=g('rmIdent').value;
  const ders=[...document.querySelectorAll('input[name=rmDer]:checked')].map(i=>i.value);const medio=g('rmMedio').value,cont=g('rmCont').value.trim();const faltas=[];
@@ -1260,6 +1473,7 @@ aplicaCFG();
 // ---------- accesibilidad y tema (estándar UI) ----------
 (function(){let n=0;const asoc=()=>document.querySelectorAll('.campo').forEach(c=>{const l=c.querySelector('label');const i=c.querySelector('input:not([type=checkbox]),select,textarea');if(l&&i&&!l.htmlFor){if(!i.id)i.id='cmp-'+(++n);l.htmlFor=i.id;}});asoc();new MutationObserver(asoc).observe(document.getElementById('contenido'),{childList:true,subtree:true});})();
 (function(){const orden=['sistema','claro','oscuro'];let i=0;const b=document.getElementById('btnTema');b.addEventListener('click',()=>{i=(i+1)%3;const t=orden[i];if(t==='sistema')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',t);b.textContent='Tema: '+t;});})();
+muestraSub('tablero');
 </script>
 </body>
 </html>

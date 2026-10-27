@@ -23,22 +23,22 @@ La maqueta se recorre por pestañas, en el orden en que avanza una solicitud:
 | 2 · Identificación | Identificación con copia de cédula (vía principal) o con correo verificado, acreditando la identidad antes de entregar la respuesta; actuar como titular, representante o heredero |
 | 3 · Formulario | Elegir uno o más derechos (los campos cambian según el derecho), adjuntar antecedentes y elegir el medio de respuesta |
 | 4 · Acuse de recibo | Número de caso, plazos que se activan y derechos de la persona durante el trámite |
-| 5 · Bandeja interna | Gestión de casos con semáforo de plazos; selector **«Ver como»** para actuar con cada perfil interno; registro manual de solicitudes recibidas por otras vías (perfil Encargado/a de recepción) |
+| 5 · Gestión interna | **Tablero de control** (casos abiertos, cumplimiento de plazos, riesgo de vencimiento, etapas donde se demoran los casos, solicitudes por mes y por derecho, vía y ámbito) y **Mis tareas** (lo que le toca a cada perfil, ordenado por urgencia, con el expediente y sus acciones; registro manual de solicitudes recibidas por otras vías para el encargado de recepción) |
 | 6 · Flujo y plazos | Etapas de gestión, responsables, contenido de la Carta Oficial, reglas de plazo y requisitos para la versión institucional |
 | 7 · Perfiles | Los seis perfiles propuestos y su matriz de permisos |
 | 8 · Vías de ingreso | Formulario web, correo de Oficina de Partes, casilla dedicada, carta y OIRS llegando al mismo registro; botón «Simular registro» por vía |
 
 Para ver el flujo completo, envíe una solicitud desde la pestaña 3 (o use el caso de
-ejemplo **DP-2026-000123**) y luego, en la bandeja interna, cambie de perfil con
-**«Ver como»**: Jefatura de la unidad receptora, Encargado/a de recepción, Fiscalía,
-Gerencia responsable (GEDEP) y Administrador de plataforma. El panel indica en cada
-momento qué perfil debe actuar.
+ejemplo **DP-2026-000123**) y luego, en la pestaña 5 · Gestión interna, abra **Mis tareas** y
+elija el perfil que trabaja: Jefatura receptora, Encargado/a de recepción, Fiscalía, Gerencia
+(GEDEP) o Administrador. Cada perfil ve solo sus tareas, ordenadas por urgencia. El historial
+de solicitudes desde mayo de 2026 que alimenta el tablero es ficticio.
 
 ## Contenido del repositorio
 
 - `index.html`: la maqueta completa en un solo archivo (código y estilos incluidos). Es
-  la versión publicada en GitHub Pages (v0.9, 27-10-2026: identificación sin ClaveÚnica y
-  vías de ingreso). Las definiciones jurídicas pendientes se tratan con Fiscalía en un
+  la versión publicada en GitHub Pages (v1.0, 27-10-2026: identificación sin ClaveÚnica, vías
+  de ingreso, tablero de control y vista Mis tareas). Las definiciones jurídicas pendientes se tratan con Fiscalía en un
   documento aparte.
 - `CON012_maqueta_canal_ley21719_2.html`: versión anterior de la maqueta (v0.5), con su
   nombre de archivo original. Se conserva como referencia.
