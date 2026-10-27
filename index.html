@@ -586,7 +586,7 @@ fieldset.grupo legend { font-size: var(--f-xs); font-weight: 600; color: var(--t
   <span class="chip">Etapa SF-02 · Requisitos</span>
   <span class="chip" id="chipVigencia">Vigencia 01-12-2026</span>
   <span class="chip">Fecha simulada: 20-10-2026</span>
-  <span class="chip">v0.8 · 20-10-2026 · vías de ingreso</span>
+  <span class="chip">v0.9 · 27-10-2026</span>
   <button class="btn pequeno tema" id="btnTema" type="button" aria-label="Cambiar tema de color">Tema: sistema</button>
 </div>
 <div class="aviso-maqueta" role="note"><b>Maqueta no operacional</b></div>
@@ -600,7 +600,6 @@ fieldset.grupo legend { font-size: var(--f-xs); font-weight: 600; color: var(--t
   <button data-v="v-flujo">6 · Flujo y plazos</button>
   <button data-v="v-perfiles">7 · Perfiles</button>
   <button data-v="v-vias">8 · Vías de ingreso</button>
-  <button data-v="v-fiscalia">9 · Definiciones Fiscalía</button>
 </nav>
 
 <main id="contenido" tabindex="-1">
@@ -812,6 +811,19 @@ fieldset.grupo legend { font-size: var(--f-xs); font-weight: 600; color: var(--t
         <tr><td>Respaldo de la respuesta</td><td>Fecha, destinatario y contenido íntegro, inmutables</td><td>art. 11 inc. 3°</td></tr>
         </tbody></table></div>
       <div class="tarjeta"><h2>Estados del caso</h2><div class="acciones"><span class="sem-mini AZUL">Ingresada</span><span class="sem-mini AZUL">En admisibilidad</span><span class="sem-mini AMARILLO">Requiere antecedentes</span><span class="sem-mini VERDE">Admisible</span><span class="sem-mini AZUL">Derivada</span><span class="sem-mini AZUL">En análisis</span><span class="sem-mini AZUL">En revisión jurídica</span><span class="sem-mini AZUL">En firma</span><span class="sem-mini VERDE">Firmada</span><span class="sem-mini AMARILLO">Prorrogada</span><span class="sem-mini GRIS">Respondida</span><span class="sem-mini GRIS">No admitida</span><span class="sem-mini ROJO">Reclamada ante la Agencia</span></div></div>
+      <div class="tarjeta"><h2>Requisitos para la versión institucional</h2>
+        <p class="ayuda" style="margin:0 0 var(--e-2)">La maqueta no los implementa; quedan como condiciones de aceptación para Informática y la UIA.</p>
+        <ul class="lista-plana">
+          <li><b>Aviso de privacidad</b> completo del art. 14 ter, enlazado desde el formulario y versionado.</li>
+          <li><b>Identidad y acceso interno</b>: autenticación institucional (IAM), perfiles según la matriz de la pestaña 7 y bitácora inalterable de lecturas de RUN y adjuntos.</li>
+          <li><b>Solicitante</b>: verificación del correo antes del acuse; número de caso no correlativo hacia afuera (no enumerable).</li>
+          <li><b>Adjuntos</b>: validación de tipo y tamaño, análisis antivirus y eliminación de la copia de cédula tras verificar la identidad, según la retención que se fije.</li>
+          <li><b>Verificación de identidad</b>: pauta para revisar la copia de cédula (coincidencia de RUN y nombre, legibilidad, vigencia) y registro de quién la revisó; en caso de duda, se pide exhibirla en una oficina.</li>
+          <li><b>Accesibilidad</b>: WCAG 2.1 nivel AA en el formulario público.</li>
+          <li><b>Menores de edad</b>: regla para solicitudes de o en representación de niños, niñas y adolescentes (por definir).</li>
+          <li><b>Reclamos ante la Agencia</b>: sub-flujo para recibir el requerimiento de la Agencia, preparar el informe y registrar lo resuelto (demostrado en la bandeja sobre casos cerrados con rechazo).</li>
+          <li><b>Respaldo</b> íntegro e inmutable de cada respuesta (fecha, destinatario, contenido), art. 11.</li>
+        </ul></div>
       
     </div>
   </div>
@@ -900,7 +912,7 @@ fieldset.grupo legend { font-size: var(--f-xs); font-weight: 600; color: var(--t
     </tbody></table></div>
     <p class="ayuda">En las vías manuales la identidad se verifica igual que en el formulario web: copia de cédula acompañada o, si no la trae, acreditación antes de entregar la respuesta.</p></div>
 
-  <div class="grid2">
+  <div>
     <div class="tarjeta"><h2>Reglas comunes a todas las vías</h2><ul class="lista-plana">
       <li>El plazo de 30 días corridos se cuenta desde la fecha de ingreso a CONAF, no desde el registro en la bandeja.</li>
       <li>Solo el encargado de recepción registra las solicitudes de vías manuales.</li>
@@ -909,42 +921,13 @@ fieldset.grupo legend { font-size: var(--f-xs); font-weight: 600; color: var(--t
       <li>El documento original digitalizado es obligatorio y queda en el expediente.</li>
       <li>La bitácora guarda quién registró el caso y cuándo.</li>
     </ul></div>
-    <div class="tarjeta"><h2>Puntos para Fiscalía</h2><ul class="lista-plana">
-      <li>Desde cuándo corre el plazo si la solicitud la recibe un funcionario distinto del encargado (pregunta 3 de la pestaña 9).</li>
-      <li>Correos recibidos fuera del horario de Oficina de Partes o en día inhábil: si cuentan desde ese día, dado que el plazo es de días corridos.</li>
-      <li>Solicitudes por correo o carta que no identifican bien al titular: si se registran y se pide completar, o se devuelven.</li>
-    </ul></div>
+    
   </div>
 </section>
 
-<!-- ============ 9. DEFINICIONES FISCALÍA ============ -->
-<section id="v-fiscalia" data-registro="operativo" class="vista">
-  <div class="tarjeta" style="margin-bottom:var(--e-4)"><div class="cab"><h2>Definiciones jurídicas que el canal necesita</h2><span class="sem-mini AMARILLO">Para resolver con Fiscalía</span></div>
-    <p class="sec" style="margin:0">Cada pregunta tiene una opción por defecto (la que hoy aplica la maqueta). Al cambiar una respuesta, el formulario público, el flujo y la bandeja se ajustan de inmediato, de modo que se pueda revisar en la misma reunión el efecto de cada decisión. Al final se genera un acta con lo acordado y lo que queda pendiente.</p></div>
-  <div class="contenedor fisc">
-    <div class="columna" id="preguntasFisc"></div>
-    <div class="columna">
-      <div class="tarjeta"><div class="cab"><h2>Acta de definiciones</h2><button class="btn pequeno" type="button" id="btnCopiarActa">Copiar acta</button></div><div id="acta"></div><p class="ayuda" id="actaCopiada" role="status"></p></div>
-      <div class="tarjeta"><h2>Requisitos para la versión institucional</h2>
-        <p class="ayuda" style="margin:0 0 var(--e-2)">La maqueta no los implementa; quedan como condiciones de aceptación para Informática y la UIA.</p>
-        <ul class="lista-plana">
-          <li><b>Aviso de privacidad</b> completo del art. 14 ter, enlazado desde el formulario y versionado.</li>
-          <li><b>Identidad y acceso interno</b>: autenticación institucional (IAM), perfiles según la matriz de la pestaña 7 y bitácora inalterable de lecturas de RUN y adjuntos.</li>
-          <li><b>Solicitante</b>: verificación del correo antes del acuse; número de caso no correlativo hacia afuera (no enumerable).</li>
-          <li><b>Adjuntos</b>: validación de tipo y tamaño, análisis antivirus y eliminación de la copia de cédula tras verificar la identidad, según la retención que se fije.</li>
-          <li><b>Verificación de identidad</b>: pauta para revisar la copia de cédula (coincidencia de RUN y nombre, legibilidad, vigencia) y registro de quién la revisó; en caso de duda, se pide exhibirla en una oficina.</li>
-          <li><b>Accesibilidad</b>: WCAG 2.1 nivel AA en el formulario público.</li>
-          <li><b>Menores de edad</b>: regla para solicitudes de o en representación de niños, niñas y adolescentes (por definir con Fiscalía).</li>
-          <li><b>Reclamos ante la Agencia</b>: sub-flujo para recibir el requerimiento de la Agencia, preparar el informe y registrar lo resuelto (demostrado en la bandeja sobre casos cerrados con rechazo).</li>
-          <li><b>Respaldo</b> íntegro e inmutable de cada respuesta (fecha, destinatario, contenido), art. 11.</li>
-        </ul></div>
-      <div class="tarjeta"><h2>Fuera del alcance de esta reunión</h2><ul class="lista-plana"><li>ClaveÚnica: CONAF no cuenta hoy con la integración. Queda como etapa posterior, sujeta a que Informática gestione las credenciales; el canal funciona sin ella.</li><li>Cargo receptor, casilla <span class="mono">datospersonales@conaf.cl</span> y suplencias (contraparte).</li><li>Catálogo de bases de datos por ámbito (Gobernanza de Datos).</li></ul></div>
-    </div>
-  </div>
-</section>
 </main>
 
-<div class="pie">CON012 · Formulario de contacto Ley N° 21.719 · Solicitante: Unidad de Participación Ciudadana y Transparencia · UIA – Gobernanza de Datos · Maqueta de propuesta v0.8, sin datos reales · Los RUN de ejemplo tienen dígito verificador inválido a propósito.</div>
+<div class="pie">CON012 · Formulario de contacto Ley N° 21.719 · Solicitante: Unidad de Participación Ciudadana y Transparencia · UIA – Gobernanza de Datos · Maqueta de propuesta v0.9, sin datos reales · Los RUN de ejemplo tienen dígito verificador inválido a propósito.</div>
 
 <script>
 // ---------- navegación ----------
@@ -1002,7 +985,7 @@ const PERFILES={
 let PERFIL='jefatura';
 function cambiaPerfil(v){PERFIL=v;document.getElementById('selPerfil').value=v;const pf=PERFILES[v];document.getElementById('perfilDesc').innerHTML='Viendo como <b>'+esc(pf.n)+'</b> · '+esc(pf.d)+' · <a href="#" onclick="ir(\'v-perfiles\');return false">ver matriz de permisos</a>';
  const ap=document.getElementById('adminPanel');const bandeja=document.querySelector('#v-bandeja .contenedor.bandeja');const kp=document.getElementById('kpis');
- if(v==='admin'){ap.classList.remove('oculto');bandeja.classList.add('oculto');kp.classList.add('oculto');ap.innerHTML=`<div class="grid2"><div class="tarjeta"><h2>Parámetros del canal</h2><table class="casos"><tbody><tr><td>Derechos ofrecidos</td><td>${derechosOfrecidosTxt()} · <span class="muted">según definiciones de Fiscalía (pestaña 9)</span></td></tr><tr><td>Plazo de respuesta</td><td>30 días corridos · prórroga única 30 · bloqueo 2 días hábiles</td></tr><tr><td>Plazos internos por etapa</td><td>1 · 2 · 1 · 8 · 2 · 2 días hábiles (propuesta) · total 16</td></tr><tr><td>Asistencia de IA para borradores</td><td>${CFG.ia==='si'?'<span class="sem-mini VERDE">habilitada · revisión humana obligatoria</span>':'<span class="sem-mini GRIS">deshabilitada</span>'}</td></tr><tr><td>Feriados cargados</td><td>2026: 12-10, 31-10, 01-11, 08-12, 25-12 · 2027: 01-01 … (carga manual)</td></tr><tr><td>Ámbitos (catálogo de bases)</td><td>8 configurados · pendiente catálogo definitivo</td></tr><tr><td>Plantillas de Carta Oficial</td><td>Acoge · Acoge parcialmente · Rechaza (art. 23 / improcedencia) · Bloqueo · Prórroga</td></tr><tr><td>Retención del expediente</td><td>Por definir (política institucional) · copia de cédula: eliminar tras verificación</td></tr><tr><td>Verificación de identidad</td><td>Copia de cédula ● · Correo verificado ${CFG.ident==='no'?'○ no ofrecido':'● con acreditación al entregar'} · ClaveÚnica <span class="sem-mini GRIS">etapa posterior</span></td></tr></tbody></table></div><div class="tarjeta"><h2>Usuarios y perfiles</h2><table class="casos"><thead><tr><th>Usuario</th><th>Perfil</th><th>Ámbito</th><th>Estado</th></tr></thead><tbody><tr><td>Jefa Unidad Participación Ciudadana y Transparencia</td><td>Jefatura</td><td>—</td><td><span class="sem-mini VERDE">activo</span></td></tr><tr><td>Encargado/a de recepción (por designar)</td><td>Encargado/a</td><td>—</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr><tr><td>Abogado/a responsable (por designar)</td><td>Fiscalía</td><td>—</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr><tr><td>Analista GEDEP (por designar)</td><td>Gerencia</td><td>Personal y ex funcionarios</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr><tr><td>Analista ASP (por designar)</td><td>Gerencia</td><td>Áreas Silvestres Protegidas</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr></tbody></table><h3 style="margin:var(--e-3) 0 var(--e-2)">Bitácora técnica (últimos eventos)</h3><div class="linea"><div class="hito hecho"><b>Lectura de RUN completo · caso DP-2026-000123 · perfil Encargado</b><small>20-10-2026 · registrado</small></div><div class="hito hecho"><b>Cambio de estado · DP-2026-000122 · Derivada</b><small>20-10-2026</small></div><div class="hito hecho"><b>Actualización de feriados 2027</b><small>13-10-2026</small></div></div><p class="ayuda">El administrador no accede al contenido de los casos; la bitácora muestra quién accedió, no qué contiene el expediente.</p></div></div>`;}
+ if(v==='admin'){ap.classList.remove('oculto');bandeja.classList.add('oculto');kp.classList.add('oculto');ap.innerHTML=`<div class="grid2"><div class="tarjeta"><h2>Parámetros del canal</h2><table class="casos"><tbody><tr><td>Derechos ofrecidos</td><td>${derechosOfrecidosTxt()} · <span class="muted">propuesta, sujeta a definición de Fiscalía</span></td></tr><tr><td>Plazo de respuesta</td><td>30 días corridos · prórroga única 30 · bloqueo 2 días hábiles</td></tr><tr><td>Plazos internos por etapa</td><td>1 · 2 · 1 · 8 · 2 · 2 días hábiles (propuesta) · total 16</td></tr><tr><td>Asistencia de IA para borradores</td><td>${CFG.ia==='si'?'<span class="sem-mini VERDE">habilitada · revisión humana obligatoria</span>':'<span class="sem-mini GRIS">deshabilitada</span>'}</td></tr><tr><td>Feriados cargados</td><td>2026: 12-10, 31-10, 01-11, 08-12, 25-12 · 2027: 01-01 … (carga manual)</td></tr><tr><td>Ámbitos (catálogo de bases)</td><td>8 configurados · pendiente catálogo definitivo</td></tr><tr><td>Plantillas de Carta Oficial</td><td>Acoge · Acoge parcialmente · Rechaza (art. 23 / improcedencia) · Bloqueo · Prórroga</td></tr><tr><td>Retención del expediente</td><td>Por definir (política institucional) · copia de cédula: eliminar tras verificación</td></tr><tr><td>Verificación de identidad</td><td>Copia de cédula ● · Correo verificado ${CFG.ident==='no'?'○ no ofrecido':'● con acreditación al entregar'} · ClaveÚnica <span class="sem-mini GRIS">etapa posterior</span></td></tr></tbody></table></div><div class="tarjeta"><h2>Usuarios y perfiles</h2><table class="casos"><thead><tr><th>Usuario</th><th>Perfil</th><th>Ámbito</th><th>Estado</th></tr></thead><tbody><tr><td>Jefa Unidad Participación Ciudadana y Transparencia</td><td>Jefatura</td><td>—</td><td><span class="sem-mini VERDE">activo</span></td></tr><tr><td>Encargado/a de recepción (por designar)</td><td>Encargado/a</td><td>—</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr><tr><td>Abogado/a responsable (por designar)</td><td>Fiscalía</td><td>—</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr><tr><td>Analista GEDEP (por designar)</td><td>Gerencia</td><td>Personal y ex funcionarios</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr><tr><td>Analista ASP (por designar)</td><td>Gerencia</td><td>Áreas Silvestres Protegidas</td><td><span class="sem-mini AMARILLO">pendiente</span></td></tr></tbody></table><h3 style="margin:var(--e-3) 0 var(--e-2)">Bitácora técnica (últimos eventos)</h3><div class="linea"><div class="hito hecho"><b>Lectura de RUN completo · caso DP-2026-000123 · perfil Encargado</b><small>20-10-2026 · registrado</small></div><div class="hito hecho"><b>Cambio de estado · DP-2026-000122 · Derivada</b><small>20-10-2026</small></div><div class="hito hecho"><b>Actualización de feriados 2027</b><small>13-10-2026</small></div></div><p class="ayuda">El administrador no accede al contenido de los casos; la bitácora muestra quién accedió, no qué contiene el expediente.</p></div></div>`;}
  else{ap.classList.add('oculto');bandeja.classList.remove('oculto');kp.classList.remove('oculto');document.getElementById('detalle').innerHTML='<div class="tarjeta vacio"><p><b>Ningún caso seleccionado</b></p><p>Seleccione un caso de la bandeja para ver su expediente.</p></div>';}
  pinta();}
 // ---------- máquina de estados (demostración funcional) ----------
@@ -1227,10 +1210,10 @@ const CFG={};PREG.forEach(p=>CFG[p[0]]=p[3][0][0]);
 const ACUERDO={};
 function derechosOfrecidosTxt(){const e=v=>v==='no'?'○ no ofrecido':v==='cond'?'◐ con aviso':'●';return 'Acceso ● Rectificación ● Oposición ● Bloqueo ● Supresión '+e(CFG.supr)+' Portabilidad '+e(CFG.port);}
 function pintaPreguntas(){document.getElementById('preguntasFisc').innerHTML=PREG.map((p,i)=>{const op=p[3].find(o=>o[0]===CFG[p[0]]);return `<div class="tarjeta pregunta"><fieldset><legend><span class="num">${i+1}.</span>${esc(p[1])}</legend><p class="base">${esc(p[2])}</p><div class="opciones">${p[3].map(o=>`<label><input type="radio" name="p-${p[0]}" value="${o[0]}" ${CFG[p[0]]===o[0]?'checked':''} onchange="cambiaCFG('${p[0]}',this.value)"><span>${esc(o[1])}<small>${esc(o[2])}</small></span></label>`).join('')}</div></fieldset><label class="opcion" style="margin-top:var(--e-2)"><input type="checkbox" ${ACUERDO[p[0]]?'checked':''} onchange="ACUERDO['${p[0]}']=this.checked;pintaActa()"><span>Acordado en la reunión</span></label><div class="aviso info efecto sin-icono">Efecto en el canal: ${esc(op[2])}</div></div>`;}).join('');}
-function cambiaCFG(k,v){CFG[k]=v;aplicaCFG();pintaPreguntas();pintaActa();}
+function cambiaCFG(k,v){CFG[k]=v;aplicaCFG();}
 function pintaActa(){const fecha=fmt(HOY);document.getElementById('acta').innerHTML=`<p class="ayuda" style="margin:0 0 var(--e-2)">CON012 · Reunión UIA–Fiscalía · ${fecha} (fecha simulada)</p><ol>${PREG.map(p=>{const op=p[3].find(o=>o[0]===CFG[p[0]]);return `<li><b>${esc(p[1])}</b><br>${esc(op[1])} <span class="sem-mini ${ACUERDO[p[0]]?'VERDE':'AMARILLO'}">${ACUERDO[p[0]]?'acordado':'pendiente'}</span><small>${esc(op[2])}</small></li>`;}).join('')}</ol>`;}
 function textoActa(){return 'CON012 · Canal Ley N° 21.719 · Acta de definiciones UIA–Fiscalía ('+fmt(HOY)+', fecha simulada)\n\n'+PREG.map((p,i)=>{const op=p[3].find(o=>o[0]===CFG[p[0]]);return (i+1)+'. '+p[1]+'\n   Definición: '+op[1]+' ['+(ACUERDO[p[0]]?'ACORDADO':'PENDIENTE')+']\n   Efecto: '+op[2];}).join('\n\n');}
-document.getElementById('btnCopiarActa').addEventListener('click',async()=>{const t=textoActa();const out=document.getElementById('actaCopiada');try{await navigator.clipboard.writeText(t);out.textContent='Acta copiada al portapapeles.';}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(_){}ta.remove();out.textContent=ok?'Acta copiada al portapapeles.':'No se pudo copiar automáticamente; seleccione el texto del acta.';}});
+
 function aplicaCFG(){
  // vías: fecha que cuenta para OIRS
  const oirsTxt=CFG.plazoOirs==='encargado'?'Fecha en que llegó al encargado de recepción':'Fecha en que la recibió el primer funcionario de CONAF';
@@ -1272,7 +1255,7 @@ function borradorIA(c){const dec=c.decision||'(decisión pendiente)';const txt=`
 7. Acciones ejecutadas o por ejecutar: [completar].
 8. Fecha de ejecución: [completar].
 ${(c.decision||'').startsWith('Rechazada')?'Se informa que puede reclamar ante la Agencia de Protección de Datos Personales dentro de 30 días hábiles.':''}`;return `<details style="margin-bottom:var(--e-3)"><summary>Borrador sugerido por el asistente (simulado)</summary><div class="borrador">${esc(txt)}</div><p class="ayuda">En la maqueta el borrador se arma con una plantilla. En producción lo propondría un modelo de lenguaje contratado por la institución, sin enviar datos fuera de los términos del contrato; la persona responsable lo corrige y decide. No hay decisión automatizada (art. 8° bis).</p></details>`;}
-pintaPreguntas();pintaActa();aplicaCFG();
+aplicaCFG();
 
 // ---------- accesibilidad y tema (estándar UI) ----------
 (function(){let n=0;const asoc=()=>document.querySelectorAll('.campo').forEach(c=>{const l=c.querySelector('label');const i=c.querySelector('input:not([type=checkbox]),select,textarea');if(l&&i&&!l.htmlFor){if(!i.id)i.id='cmp-'+(++n);l.htmlFor=i.id;}});asoc();new MutationObserver(asoc).observe(document.getElementById('contenido'),{childList:true,subtree:true});})();
