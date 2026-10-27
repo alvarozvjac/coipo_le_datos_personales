@@ -568,14 +568,15 @@ table.compacta td.num, table.compacta th.num { text-align: right; }
 }
 
 /* Pestaña 1: página general de protección de datos */
-.pd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e-3); }
+.pd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e-3); list-style: none; margin: 0; padding: 0; }
+.pd-n { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; margin-right: var(--e-2); border-radius: var(--r-circulo); background: var(--banner-campo-principal); color: #fff; font-size: var(--f-xs); vertical-align: 1px; }
 .pd-item { border: 1px solid var(--borde-sutil); border-radius: var(--r-m); padding: var(--e-3); display: grid; gap: var(--e-1); align-content: start; background: var(--superficie); }
 .pd-item h3 { font-size: var(--f-s); }
 .pd-item p { margin: 0; font-size: var(--f-s); color: var(--texto-tenue); }
 .pd-item .pd-doc { font-size: var(--f-xs); font-weight: 600; color: var(--verde-institucional); }
 .pd-item .btn { justify-self: start; margin-top: var(--e-1); }
 .pd-item.destacado { border-color: var(--verde-institucional); background: color-mix(in srgb, var(--verde-institucional) 6%, var(--superficie)); }
-.pd-item.ancho { grid-column: span 2; }
+.pd-item.ancho { grid-column: 1 / -1; }
 @media (max-width: 899.98px) { .pd-grid { grid-template-columns: 1fr; } .pd-item.ancho { grid-column: auto; } }
 
 /* ── Teléfono ──────────────────────────────────────────────────────────────────── */
@@ -739,21 +740,18 @@ table.compacta td.num, table.compacta th.num { text-align: right; }
   <div class="tarjeta pagina-pd" id="paginaPD" style="margin-top:var(--e-4)">
       <div class="cab"><h2>Página «Protección de Datos Personales» en conaf.cl</h2><span class="sem-mini AMARILLO">Propuesta · contenidos art. 14 ter</span></div>
       <p class="sec" style="margin:0 0 var(--e-3);font-size:var(--f-s)">El banner y el enlace del pie llevan a esta página, que reúne la información que CONAF debe publicar. Desde ella se entra al formulario.</p>
-      <div class="pd-grid">
-        <div class="pd-item"><h3>Política de protección de datos personales</h3><p>Documento institucional con su versión y fecha de vigencia.</p><span class="pd-doc">Política_Proteccion_Datos_CONAF.pdf · por aprobar</span></div>
-        <div class="pd-item destacado"><h3>Formulario de solicitudes</h3><p>Ejerza sus derechos de acceso, rectificación, supresión, oposición, portabilidad y bloqueo temporal. Ingreso con Clave Única.</p><button class="btn primario pequeno" type="button" onclick="ir('v-ident')">Ir al formulario</button></div>
-        <div class="pd-item"><h3>Delegado de protección de datos</h3><p>Nombre, cargo y forma de contacto. La designación es voluntaria (art. 50); si CONAF no la hace, se publica al responsable de datos.</p><span class="pd-doc">Por designar</span></div>
-        <div class="pd-item"><h3>Correo de contacto</h3><p>Consultas sobre el tratamiento de sus datos.</p><span class="pd-doc mono">datospersonales@conaf.cl</span><small class="muted">Casilla propuesta, aún no creada</small></div>
-        <div class="pd-item ancho"><h3>Matriz de datos personales</h3><p>Versión pública de los tratamientos que realiza CONAF. Filas de ejemplo; el contenido definitivo sale del inventario institucional.</p>
+      <ol class="pd-grid">
+        <li class="pd-item destacado"><h3><span class="pd-n">1</span>Formulario de solicitudes</h3><p>Ejerza sus derechos de acceso, rectificación, supresión, oposición, portabilidad y bloqueo temporal. Ingreso con Clave Única.</p><button class="btn primario pequeno" type="button" onclick="ir('v-ident')">Ir al formulario</button></li>
+        <li class="pd-item"><h3><span class="pd-n">2</span>Política de protección de datos personales</h3><p>Documento institucional con su versión y fecha de vigencia.</p><span class="pd-doc">Politica_Proteccion_Datos_CONAF.pdf · por aprobar</span></li>
+        <li class="pd-item"><h3><span class="pd-n">3</span>Delegado de protección de datos</h3><p>Nombre, cargo y forma de contacto. La designación es voluntaria (art. 50); si CONAF no la hace, se publica al responsable de datos.</p><span class="pd-doc">Por designar</span></li>
+        <li class="pd-item ancho"><h3><span class="pd-n">4</span>Matriz de datos personales</h3><p>Versión pública de los tratamientos que realiza CONAF. Filas de ejemplo; el contenido definitivo sale del inventario institucional.</p>
           <div class="desplaza-x"><table class="compacta"><thead><tr><th>Tratamiento</th><th>Finalidad</th><th>Categorías de datos</th><th>Conservación</th></tr></thead><tbody>
             <tr><td>Personal y ex funcionarios</td><td>Gestión de personal y remuneraciones</td><td>Identificación, contacto, laborales, previsionales</td><td>Por definir</td></tr>
             <tr><td>Programa de entrega de plantas</td><td>Asignación y seguimiento de beneficios</td><td>Identificación, contacto, domicilio</td><td>Por definir</td></tr>
             <tr><td>Áreas Silvestres Protegidas</td><td>Reservas y control de visitas</td><td>Identificación, contacto</td><td>Por definir</td></tr>
             <tr><td>Denuncias forestales</td><td>Fiscalización y sanción</td><td>Identificación, domicilio, antecedentes de la denuncia</td><td>Por definir</td></tr>
-          </tbody></table></div></div>
-        <div class="pd-item"><h3>Política de Seguridad de la Información</h3><p>Documento institucional vigente de CONAF.</p><span class="pd-doc">Politica_Seguridad_Informacion_CONAF.pdf</span></div>
-        <div class="pd-item ancho"><h3>Sus derechos y cómo reclamar</h3><p>Derechos del titular, plazos de respuesta y reclamo ante la Agencia de Protección de Datos Personales.</p></div>
-      </div>
+          </tbody></table></div></li>
+      </ol>
     </div>
     <div style="margin-top:var(--e-4)">
     <div class="tarjeta"><h2>Vías de ingreso que convergen al mismo registro</h2>
