@@ -690,7 +690,7 @@ table.compacta td.num, table.compacta th.num { text-align: right; }
   <span class="chip">Etapa SF-02 · Requisitos</span>
   <span class="chip" id="chipVigencia">Vigencia 01-12-2026</span>
   <span class="chip">Fecha simulada: 20-10-2026</span>
-  <span class="chip">v1.7 · 27-10-2026</span>
+  <span class="chip">v1.8 · 27-10-2026</span>
   <button class="btn pequeno tema" id="btnTema" type="button" aria-label="Cambiar tema de color">Tema: sistema</button>
 </div>
 <div class="aviso-maqueta" role="note"><b>Maqueta no operacional</b></div>
@@ -1045,7 +1045,7 @@ table.compacta td.num, table.compacta th.num { text-align: right; }
 
 </main>
 
-<div class="pie">CON012 · Formulario de contacto Ley N° 21.719 · Solicitante: Unidad de Participación Ciudadana y Transparencia · UIA – Gobernanza de Datos · Maqueta de propuesta v1.7, sin datos reales · Los RUN de ejemplo tienen dígito verificador inválido a propósito.</div>
+<div class="pie">CON012 · Formulario de contacto Ley N° 21.719 · Solicitante: Unidad de Participación Ciudadana y Transparencia · UIA – Gobernanza de Datos · Maqueta de propuesta v1.8, sin datos reales · Los RUN de ejemplo tienen dígito verificador inválido a propósito.</div>
 
 <script>
 // ---------- navegación ----------
@@ -1307,12 +1307,6 @@ function pintaTablero(){const box=document.getElementById('vistaTablero');if(!bo
    <p class="decide"><b>Para decidir:</b> escalar o reasignar los casos con 3 días o menos; autorizar la prórroga única solo con causa y antes del vencimiento.</p></div>
 
  </div>
- <div class="tarjeta"><div class="cab"><h2>Solicitudes por mes y resultado de plazo</h2><span class="ayuda" style="margin:0">Por mes de ingreso</span></div>
-  <p class="lectura">Desde mayo ingresaron <b>${totM} solicitudes</b>.${mejorMes?` El mes con menor cumplimiento fue ${mejorMes.m} (${mejorMes.p} % dentro de plazo).`:''} Octubre registra ${meses[5].tot} solicitudes al ${fmt(HOY)}.</p>
-  <div class="meses" role="img" aria-label="Solicitudes por mes: ${meses.map(x=>x.m+' '+x.tot).join(', ')}">${meses.map(x=>`<div class="mes" title="${x.m}: ${x.tot} solicitudes · ${x.ok} a tiempo · ${x.mal} fuera de plazo o vencidas · ${x.curso} en curso"><span class="tot">${x.tot}</span>${x.curso?`<span class="seg curso" style="height:${85*x.curso/maxM}%"></span>`:''}${x.mal?`<span class="seg mal" style="height:${85*x.mal/maxM}%"></span>`:''}${x.ok?`<span class="seg ok" style="height:${85*x.ok/maxM}%"></span>`:''}</div>`).join('')}</div>
-  <div class="meses-et">${meses.map(x=>`<span><b>${x.m}</b>${x.ok+x.mal?x.ok+' de '+(x.ok+x.mal)+' a tiempo':'en curso'}</span>`).join('')}</div>
-  <div class="leyenda-t"><span><i class="ok"></i>Respondida a tiempo</span><span><i class="mal"></i>Respondida fuera de plazo o vencida</span><span><i class="curso"></i>En curso</span></div>
-  <p class="decide"><b>Para decidir:</b> anticipar dotación en los meses de mayor ingreso y revisar las causas de cada respuesta fuera de plazo.</p></div>
  <div class="tarjeta"><div class="cab"><h2>Qué se pide y por dónde llega</h2><span class="ayuda" style="margin:0">${base.length} solicitudes desde el 01-05-2026</span></div>
   <div class="composicion"><div><h3 style="margin-bottom:var(--e-2)">Por derecho</h3>${hb(porDer)}<p class="ayuda">Una solicitud puede ejercer más de un derecho.</p></div><div><h3 style="margin-bottom:var(--e-2)">Por vía de ingreso</h3>${hb(porVia)}</div><div><h3 style="margin-bottom:var(--e-2)">Por ámbito de datos</h3>${hb(porAmb)}</div></div>
   <p class="decide"><b>Para decidir:</b> priorizar plantillas de respuesta para los derechos más pedidos y capacitar a los ámbitos que concentran solicitudes.</p></div>
