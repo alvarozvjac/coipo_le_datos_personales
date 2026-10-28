@@ -66,6 +66,25 @@ Lo que hace la versión actual, en orden:
   del 15-10-2026).
 - Precisar el plazo cuando la solicitud se deniega por falta de antecedentes.
 
+## Pruebas
+
+La carpeta `pruebas/` contiene pruebas funcionales con Playwright (Chromium, sin red) que recorren
+`index.html`:
+
+- `recorrido_caso.py`: recorrido completo de una solicitud, de punto 1 a punto 10, para titular,
+  representante con poder notarial y heredero. Genera capturas en `pruebas/capturas/` (no se versionan).
+- `probar_v35.py`: numeración de los puntos, «Datos Personales» como punto 2 y «Volver al punto anterior».
+- `probar_v33.py`: cascada Región → Provincia → Comuna.
+- `probar_v3.py` y `probar_v31.py`: flujo del formulario, gestión interna, tablero y vías de ingreso.
+
+Ejecución (desde la raíz del repositorio):
+
+```bash
+python3 pruebas/recorrido_caso.py
+```
+
+Requiere `playwright` para Python con Chromium instalado.
+
 ## Contenido del repositorio
 
 - `index.html`: la maqueta completa en un solo archivo (código y estilos incluidos). Es la versión
