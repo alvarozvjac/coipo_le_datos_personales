@@ -70,9 +70,10 @@ function heroHTML(eyebrow, saludo, txt) {
   return `<section class="hero"><div style="position:relative;z-index:1"><span class="eyebrow">${ico("escudo")}${esc(eyebrow)}</span><h1>${esc(saludo)}</h1><p>${txt}</p></div><span class="fecha">${ico("calendario")}${fLarga(HOY)}</span></section>`;
 }
 let ACCESOS = [];
-function accesosHTML(lista) {
-  ACCESOS = lista;
-  return `<div class="accesos">${lista.map((a, i) => `<button type="button" class="acceso ${a.principal ? "principal" : ""}" data-acc="${i}">${a.n ? `<span class="a-cuenta num ${a.aviso ? "aviso" : ""}" aria-label="${a.n} ${esc(a.nl || "pendientes")}">${a.n}</span>` : ""}<span class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-${a.ico}"/></svg></span><h3>${a.t}</h3><p>${a.d}</p><span class="a-pie">${a.cta}${ico("flecha")}</span></button>`).join("")}</div>`;
+function accesosHTML(lista, agregar) { // agregar: suma a los accesos ya pintados (segunda sección del inicio)
+  const base = agregar ? ACCESOS.length : 0;
+  ACCESOS = agregar ? ACCESOS.concat(lista) : lista;
+  return `<div class="accesos">${lista.map((a, k) => { const i = base + k; return `<button type="button" class="acceso ${a.principal ? "principal" : ""}" data-acc="${i}">${a.n ? `<span class="a-cuenta num ${a.aviso ? "aviso" : ""}" aria-label="${a.n} ${esc(a.nl || "pendientes")}">${a.n}</span>` : ""}<span class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-${a.ico}"/></svg></span><h3>${a.t}</h3><p>${a.d}</p><span class="a-pie">${a.cta}${ico("flecha")}</span></button>`; }).join("")}</div>`;
 }
 function postAccesos() { $$("#vista [data-acc]").forEach(b => b.onclick = () => { const a = ACCESOS[+b.dataset.acc]; if (a.pre) a.pre(); ir(a.v); }); }
 const volverHTML = (txt = "Volver al inicio") => `<div class="acciones" style="margin-bottom:var(--e-4)"><button class="boton secundario chico" type="button" data-ir="inicio">${ico("home")}${txt}</button></div>`;

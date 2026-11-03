@@ -339,3 +339,15 @@ button.sol:hover { border-color: var(--borde-control); box-shadow: var(--s-1); }
   dl.ficha { grid-template-columns: minmax(0, 1fr); }
   dl.ficha dd { margin-block-end: var(--e-2); }
 }
+
+/* ---------- Línea 2 · mapa de calor (probabilidad × impacto). El nivel va en el glifo, no sólo en el color (UI-13) ---------- */
+.mapa-calor { display: grid; grid-template-columns: 1.5rem repeat(5, minmax(0, 1fr)); gap: var(--e-1); max-width: 26rem; }
+.mc-eje { display: grid; place-items: center; font-size: var(--f-xs); color: var(--texto-tenue); font-family: var(--letra-dato); }
+.mc-c { aspect-ratio: 1; border-radius: var(--r-s); display: grid; place-items: center; position: relative; border: 1px solid var(--borde-sutil); }
+.mc-n { font-family: var(--letra-dato); font-weight: var(--peso-fuerte); font-size: var(--f-l); color: var(--texto); }
+.mc-l { position: absolute; inset-block-start: 2px; inset-inline-end: 4px; font-size: var(--f-xs); color: var(--texto-tenue); }
+.mc-bajo { background: color-mix(in srgb, var(--verde-institucional) 14%, var(--superficie)); }
+.mc-medio { background: color-mix(in srgb, var(--info) 18%, var(--superficie)); }
+.mc-alto { background: color-mix(in srgb, var(--aviso) 26%, var(--superficie)); }
+.mc-critico { background: color-mix(in srgb, var(--error) 30%, var(--superficie)); }
+.mc-ejes { display: flex; justify-content: space-between; max-width: 26rem; margin-block-start: var(--e-2); }

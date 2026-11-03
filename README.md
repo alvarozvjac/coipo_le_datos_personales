@@ -12,7 +12,7 @@ Información y Análisis (UIA), línea de Gobernanza de Datos.
 > envía a un servidor. El ingreso con Clave Única está simulado: CONAF hoy no cuenta con la
 > integración.
 
-## Versión 4.1 (borrador sin aprobar)
+## Versión 4.2 (borrador, sin aprobar)
 
 Nace del **estándar de interfaz de la fábrica**, no de una maqueta anterior: las hojas de
 `css/semilla/` son copia sin editar de `semilla/ESQUELETO/frontend/src` de
@@ -37,6 +37,23 @@ del art. 14 ter.
 | Delegado de protección de datos | Supervisión: vencidos, bloqueos, reclamos, casos sin responsable, bitácora y observaciones (art. 50) |
 | Administración del canal | Responsables por etapa y sede, asignación de las solicitudes web, plazos internos y feriados |
 
+### Línea 2 · Cumplimiento interno (nueva en la v4.2, propuesta sin contraparte)
+
+Con datos de ejemplo, sin datos reales, hasta cargar la matriz de datos personales. Archivos: `js/cumplimiento-datos.js`,
+`js/cumplimiento.js` y `js/cumplimiento-instrumentos.js`.
+
+| Módulo | Quién lo usa | Fuente |
+|---|---|---|
+| Registro de tratamientos | Dueño de tratamiento completa, delegado aprueba | Art. 49 c); art. 14 ter d), h), i), j) |
+| Matriz de riesgos y controles (mapa de calor 5 × 5; control sin evidencia no se cierra) | Delegado; dueños y seguridad cumplen controles | Art. 49 d) y e); art. 14 quinquies |
+| Vulneraciones de seguridad (reporte a la Agencia y comunicación a titulares) | Seguridad de la información y delegado | Art. 14 sexies |
+| Evaluaciones de impacto | Dueño elabora, Fiscalía revisa | Art. 15 ter [VERIFICAR exigibilidad: el art. 21 no lo nombra] |
+| Encargados de tratamiento (cláusulas del contrato) | Fiscalía y delegado | Art. 15 bis |
+| Convenios de cesión y su publicación mensual | Fiscalía y delegado | Art. 22 |
+
+Perfiles nuevos: **Dueño de tratamiento** y **Seguridad de la información**. La gravedad de cada infracción y los cortes
+del mapa de calor son una propuesta tomada de material de IusConsult, por confirmar con Fiscalía (arts. 34 bis a 34 quáter).
+
 **Manual de usuario:** [`manual/manual-usuario.pdf`](manual/manual-usuario.pdf), con un capítulo
 por perfil y capturas reales de la maqueta. Se regenera con `manual/capturar.py` y
 `manual/imprimir.py`.
@@ -53,7 +70,8 @@ por perfil y capturas reales de la maqueta. Se regenera con `manual/capturar.py`
 ## Pruebas
 
 ```bash
-python -X utf8 pruebas/probar_v4.py            # 55 comprobaciones, escritorio y teléfono
+python -X utf8 pruebas/probar_v4.py            # 55 comprobaciones del canal, escritorio y teléfono
+python -X utf8 pruebas/probar_v42.py           # 59 comprobaciones de la línea 2, escritorio y teléfono
 ```
 
 Requiere `playwright` para Python con Chromium. Las capturas quedan en `pruebas/capturas/`
@@ -64,7 +82,7 @@ a la versión 3.x, que queda en el historial (commit `775435f`).
 
 - `index.html`: estructura de la página.
 - `css/semilla/`: hojas del estándar, sin editar. `css/fuentes.css` y `fuentes/`: tipografía autoalojada (OFL). `css/con012.css`: estilos propios.
-- `js/`: `comun.js`, `datos.js`, `casos.js`, `publico.js`, `interno.js`, `admin.js`, `app.js` y `territorio.js`.
+- `js/`: `comun.js`, `datos.js`, `casos.js`, `publico.js`, `interno.js`, `admin.js`, `app.js` y `territorio.js` (línea 1); `cumplimiento-datos.js`, `cumplimiento.js` y `cumplimiento-instrumentos.js` (línea 2).
 - `img/`: banner de la Secretaría de Asuntos Institucionales generado por la semilla.
 - `manual/`: manual en PDF, su fuente HTML y los scripts de capturas e impresión.
 
