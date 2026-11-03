@@ -3,7 +3,7 @@
 
 let SESION = null, vista = "inicio";
 const VISTAS = {
-  solicitante: { inicio: () => vPortada(), pagina: () => vPagina(), solicitud: () => vSolicitud(), acuse: () => vAcuse(), mis: () => vMis() },
+  solicitante: { inicio: () => vPagina(), pagina: () => vPagina(), solicitud: () => vSolicitud(), acuse: () => vAcuse(), mis: () => vMis() },
   interno: { inicio: () => vInicioInterno(), casos: () => vCasos(), registrar: () => vRegistrar(), calendario: () => vCalendario(), reportes: () => vReportes() },
   fiscalia: { inicio: () => vInicioInterno(), casos: () => vCasos(), calendario: () => vCalendario(), reportes: () => vReportes(), tratamientos: () => vTratamientos(), eipd: () => vEipd(), encargados: () => vEncargados(), convenios: () => vConvenios() },
   delegado: { inicio: () => vInicioInterno(), casos: () => vCasos(), calendario: () => vCalendario(), reportes: () => vReportes(), bitacora: () => vBitacora(), tratamientos: () => vTratamientos(), riesgos: () => vRiesgos(), vulneraciones: () => vVulneraciones(), eipd: () => vEipd(), encargados: () => vEncargados(), convenios: () => vConvenios() },
@@ -51,8 +51,5 @@ const irInicio = () => { if (SESION) { cerrarCapa(); ir("inicio"); } };
 $("#app-home").addEventListener("click", irInicio);
 $("#app-home").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); irInicio(); } });
 $("#f-hoy").textContent = fLarga(HOY);
-/* Tema: sistema, claro, oscuro o inmersivo (interfaz.css de la semilla). Se recuerda en el navegador. */
-(() => { const sel = $("#tema"); let t = "sistema"; try { t = localStorage.getItem("con012-tema") || "sistema"; } catch (e) { }
-  sel.value = t; sel.onchange = () => { const v = sel.value; if (v === "sistema") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = v; try { localStorage.setItem("con012-tema", v); } catch (e) { } }; })();
 pintarLogin();
 $("#login").hidden = false;

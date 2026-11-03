@@ -32,7 +32,7 @@ def entrar(pg, perfil_txt):
     pg.goto(URL)
     pg.wait_for_selector("#login:not([hidden])")
     pg.locator("#login .l-usuario", has_text=perfil_txt).first.click()
-    pg.wait_for_selector("#vista .hero, #vista .portada")
+    pg.wait_for_selector("#vista .hero, #vista .items-14ter")
 
 
 def tarjeta(pg, titulo):
@@ -51,13 +51,13 @@ with sync_playwright() as p:
         pg.on("console", lambda m: errores.append(m.text) if m.type == "error" and "net::" not in m.text and "Failed to load resource" not in m.text else None)
         tel = nombre == "telefono"
 
-        # --- Persona solicitante: portada → página → solicitud → acuse → mis solicitudes
+        # --- Persona solicitante: página (entrada directa) → solicitud → acuse → mis solicitudes
         entrar(pg, "Persona solicitante")
-        pg.screenshot(path=str(SAL / f"{nombre}-01-portada.png"))
+        pg.screenshot(path=str(SAL / f"{nombre}-01-pagina.png"))
         y = pg.evaluate("document.querySelector('#vista').getBoundingClientRect().top")
         ok(y < (300 if tel else 400), f"{nombre}: el contenido empieza en y={y:.0f}")
-        ok(pg.evaluate("document.documentElement.scrollWidth") <= op["viewport"]["width"], f"{nombre}: sin scroll horizontal en la portada")
-        pg.locator(".p-tarjeta.dp").click()
+        ok(pg.evaluate("document.documentElement.scrollWidth") <= op["viewport"]["width"], f"{nombre}: sin scroll horizontal en la página")
+        ok(pg.locator(".portada").count() == 0, f"{nombre}: el solicitante entra directo a la página, sin portada simulada")
         ok(pg.locator(".items-14ter li").count() == 12, f"{nombre}: la página muestra las 12 letras del art. 14 ter")
         pg.screenshot(path=str(SAL / f"{nombre}-02-pagina.png"))
         pg.get_by_role("button", name="Presentar una solicitud").click()

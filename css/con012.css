@@ -5,7 +5,7 @@
    · estados con glifo + etiqueta + tono, con el componente Estado (UI-13, UI-14);
    · una sola curva de movimiento (UI-8); toque ≥ 44 px bajo puntero grueso (UI-18);
    · sólo los cuatro cortes con .98: teléfono 559.98 · tableta 767.98 · columna 899.98 · ancho 1399.98 (UI-17).
-   Registro EDITORIAL: ingreso, portada, página pública y solicitud. OPERATIVO: todo lo interno (UI-6). */
+   Registro EDITORIAL: ingreso, página pública y solicitud. OPERATIVO: todo lo interno (UI-6). */
 
 :root {
   /* DERIVADO de interfaz.css: tintes de superficie para paneles y filas, nunca para texto. */
@@ -67,7 +67,6 @@ body.sin-sesion .barra, body.sin-sesion #vista, body.sin-sesion .pie-app { displ
 .quien .avatar { width: 2.25rem; height: 2.25rem; border-radius: var(--r-circulo); background: var(--verde-institucional); color: var(--superficie); display: grid; place-items: center; font-weight: var(--peso-fuerte); font-size: var(--f-xs); flex: none; }
 .quien .qtxt { display: flex; flex-direction: column; line-height: var(--i-denso); }
 .quien b { color: var(--texto); font-size: var(--f-s); }
-.tema select { min-height: var(--tactil-minimo); width: auto; }
 
 /* ---------- Área de trabajo ---------- */
 main { display: block; padding: var(--e-6) var(--e-4) var(--e-7); max-width: 92rem; margin: 0 auto; }
@@ -150,7 +149,7 @@ td.mono, td.num { white-space: nowrap; }
 /* ---------- Estado: tono neutro (DERIVADO: texto-tenue cumple 4,5:1 en los dos temas) ---------- */
 .estado.neutro { --estado-tono: var(--texto-tenue); }
 .estado { white-space: nowrap; }
-.items-14ter .estado, .portada .estado, .regla .estado, p .estado { white-space: normal; }
+.items-14ter .estado, .regla .estado, p .estado { white-space: normal; }
 
 /* ---------- Botones: tamaños y variantes sobre Boton.css ---------- */
 .boton { text-decoration: none; }
@@ -254,21 +253,6 @@ button.sol:hover { border-color: var(--borde-control); box-shadow: var(--s-1); }
 @keyframes sube { from { transform: translateY(.625rem); opacity: 0; } to { transform: none; opacity: 1; } }
 
 /* ---------- Portada simulada y página pública (EDITORIAL) ---------- */
-.portada { background: var(--superficie); border: 1px solid var(--borde-sutil); border-radius: var(--r-l); box-shadow: var(--s-1); overflow: hidden; }
-.portada-sello { padding: var(--e-2) var(--e-4); background: var(--tinte); border-block-end: 1px solid var(--borde-sutil); }
-.portada-cab { display: flex; align-items: center; gap: var(--e-5); flex-wrap: wrap; padding: var(--e-4) var(--e-5); border-block-end: 1px solid var(--borde-sutil); }
-.portada-logo { font-family: var(--letra-display); font-size: var(--f-xl); color: var(--verde-institucional); }
-.portada-cab nav { display: flex; gap: var(--e-2) var(--e-4); flex-wrap: wrap; font-size: var(--f-s); color: var(--texto-tenue); }
-.portada-relleno { padding: var(--e-4) var(--e-5); color: var(--texto-tenue); font-size: var(--f-s); text-align: center; border-block-end: 1px dashed var(--borde-sutil); }
-.portada-tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: var(--e-3); padding: var(--e-5); }
-.p-tarjeta { position: relative; display: flex; flex-direction: column; gap: var(--e-1); justify-content: flex-end; min-height: 7rem; padding: var(--e-4); border-radius: var(--r-m); background: var(--tinte); color: var(--texto); border: 1px solid var(--borde-sutil); text-align: left; }
-.p-tarjeta small { font-size: var(--f-s); color: var(--texto-tenue); }
-.p-tarjeta.dp { background: var(--banner-campo-principal); color: #fff; border: 3px solid var(--aviso); cursor: pointer; } /* blanco sobre #064928: 10,55:1 (medido, tokens.css) */
-.p-tarjeta.dp small { color: #fff; }
-.p-tarjeta.dp .ico { width: 1.75rem; height: 1.75rem; }
-.p-propuesto { position: absolute; inset-block-start: var(--e-2); inset-inline-end: var(--e-2); background: #fff; color: var(--banner-campo-principal); border-radius: var(--r-pill); padding: 0 var(--e-2); font-size: var(--f-xs); font-weight: var(--peso-fuerte); }
-.portada-pie { display: flex; gap: var(--e-3); flex-wrap: wrap; align-items: center; padding: var(--e-4) var(--e-5); background: var(--tinte); border-block-start: 1px solid var(--borde-sutil); font-size: var(--f-s); }
-.portada + .nota, .nota { margin-block-start: var(--e-4); font-size: var(--f-s); color: var(--texto-tenue); border: 1px dashed var(--borde-control); border-radius: var(--r-m); padding: var(--e-2) var(--e-3); background: var(--superficie); }
 .items-14ter { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--e-3); }
 .items-14ter li { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(10rem, auto); gap: var(--e-3) var(--e-4); align-items: start; background: var(--superficie); border: 1px solid var(--borde-sutil); border-radius: var(--r-m); padding: var(--e-4); }
 .items-14ter .n { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: var(--r-circulo); border: 2px solid var(--verde-institucional); color: var(--verde-institucional); font-family: var(--letra-dato); font-weight: var(--peso-fuerte); }
@@ -315,7 +299,7 @@ button.sol:hover { border-color: var(--borde-control); box-shadow: var(--s-1); }
   .franja-maqueta .f-largo { display: none; }
   .franja-maqueta .f-corto { display: inline; }
   .barra-in { flex-wrap: nowrap; gap: var(--e-2); padding: var(--e-1) var(--e-3); }
-  .app-txt small, .rol-chip, .quien .qtxt, .tema { display: none; }
+  .app-txt small, .rol-chip, .quien .qtxt { display: none; }
   .perfil { flex-wrap: nowrap; gap: var(--e-2); }
   #btn-salir .txt-salir { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   main { padding: var(--e-4) var(--e-3) var(--e-6); }
@@ -327,9 +311,6 @@ button.sol:hover { border-color: var(--borde-control); box-shadow: var(--s-1); }
   .tarea { grid-template-columns: minmax(0, 1fr); }
   .items-14ter li { grid-template-columns: auto minmax(0, 1fr); }
   .items-14ter .e { grid-column: 2; }
-  .portada-tarjetas { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: var(--e-4); }
-  .p-tarjeta { min-height: 5rem; padding: var(--e-3); }
-  .p-tarjeta.dp { grid-column: 1 / -1; }
   .pr-pasos { display: none; }
   .barras .b { grid-template-columns: minmax(0, 1fr) 3rem; }
   .barras .pista { grid-column: 1 / -1; grid-row: 2; }

@@ -1,18 +1,5 @@
-/* CON012 · sitio público: portada simulada, página de datos personales, solicitud y consulta de estado. */
+/* CON012 · sitio público: página de datos personales (punto de entrada), solicitud y consulta de estado. */
 "use strict";
-
-/* ---------- Portada simulada de conaf.cl ---------- */
-function vPortada() {
-  const tarjetas = [["Datos Personales", "Ejerza sus derechos · Ley N° 21.719", "dp"], ["MESU", "Medición de satisfacción usuaria", ""], ["Transparencia Activa", "Ley de Transparencia", ""], ["Trámites Online", "Oficina Virtual", ""], ["Licitaciones", "Compras públicas", ""]];
-  return `<section class="portada" aria-label="Simulación de la portada de conaf.cl">
-    <div class="portada-sello">${chip("Simulación de la portada de conaf.cl · no operativa", "c-pend", "!")}</div>
-    <header class="portada-cab"><span class="portada-logo">CONAF</span><nav aria-label="Menú simulado"><span>Inicio</span><span>Manejo de Ecosistemas</span><span>Fiscalización</span><span>Parques Nacionales</span><span>Incendios Forestales</span><span>Noticias</span></nav></header>
-    <p class="portada-relleno">··· contenido habitual de la portada ···</p>
-    <div class="portada-tarjetas">${tarjetas.map(([t, s, k]) => k ? `<button type="button" class="p-tarjeta dp" data-ir="pagina"><span class="p-propuesto">Propuesto</span>${ico("escudo")}<b>${t}</b><small>${s}</small></button>` : `<div class="p-tarjeta"><b>${t}</b><small>${s}</small></div>`).join("")}</div>
-    <footer class="portada-pie"><span>Enlaces de interés</span><a href="#" data-ir="pagina">Protección de datos personales · Ley N° 21.719</a> ${chip("Propuesto", "c-pend", "!")}</footer>
-  </section>
-  <p class="nota" style="margin-top:var(--e-4)">El acceso «Datos Personales» se agrega a la portada de conaf.cl, que administra un proveedor externo. Cómo se publica es una definición de SECOM y de Informática ${porDefinir()}.</p>`;
-}
 
 /* ---------- Página «Protección de datos personales» (art. 14 ter) ---------- */
 const ITEMS_14TER = [ // art. 14 ter de la Ley N° 21.719, letras a) a l)
@@ -30,7 +17,7 @@ const ITEMS_14TER = [ // art. 14 ter de la Ley N° 21.719, letras a) a l)
   ["l", "Decisiones automatizadas", "Si existen decisiones automatizadas o perfiles, la lógica aplicada y sus consecuencias.", porDefinir("Por confirmar")]
 ];
 function vPagina() {
-  return volverHTML("Volver a la portada") + cab("Protección de datos personales", "Información que CONAF publica sobre el tratamiento de sus datos y cómo ejercer sus derechos.", "Art. 14 ter, letras a) a l) · propuesta") +
+  return cab("Protección de datos personales", "Información que CONAF publica sobre el tratamiento de sus datos y cómo ejercer sus derechos.", "Art. 14 ter, letras a) a l) · propuesta") +
     `<div class="acciones" style="margin-bottom:var(--e-5)"><button class="boton grande" type="button" data-ir="solicitud">${ico("plus")}Presentar una solicitud</button><button class="boton secundario grande" type="button" data-ir="mis">${ico("buscar")}Consultar mis solicitudes</button></div>
     <ol class="items-14ter">${ITEMS_14TER.map(([l, t, d, e]) => `<li><span class="n num">${l}</span><div><h3>${t}</h3><p>${d}</p></div><div class="e">${e}</div></li>`).join("")}</ol>
     <p class="nota" style="margin-top:var(--e-4)">¿No tiene Clave Única? Puede presentar su solicitud con el formulario físico en la Oficina de Partes de Oficina Central o de cualquier dirección regional de CONAF.</p>`;
@@ -52,7 +39,7 @@ const PASOS = ["Quién solicita", "Qué pide", "Cómo recibe la respuesta", "Rev
 function vSolicitud() {
   if (!SOL) SOL = solNueva();
   const p = SOL.paso;
-  return volverHTML("Volver a la portada") + cab("Presentar una solicitud", "Ejercicio de derechos sobre datos personales · Ley N° 21.719", "") +
+  return volverHTML("Volver a Datos Personales") + cab("Presentar una solicitud", "Ejercicio de derechos sobre datos personales · Ley N° 21.719", "") +
     `<div class="progreso" aria-label="Paso ${p} de 4"><div class="pr-txt"><b>Paso ${p} de 4</b> · ${PASOS[p - 1]}</div><div class="pr-barra"><span style="width:${p * 25}%"></span></div><ol class="pr-pasos">${PASOS.map((t, i) => `<li class="${i + 1 < p ? "hecho" : i + 1 === p ? "actual" : ""}">${t}</li>`).join("")}</ol></div>
     ${SOL.err.length ? `<div class="faltan" role="alert" tabindex="-1" id="faltan"><b>Revise lo siguiente:</b><ul>${SOL.err.map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
     <form id="f-sol" class="form-sol" novalidate>${[paso1, paso2, paso3, paso4][p - 1]()}
@@ -148,7 +135,7 @@ function enviarSolicitud() {
   ULTIMO = c; SOL = null; ir("acuse");
 }
 function vAcuse() {
-  const c = ULTIMO; if (!c) return vPortada();
+  const c = ULTIMO; if (!c) return vPagina();
   return `<section class="acuse panel"><div class="cuerpo"><span class="app-ico grande" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span>
     <h1>Solicitud recibida</h1><p class="tenue">Número de caso</p><p class="acuse-num mono">${c.num}</p>
     <p>Recibida el ${fLarga(c.ingreso)}. Enviamos una copia íntegra a <b>${esc(c.correo)}</b> (simulado).</p></div></section>
@@ -157,7 +144,7 @@ function vAcuse() {
     <li>Recibirá la respuesta por ${MEDIOS[c.medio].toLowerCase()} a más tardar el <b>${fF(venceLegal(c))}</b>.</li>
     ${c.bloq ? `<li>Su bloqueo temporal se resuelve a más tardar el <b>${fF(venceBloqueo(c))}</b>.</li>` : ""}
     <li>Si CONAF no responde a tiempo o deniega su solicitud, puede reclamar ante la Agencia de Protección de Datos Personales dentro de 30 días hábiles (art. 11 y 41).</li></ul></div></section>
-    <div class="acciones" style="margin-top:var(--e-4)"><button class="boton" type="button" data-ir="mis">${ico("buscar")}Ver mis solicitudes</button><button class="boton secundario" type="button" data-ir="inicio">Volver a la portada</button></div>`;
+    <div class="acciones" style="margin-top:var(--e-4)"><button class="boton" type="button" data-ir="mis">${ico("buscar")}Ver mis solicitudes</button><button class="boton secundario" type="button" data-ir="inicio">Volver a Datos Personales</button></div>`;
 }
 
 /* ---------- Mis solicitudes (consulta de estado) ---------- */
@@ -167,10 +154,10 @@ function lineaPublica(c) {
   return `<div class="flujo" aria-label="Avance de la solicitud">${PUB.map((p, k) => `<span class="${k < i ? "hecho" : k === i ? "actual" : ""}">${p[0]}</span>`).join("")}</div>`;
 }
 function vMis() {
-  if (!SESION.cu) return volverHTML("Volver a la portada") + cab("Mis solicitudes", "Consulte el estado de las solicitudes que presentó.", "") +
+  if (!SESION.cu) return volverHTML("Volver a Datos Personales") + cab("Mis solicitudes", "Consulte el estado de las solicitudes que presentó.", "") +
     `<section class="panel"><div class="cuerpo"><p>Para ver sus solicitudes, identifíquese con su Clave Única.</p><div class="acciones" style="margin-top:var(--e-3)"><button class="boton" type="button" id="mis-cu">${ico("candado")}Ingresar con Clave Única</button></div></div></section>`;
   const mias = CASOS.filter(c => c.tit.run === SESION.run || (c.rep && c.rep.run === SESION.run)).sort((a, b) => b.ingreso.localeCompare(a.ingreso));
-  return volverHTML("Volver a la portada") + cab("Mis solicitudes", `${esc(SESION.nom)} · <span class="mono">${esc(SESION.run)}</span>`, "") +
+  return volverHTML("Volver a Datos Personales") + cab("Mis solicitudes", `${esc(SESION.nom)} · <span class="mono">${esc(SESION.run)}</span>`, "") +
     `<div class="lista">${mias.length ? mias.map(c => tarjetaPublica(c)).join("") : vacio("No tiene solicitudes", "Cuando presente una, aparecerá aquí.")}</div>`;
 }
 function tarjetaPublica(c) {
