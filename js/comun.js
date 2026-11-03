@@ -38,7 +38,9 @@ function runFicticio(n) {
 const runMascara = r => r ? r.replace(/^(\d{1,2})\.(\d{3})\.(\d{3})/, "$1.•••.•••") : "—";
 
 /* ---------- Chips: forma + etiqueta + color (UI-13) ---------- */
-const chip = (txt, cls, ico) => `<span class="chip ${cls}"><i aria-hidden="true">${ico}</i>${esc(txt)}</span>`;
+// Componente Estado de la semilla (UI-13/UI-14): glifo + etiqueta + tono. Los nombres c-* son tonos de la maqueta.
+const TONO = { "c-disp": "correcto", "c-malo": "error", "c-pend": "aviso", "c-res": "info", "c-terr": "info", "c-tall": "aviso", "c-excl": "neutro", "c-neu": "neutro" };
+const chip = (txt, cls, ico) => `<span class="estado ${TONO[cls] || "neutro"}"><span class="estado-glifo" aria-hidden="true">${ico}</span>${esc(txt)}</span>`;
 const porDefinir = (txt = "Por definir") => chip(txt, "c-pend", "?");
 const ico = (n, cls = "ico") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 
@@ -48,7 +50,9 @@ function cerrarCapa() { $("#capa").innerHTML = ""; }
 let alCerrarCajon = null;
 function cajon(titulo, sub, cuerpo, alCerrar) {
   alCerrarCajon = alCerrar || null;
-  $("#capa").innerHTML = `<div class="velo" id="velo"><div class="cajon" role="dialog" aria-modal="true" aria-labelledby="t-cajon"><header><div style="display:flex;gap:var(--e-3);align-items:center;flex-wrap:wrap;min-width:0"><h2 id="t-cajon" style="font-size:var(--f-xl)">${titulo}</h2>${sub ? `<span class="sub">${sub}</span>` : ""}</div><button class="btn sec chico" type="button" id="cerrar">Cerrar</button></header><div class="cuerpo">${cuerpo}</div></div></div>`;
+  const yaAbierto = !!$("#capa .cajon"); // al repintar el mismo panel no se repite la entrada
+  $("#capa").innerHTML = `<div class="velo" id="velo"><div class="cajon" role="dialog" aria-modal="true" aria-labelledby="t-cajon"><header><div style="display:flex;gap:var(--e-3);align-items:center;flex-wrap:wrap;min-width:0"><h2 id="t-cajon" style="font-size:var(--f-xl)">${titulo}</h2>${sub ? `<span class="sub">${sub}</span>` : ""}</div><button class="boton secundario chico" type="button" id="cerrar">Cerrar</button></header><div class="cuerpo">${cuerpo}</div></div></div>`;
+  if (yaAbierto) $("#capa .cajon").classList.add("sin-entrada");
   const fin = () => { cerrarCapa(); if (alCerrarCajon) alCerrarCajon(); };
   $("#cerrar").onclick = fin; $("#velo").onclick = e => { if (e.target.id === "velo") fin(); };
   $("#cerrar").focus();
@@ -71,4 +75,4 @@ function accesosHTML(lista) {
   return `<div class="accesos">${lista.map((a, i) => `<button type="button" class="acceso ${a.principal ? "principal" : ""}" data-acc="${i}">${a.n ? `<span class="a-cuenta num ${a.aviso ? "aviso" : ""}" aria-label="${a.n} ${esc(a.nl || "pendientes")}">${a.n}</span>` : ""}<span class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-${a.ico}"/></svg></span><h3>${a.t}</h3><p>${a.d}</p><span class="a-pie">${a.cta}${ico("flecha")}</span></button>`).join("")}</div>`;
 }
 function postAccesos() { $$("#vista [data-acc]").forEach(b => b.onclick = () => { const a = ACCESOS[+b.dataset.acc]; if (a.pre) a.pre(); ir(a.v); }); }
-const volverHTML = (txt = "Volver al inicio") => `<div class="acciones" style="margin-bottom:var(--e-4)"><button class="btn sec chico" type="button" data-ir="inicio">${ico("home")}${txt}</button></div>`;
+const volverHTML = (txt = "Volver al inicio") => `<div class="acciones" style="margin-bottom:var(--e-4)"><button class="boton secundario chico" type="button" data-ir="inicio">${ico("home")}${txt}</button></div>`;

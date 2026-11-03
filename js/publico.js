@@ -15,23 +15,24 @@ function vPortada() {
 }
 
 /* ---------- Página «Protección de datos personales» (art. 14 ter) ---------- */
-const ITEMS_14TER = [
-  ["Formulario de solicitudes", "Ejerza sus derechos de acceso, rectificación, supresión, oposición, portabilidad y bloqueo temporal. Ingreso con Clave Única.", chip("En esta maqueta", "c-disp", "●")],
-  ["Política de protección de datos personales", "Documento institucional con su versión y fecha de vigencia.", porDefinir("Por aprobar")],
-  ["Delegado de protección de datos", "Asesora y supervisa el cumplimiento de la ley. Aquí se publicarán su nombre y su contacto.", chip("Designado · contacto por publicar", "c-res", "■")],
-  ["Matriz de datos personales", "Versión pública de los tratamientos que realiza CONAF. Se completará a partir de la matriz que compartió el delegado el 28-10-2026.", porDefinir("Por completar")],
-  ["Responsable y representante legal", "Corporación Nacional Forestal y su representante legal.", porDefinir("Representante por confirmar")],
-  ["Domicilio y canales para solicitudes", "Formulario web con Clave Única y formulario físico en las Oficinas de Partes de Oficina Central y de las direcciones regionales.", chip("Vías confirmadas · 28-10-2026", "c-disp", "✓")],
-  ["Política y medidas de seguridad", "Política de seguridad de la información y medidas para proteger las bases de datos personales.", porDefinir("Por aprobar")],
-  ["Derechos y reclamo ante la Agencia", "Si CONAF rechaza la solicitud o no responde a tiempo, puede reclamar ante la Agencia de Protección de Datos Personales.", chip("Ley vigente desde 01-12-2026", "c-res", "■")],
-  ["Categorías, destinatarios y finalidades", "Qué datos trata cada tratamiento, a quién se comunican y para qué.", porDefinir("Por completar")],
-  ["Conservación, fuente y transferencias", "Cuánto tiempo se conservan los datos, de dónde provienen y si se transfieren.", porDefinir("Por confirmar")],
-  ["Decisiones automatizadas", "Si existen decisiones automatizadas o perfiles, la lógica aplicada y sus consecuencias.", porDefinir("Por confirmar")]
+const ITEMS_14TER = [ // art. 14 ter de la Ley N° 21.719, letras a) a l)
+  ["a", "Política de tratamiento de datos personales", "La política que adopta CONAF, con su fecha y versión.", porDefinir("Por aprobar")],
+  ["b", "Responsable, representante legal y encargado de prevención", "Corporación Nacional Forestal, su representante legal y, si existe, el encargado de prevención.", porDefinir("Por confirmar")],
+  ["c", "Domicilio y medios para presentar solicitudes", "Formulario web con Clave Única y formulario físico en las Oficinas de Partes de Oficina Central y de las direcciones regionales. Domicilio postal y correo electrónico por publicar.", chip("Vías confirmadas · 28-10-2026", "c-disp", "✓")],
+  ["d", "Datos que trata CONAF", "Categorías de datos, universo de personas, destinatarios, finalidades y base de legitimidad de cada tratamiento. Sale de la matriz de datos personales.", porDefinir("Por completar")],
+  ["e", "Política y medidas de seguridad", "La política y las medidas para proteger las bases de datos personales.", porDefinir("Por aprobar")],
+  ["f", "Sus derechos ante CONAF", "Acceso, rectificación, supresión y oposición, y bloqueo temporal, en los términos del art. 23 para los órganos públicos.", chip("Ley vigente desde 01-12-2026", "c-res", "■")],
+  ["g", "Reclamo ante la Agencia", "Si CONAF rechaza su solicitud o no responde a tiempo, puede reclamar ante la Agencia de Protección de Datos Personales dentro de 30 días hábiles.", chip("Art. 11 y 41", "c-res", "■")],
+  ["h", "Transferencias internacionales", "Si CONAF transfiere datos a otro país u organización internacional y con qué garantías.", porDefinir("Por confirmar")],
+  ["i", "Período de conservación", "Por cuánto tiempo se conservan los datos.", porDefinir("Por confirmar")],
+  ["j", "Fuente de los datos", "De dónde provienen los datos y si proceden de fuentes de acceso público.", porDefinir("Por confirmar")],
+  ["k", "Retiro del consentimiento", "Cuando un tratamiento se basa en el consentimiento, el derecho a retirarlo en cualquier momento.", porDefinir("Por confirmar si aplica")],
+  ["l", "Decisiones automatizadas", "Si existen decisiones automatizadas o perfiles, la lógica aplicada y sus consecuencias.", porDefinir("Por confirmar")]
 ];
 function vPagina() {
-  return volverHTML("Volver a la portada") + cab("Protección de datos personales", "Información que CONAF publica sobre el tratamiento de sus datos y cómo ejercer sus derechos.", "Contenidos del art. 14 ter · propuesta") +
-    `<div class="acciones" style="margin-bottom:var(--e-5)"><button class="btn grande" type="button" data-ir="solicitud">${ico("plus")}Presentar una solicitud</button><button class="btn sec grande" type="button" data-ir="mis">${ico("buscar")}Consultar mis solicitudes</button></div>
-    <ol class="items-14ter">${ITEMS_14TER.map(([t, d, e], i) => `<li><span class="n num">${i + 1}</span><div><h3>${t}</h3><p>${d}</p></div><div class="e">${e}</div></li>`).join("")}</ol>
+  return volverHTML("Volver a la portada") + cab("Protección de datos personales", "Información que CONAF publica sobre el tratamiento de sus datos y cómo ejercer sus derechos.", "Art. 14 ter, letras a) a l) · propuesta") +
+    `<div class="acciones" style="margin-bottom:var(--e-5)"><button class="boton grande" type="button" data-ir="solicitud">${ico("plus")}Presentar una solicitud</button><button class="boton secundario grande" type="button" data-ir="mis">${ico("buscar")}Consultar mis solicitudes</button></div>
+    <ol class="items-14ter">${ITEMS_14TER.map(([l, t, d, e]) => `<li><span class="n num">${l}</span><div><h3>${t}</h3><p>${d}</p></div><div class="e">${e}</div></li>`).join("")}</ol>
     <p class="nota" style="margin-top:var(--e-4)">¿No tiene Clave Única? Puede presentar su solicitud con el formulario físico en la Oficina de Partes de Oficina Central o de cualquier dirección regional de CONAF.</p>`;
 }
 
@@ -40,7 +41,7 @@ function pedirClaveUnica(luego) {
   if (SESION.cu) return luego();
   cajon("Clave Única", "Simulación", `<p>En producción, este botón lleva a Clave Única del Estado y vuelve con su RUN y su nombre verificados. CONAF hoy no cuenta con la integración: es una condición para operar el formulario web ${porDefinir("Informática")}.</p>
     <dl class="ficha"><dt>RUN</dt><dd class="mono">${esc(SESION.run)}</dd><dt>Nombre</dt><dd>${esc(SESION.nom)}</dd></dl>
-    <div class="acciones"><button class="btn grande" type="button" id="cu-ok">${ico("candado")}Autorizar (simulado)</button></div>`);
+    <div class="acciones"><button class="boton grande" type="button" id="cu-ok">${ico("candado")}Autorizar (simulado)</button></div>`);
   $("#cu-ok").onclick = () => { SESION.cu = true; cerrarCapa(); tostada("Identidad verificada con Clave Única (simulado)"); luego(); };
 }
 
@@ -55,16 +56,16 @@ function vSolicitud() {
     `<div class="progreso" aria-label="Paso ${p} de 4"><div class="pr-txt"><b>Paso ${p} de 4</b> · ${PASOS[p - 1]}</div><div class="pr-barra"><span style="width:${p * 25}%"></span></div><ol class="pr-pasos">${PASOS.map((t, i) => `<li class="${i + 1 < p ? "hecho" : i + 1 === p ? "actual" : ""}">${t}</li>`).join("")}</ol></div>
     ${SOL.err.length ? `<div class="faltan" role="alert" tabindex="-1" id="faltan"><b>Revise lo siguiente:</b><ul>${SOL.err.map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
     <form id="f-sol" class="form-sol" novalidate>${[paso1, paso2, paso3, paso4][p - 1]()}
-    <div class="acciones barra-pasos">${p > 1 ? `<button class="btn sec" type="button" id="sol-atras">← Anterior</button>` : ""}<button class="btn" type="submit">${p < 4 ? "Continuar →" : ico("enviar") + "Enviar solicitud"}</button></div></form>`;
+    <div class="acciones barra-pasos">${p > 1 ? `<button class="boton secundario" type="button" id="sol-atras">← Anterior</button>` : ""}<button class="boton" type="submit">${p < 4 ? "Continuar →" : ico("enviar") + "Enviar solicitud"}</button></div></form>`;
 }
-const radio = (name, v, act, t, d) => `<label class="opcion"><input type="radio" name="${name}" value="${v}" ${act === v ? "checked" : ""}><span></span><span><b>${t}</b>${d ? `<small>${d}</small>` : ""}</span></label>`;
+const radio = (name, v, act, t, d) => `<label class="opcion"><input type="radio" name="${name}" value="${v}" ${act === v ? "checked" : ""}><span><b>${t}</b>${d ? `<small>${d}</small>` : ""}</span></label>`;
 function paso1() {
   return `<fieldset><legend>¿Quién presenta la solicitud?</legend><div class="lista-opciones">
     ${radio("calidad", "titular", SOL.calidad, "Soy el titular de los datos", "Los derechos son personales: puede ejercerlos directamente.")}
-    ${radio("calidad", "representante", SOL.calidad, "Represento al titular", "Debe adjuntar poder notarial. No se acepta poder simple.")}
-    ${radio("calidad", "heredero", SOL.calidad, "Soy heredero de un titular fallecido", "Debe acreditar la calidad de heredero.")}</div></fieldset>
+    ${radio("calidad", "representante", SOL.calidad, "Represento al titular", "Representante legal o mandatario (art. 4°). Debe adjuntar poder notarial: no se acepta poder simple.")}
+    ${radio("calidad", "heredero", SOL.calidad, "Soy heredero de un titular fallecido", "Debe acreditar la calidad de heredero. No procede si el titular lo prohibió o una ley lo establece (art. 4°).")}</div></fieldset>
     <fieldset><legend>Identificación</legend>
-    ${SESION.cu ? `<div class="estado-linea">${chip("Verificado con Clave Única (simulado)", "c-disp", "✓")}<span class="mono">${esc(SESION.run)}</span><span>${esc(SESION.nom)}</span></div>` : `<p>Para continuar, identifíquese con su Clave Única.</p><div><button class="btn" type="button" id="sol-cu">${ico("candado")}Ingresar con Clave Única</button></div>`}</fieldset>
+    ${SESION.cu ? `<div class="estado-linea">${chip("Verificado con Clave Única (simulado)", "c-disp", "✓")}<span class="mono">${esc(SESION.run)}</span><span>${esc(SESION.nom)}</span></div>` : `<p>Para continuar, identifíquese con su Clave Única.</p><div><button class="boton" type="button" id="sol-cu">${ico("candado")}Ingresar con Clave Única</button></div>`}</fieldset>
     ${SOL.calidad !== "titular" ? `<fieldset><legend>${SOL.calidad === "representante" ? "Titular representado" : "Titular fallecido"}</legend><div class="campos">
       <div class="campo"><label for="o-run">RUN del titular *</label><input type="text" id="o-run" class="mono" value="${esc(SOL.otro.run)}" placeholder="12.345.678-9" maxlength="12"></div>
       <div class="campo"><label for="o-nom">Nombre del titular *</label><input type="text" id="o-nom" value="${esc(SOL.otro.nom)}"></div>
@@ -72,11 +73,11 @@ function paso1() {
 }
 function paso2() {
   return `<fieldset><legend>¿Qué derecho desea ejercer?</legend><p class="peq tenue" style="margin-bottom:var(--e-3)">Puede marcar más de uno.</p><div class="lista-opciones">
-    ${DERECHOS.map(d => `<label class="opcion"><input type="checkbox" name="der" value="${d.k}" ${SOL.der[d.k] ? "checked" : ""}><span></span><span><b>${d.n}</b><small>${d.d}</small></span></label>`).join("")}</div></fieldset>
+    ${DERECHOS.map(d => `<label class="opcion"><input type="checkbox" name="der" value="${d.k}" ${SOL.der[d.k] ? "checked" : ""}><span><b>${d.n}</b><small>${d.d}</small>${d.verificar ? `<small>${chip("Por confirmar", "c-pend", "?")} ${esc(d.verificar)}</small>` : ""}</span></label>`).join("")}</div></fieldset>
     <fieldset><legend>Detalle de la solicitud</legend><div class="campos">
     <div class="campo ancho"><label for="s-det">Qué información pide y dónde cree que consta *</label><textarea id="s-det" rows="4" placeholder="Por ejemplo: el trámite, el programa o la oficina, y el año aproximado.">${esc(SOL.detalle)}</textarea><span class="ayuda">Obligatorio: ayuda a CONAF a ubicar sus datos.</span></div>
     ${SOL.der.bloqueo ? `<div class="campo ancho"><label for="s-fb">Fundamento del bloqueo temporal *</label><textarea id="s-fb" rows="2">${esc(SOL.fundBloq)}</textarea></div>` : ""}
-    <div class="campo ancho"><span class="lbl">Documentos (opcional)</span><div class="acciones"><button class="btn sec chico" type="button" id="s-doc">${ico("doc")}Adjuntar documento (simulado)</button><span class="tenue peq" id="s-docn">${SOL.docs ? SOL.docs + " adjunto(s)" : "Sin adjuntos"}</span></div></div></div></fieldset>`;
+    <div class="campo ancho"><span class="lbl">Documentos (opcional)</span><div class="acciones"><button class="boton secundario chico" type="button" id="s-doc">${ico("doc")}Adjuntar documento (simulado)</button><span class="tenue peq" id="s-docn">${SOL.docs ? SOL.docs + " adjunto(s)" : "Sin adjuntos"}</span></div></div></div></fieldset>`;
 }
 function paso3() {
   const ops = SEDES.map(s => `<option ${SOL.retiro === s ? "selected" : ""}>${s}</option>`).join("");
@@ -98,11 +99,11 @@ function paso4() {
     ${SOL.calidad !== "titular" ? `<dt>Titular</dt><dd>${esc(SOL.otro.nom)} · <span class="mono">${esc(SOL.otro.run)}</span></dd>` : ""}
     <dt>Derechos</dt><dd>${ders.map(k => DER[k]).join(", ")}</dd><dt>Detalle</dt><dd>${esc(SOL.detalle)}</dd>
     <dt>Respuesta</dt><dd>${MEDIOS[SOL.medio]}${SOL.medio === "retiro" ? " · " + esc(SOL.retiro) : SOL.medio === "carta" ? " · " + esc(SOL.dom + ", " + SOL.comuna) : ""}</dd><dt>Correo</dt><dd>${esc(SOL.correo)}</dd></dl></div></section>
-    <section class="panel"><header><h2>Plazos que se activan</h2>${chip("Por validar con el delegado", "c-pend", "?")}</header><div class="cuerpo"><ul class="plazos">
+    <section class="panel"><header><h2>Plazos que se activan</h2>${chip("Art. 11 · Ley N° 21.719", "c-disp", "✓")}</header><div class="cuerpo"><ul class="plazos">
     <li>Acuse de recibo inmediato con número de caso.</li><li>Respuesta a más tardar el <b>${fF(venc)}</b> (${PARAM.RESPUESTA} días corridos, prorrogables una vez).</li>
     ${SOL.der.bloqueo ? `<li>Bloqueo temporal: se resuelve en ${PARAM.BLOQUEO} días hábiles, a más tardar el <b>${fF(sumaHabiles(HOY, PARAM.BLOQUEO))}</b>.</li>` : ""}
-    <li>Si CONAF le pide antecedentes, tendrá ${PARAM.ANTECEDENTES} días hábiles para aportarlos.</li></ul></div></section>
-    <label class="opcion decl"><input type="checkbox" id="s-decl" ${SOL.decl ? "checked" : ""}><span></span><span>Declaro que los antecedentes son verdaderos y que CONAF podrá verificar mi identidad y, si corresponde, la representación invocada. *</span></label>`;
+    <li>Si CONAF le pide antecedentes, tendrá ${PARAM.ANTECEDENTES} días hábiles para aportarlos ${chip("propuesta", "c-pend", "?")}.</li><li>La solicitud se dirige a la Directora Ejecutiva, jefa superior del servicio (art. 23 inc. 3°).</li></ul></div></section>
+    <label class="opcion decl"><input type="checkbox" id="s-decl" ${SOL.decl ? "checked" : ""}><span>Declaro que los antecedentes son verdaderos y que CONAF podrá verificar mi identidad y, si corresponde, la representación invocada. *</span></label>`;
 }
 function leerPaso() {
   const v = id => ($("#" + id) || {}).value;
@@ -151,12 +152,12 @@ function vAcuse() {
   return `<section class="acuse panel"><div class="cuerpo"><span class="app-ico grande" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span>
     <h1>Solicitud recibida</h1><p class="tenue">Número de caso</p><p class="acuse-num mono">${c.num}</p>
     <p>Recibida el ${fLarga(c.ingreso)}. Enviamos una copia íntegra a <b>${esc(c.correo)}</b> (simulado).</p></div></section>
-    <section class="panel" style="margin-top:var(--e-4)"><header><h2>Qué ocurre ahora</h2>${chip("Plazos por validar con el delegado", "c-pend", "?")}</header><div class="cuerpo"><ul class="plazos">
+    <section class="panel"><header><h2>Qué ocurre ahora</h2>${chip("Art. 11 · Ley N° 21.719", "c-disp", "✓")}</header><div class="cuerpo"><ul class="plazos">
     <li>CONAF registra su solicitud y resuelve si procede.</li><li>El área que trata sus datos analiza lo pedido y prepara la respuesta.</li>
     <li>Recibirá la respuesta por ${MEDIOS[c.medio].toLowerCase()} a más tardar el <b>${fF(venceLegal(c))}</b>.</li>
     ${c.bloq ? `<li>Su bloqueo temporal se resuelve a más tardar el <b>${fF(venceBloqueo(c))}</b>.</li>` : ""}
-    <li>Si CONAF no responde a tiempo o deniega su solicitud, puede reclamar ante la Agencia de Protección de Datos Personales.</li></ul></div></section>
-    <div class="acciones" style="margin-top:var(--e-4)"><button class="btn" type="button" data-ir="mis">${ico("buscar")}Ver mis solicitudes</button><button class="btn sec" type="button" data-ir="inicio">Volver a la portada</button></div>`;
+    <li>Si CONAF no responde a tiempo o deniega su solicitud, puede reclamar ante la Agencia de Protección de Datos Personales dentro de 30 días hábiles (art. 11 y 41).</li></ul></div></section>
+    <div class="acciones" style="margin-top:var(--e-4)"><button class="boton" type="button" data-ir="mis">${ico("buscar")}Ver mis solicitudes</button><button class="boton secundario" type="button" data-ir="inicio">Volver a la portada</button></div>`;
 }
 
 /* ---------- Mis solicitudes (consulta de estado) ---------- */
@@ -167,7 +168,7 @@ function lineaPublica(c) {
 }
 function vMis() {
   if (!SESION.cu) return volverHTML("Volver a la portada") + cab("Mis solicitudes", "Consulte el estado de las solicitudes que presentó.", "") +
-    `<section class="panel"><div class="cuerpo"><p>Para ver sus solicitudes, identifíquese con su Clave Única.</p><div class="acciones" style="margin-top:var(--e-3)"><button class="btn" type="button" id="mis-cu">${ico("candado")}Ingresar con Clave Única</button></div></div></section>`;
+    `<section class="panel"><div class="cuerpo"><p>Para ver sus solicitudes, identifíquese con su Clave Única.</p><div class="acciones" style="margin-top:var(--e-3)"><button class="boton" type="button" id="mis-cu">${ico("candado")}Ingresar con Clave Única</button></div></div></section>`;
   const mias = CASOS.filter(c => c.tit.run === SESION.run || (c.rep && c.rep.run === SESION.run)).sort((a, b) => b.ingreso.localeCompare(a.ingreso));
   return volverHTML("Volver a la portada") + cab("Mis solicitudes", `${esc(SESION.nom)} · <span class="mono">${esc(SESION.run)}</span>`, "") +
     `<div class="lista">${mias.length ? mias.map(c => tarjetaPublica(c)).join("") : vacio("No tiene solicitudes", "Cuando presente una, aparecerá aquí.")}</div>`;
@@ -179,8 +180,8 @@ function tarjetaPublica(c) {
     <div class="meta"><span>Ingreso <b>${fF(c.ingreso)}</b></span>${abierto(c) ? `<span>Respuesta a más tardar <b>${fF(venceLegal(c))}</b>${c.prorroga ? " (prorrogado)" : ""}</span>` : `<span>Respondida <b>${fF(c.cierre.f)}</b></span>`}<span>${VIAS[c.via]}</span></div>
     ${lineaPublica(c)}
     ${ant ? `<form class="antecedentes" data-ant="${c.num}"><p><b>Antecedentes pedidos:</b> ${esc(c.ant.que)}</p><p class="peq">Plazo para aportarlos: hasta el <b>${fF(venceAntecedentes(c))}</b>. Este requerimiento no suspende el plazo de respuesta.</p>
-      <div class="campo"><label for="ant-${c.num}">Su respuesta *</label><textarea id="ant-${c.num}" rows="3"></textarea></div><div class="acciones"><button class="btn" type="submit">${ico("enviar")}Enviar antecedentes</button></div></form>` : ""}
-    ${!abierto(c) ? `<p class="peq">${c.cierre.res === "No admitida" ? "Motivo: " + esc(c.cierre.causal || "") + ". " : ""}${c.cierre.res !== "Acogida" ? "Puede reclamar ante la Agencia de Protección de Datos Personales dentro de 30 días hábiles." : ""}</p><div class="acciones"><button class="btn sec chico" type="button" data-resp="${c.num}">${ico("doc")}Ver respuesta (simulado)</button></div>` : ""}</article>`;
+      <div class="campo"><label for="ant-${c.num}">Su respuesta *</label><textarea id="ant-${c.num}" rows="3"></textarea></div><div class="acciones"><button class="boton" type="submit">${ico("enviar")}Enviar antecedentes</button></div></form>` : ""}
+    ${!abierto(c) ? `<p class="peq">${c.cierre.res === "No admitida" ? "Motivo: " + esc(c.cierre.causal || "") + ". " : ""}${c.cierre.res !== "Acogida" ? "Puede reclamar ante la Agencia de Protección de Datos Personales dentro de 30 días hábiles." : ""}</p><div class="acciones"><button class="boton secundario chico" type="button" data-resp="${c.num}">${ico("doc")}Ver respuesta (simulado)</button></div>` : ""}</article>`;
 }
 POST.mis = () => {
   if ($("#mis-cu")) $("#mis-cu").onclick = () => pedirClaveUnica(render);

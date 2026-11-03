@@ -1,0 +1,45 @@
+/* La tipografía de la flota: tres voces, cada una en su token (ESTANDAR_UI, «Familias»).
+ *
+ *   --letra-texto    párrafos, formularios, tablas, el título sobre el banner   Instrument Sans
+ *   --letra-display  títulos de página y de sección                           Fraunces
+ *   --letra-dato     códigos, folios, coordenadas, cifras que se comparan      JetBrains Mono
+ *
+ * Autoalojadas: woff2 variables con licencia OFL, de `@fontsource-variable/*` (se importan en
+ * main.tsx). No piden nada a un tercero, y el navegador baja sólo los subconjuntos que la página
+ * usa: latín y latín extendido, unos 190 KB entre las tres, una vez y en caché.
+ *
+ * DECISIÓN (2026-10-24, Luis Monsalve: «es lo único que está como antiguo, como plano»): reemplaza
+ * la pila del sistema. Se eligió entre tres sistemas probados sobre páginas reales:
+ *   · Geist, la candidata de texto de los otros dos, confunde «i» con «l» a 13-14 px en Windows;
+ *   · Newsreader se lee como diario antiguo, justo lo que se quería dejar atrás;
+ *   · Fraunces ajusta el trazo al tamaño (eje `opsz`) y su eje SOFT redondea los remates.
+ * Los pesos van por token: ninguna hoja escribe 800 o 900 a mano.
+ *
+ * Una aplicación cambia de voz redefiniendo estos tokens, no reescribiendo `font-family` por todo.
+ */
+
+:root {
+  --letra-texto: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --letra-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --letra-dato: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace;
+  --ajuste-display: 'SOFT' 60, 'WONK' 0;
+  --peso-titular: 420;
+  --peso-fuerte: 600;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--letra-display);
+  font-weight: var(--peso-titular);
+  font-variation-settings: var(--ajuste-display);
+  font-optical-sizing: auto;
+  letter-spacing: var(--tr-titulo);
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--letra-dato);
+}

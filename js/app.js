@@ -5,9 +5,10 @@ let SESION = null, vista = "inicio";
 const VISTAS = {
   solicitante: { inicio: () => vPortada(), pagina: () => vPagina(), solicitud: () => vSolicitud(), acuse: () => vAcuse(), mis: () => vMis() },
   interno: { inicio: () => vInicioInterno(), casos: () => vCasos(), registrar: () => vRegistrar(), calendario: () => vCalendario(), reportes: () => vReportes() },
+  delegado: { inicio: () => vInicioInterno(), casos: () => vCasos(), calendario: () => vCalendario(), reportes: () => vReportes(), bitacora: () => vBitacora() },
   admin: { inicio: () => vInicioInterno(), casos: () => vCasos(), calendario: () => vCalendario(), reportes: () => vReportes(), responsables: () => vResponsables(), parametros: () => vParametros(), bitacora: () => vBitacora() }
 };
-const grupo = () => !SESION ? null : SESION.perfil === "solicitante" ? "solicitante" : SESION.perfil === "admin" ? "admin" : "interno";
+const grupo = () => !SESION ? null : ["solicitante", "admin", "delegado"].includes(SESION.perfil) ? SESION.perfil : "interno";
 
 function pintarLogin() {
   const li = u => `<li><button type="button" class="l-usuario" data-u="${u.id}">${ico(PERFILES[u.perfil].ico)}<span><b>${esc(PERFILES[u.perfil].n)}</b><br><span class="peq tenue">${esc(u.nom)} · ${esc(u.cargo)}</span></span>${ico("flecha", "ico fin")}</button></li>`;
@@ -47,5 +48,8 @@ const irInicio = () => { if (SESION) { cerrarCapa(); ir("inicio"); } };
 $("#app-home").addEventListener("click", irInicio);
 $("#app-home").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); irInicio(); } });
 $("#f-hoy").textContent = fLarga(HOY);
+/* Tema: sistema, claro, oscuro o inmersivo (interfaz.css de la semilla). Se recuerda en el navegador. */
+(() => { const sel = $("#tema"); let t = "sistema"; try { t = localStorage.getItem("con012-tema") || "sistema"; } catch (e) { }
+  sel.value = t; sel.onchange = () => { const v = sel.value; if (v === "sistema") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = v; try { localStorage.setItem("con012-tema", v); } catch (e) { } }; })();
 pintarLogin();
 $("#login").hidden = false;

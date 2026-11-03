@@ -19,7 +19,7 @@ function semaforo(c) {
   if (d <= 9) return chip(`Esta semana · ${d} días`, "c-pend", "!");
   return chip(`Con holgura · ${d} días`, "c-disp", "●");
 }
-const urgencia = c => !abierto(c) ? 999 : bloqueoPendiente(c) ? -100 : diasLegal(c);
+const urgencia = c => reclamoPendiente(c) ? corridosEntre(HOY, venceReclamo(c)) - 50 : !abierto(c) ? 999 : bloqueoPendiente(c) ? -100 : diasLegal(c);
 
 /* ---------- Estado visible ---------- */
 function estado(c) {
@@ -40,7 +40,6 @@ function responsable(c) {
   if (!abierto(c)) return null;
   const e = ETAPA[c.etapa];
   if (e.col === "ambito") return c.ambito && AMB(c.ambito) ? AMB(c.ambito).resp : null;
-  if (e.col === "firma") return RESP[sedeDe(c)].responde; // la firma la registra quien responde; el firmante es un cargo
   return RESP[sedeDe(c)][e.col];
 }
 const sinResponsable = c => abierto(c) && !responsable(c);
@@ -52,13 +51,19 @@ function quienTxt(c) {
   return chip("Sin responsable", "c-malo", "!");
 }
 function visibleParaUsuario(c, u) {
-  if (u.perfil === "admin") return true;
-  if (u.perfil === "fiscalia") return RESP[c.sede].admisibilidad === u.id || RESP[c.sede].revision === u.id;
+  const r = RESP[c.sede];
+  if (u.perfil === "admin" || u.perfil === "delegado") return true;
+  if (u.perfil === "fiscalia") return r.admisibilidad === u.id || r.revision === u.id || r.reclamos === u.id;
   if (u.perfil === "gerencia") return AMBITOS.some(a => a.resp === u.id && a.k === c.ambito);
-  if (u.perfil === "recepcion") return ["recibe", "deriva", "responde"].some(k => RESP[c.sede][k] === u.id);
+  if (u.perfil === "firmante") return r.firma === u.id && ["firma", "respuesta", "cerrado"].includes(c.etapa);
+  if (u.perfil === "recepcion") return ["recibe", "deriva", "responde"].some(k => r[k] === u.id);
   return false;
 }
+/* Reclamos ante la Agencia (art. 41): CONAF responde en 30 días corridos desde la notificación, prorrogables. */
+const reclamoPendiente = c => !!(c.reclamo && !c.reclamo.resp);
+const venceReclamo = c => c.reclamo ? sumaCorridos(c.reclamo.notif, PARAM.RECLAMO_RESP + (c.reclamo.prorroga ? PARAM.RECLAMO_RESP : 0)) : null;
 function tareaDe(c, u) { // ¿le toca actuar a este usuario?
+  if (reclamoPendiente(c) && RESP[c.sede].reclamos === u.id) return true;
   if (!abierto(c)) return false;
   if (bloqueoPendiente(c) && u.perfil === "fiscalia" && RESP[c.sede].admisibilidad === u.id) return true;
   return responsable(c) === u.id;

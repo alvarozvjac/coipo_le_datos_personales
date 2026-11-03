@@ -1,52 +1,54 @@
 /* CON012 · datos de la maqueta. Todo es ficticio salvo lo marcado con su fuente.
-   Fuentes verificadas: correo del delegado de protección de datos del 28-10-2026 (vías de ingreso: formulario web con
-   Clave Única y formulario físico en Oficina de Partes; perfiles y flujos los levanta la contraparte);
-   observaciones de la reunión del 15-10-2026 (poder notarial, detalle obligatorio, retiro sólo en Oficinas de Partes). */
+   Marco normativo: Ley N° 21.719 (texto de la BCN, versión con vigencia diferida al 01-12-2026, en los antecedentes
+   del proyecto). Antecedentes de la contraparte: correo del delegado de protección de datos del 28-10-2026 (vías de
+   ingreso confirmadas; perfiles y flujos por levantar) y observaciones de la reunión del 15-10-2026. */
 "use strict";
 
-/* ---------- Parámetros del canal (editables en Administración) ---------- */
+/* ---------- Parámetros del canal ---------- */
 const PARAM = {
-  // Plazos legales, según lo que citaba la v3.7 (art. 11, 8° ter, 41 de la Ley N° 21.719). [VERIFICAR con el delegado]
+  // Plazos legales VERIFICADOS en el texto de la ley.
   legal: [
-    { k: "respuesta", n: "Respuesta a la solicitud", v: "30 días corridos desde el ingreso", art: "art. 11" },
-    { k: "prorroga", n: "Prórroga", v: "Una vez, hasta 30 días corridos, comunicada antes del vencimiento", art: "art. 11" },
-    { k: "bloqueo", n: "Bloqueo temporal", v: "2 días hábiles", art: "art. 8° ter" },
-    { k: "antecedentes", n: "Plazo del titular para aportar antecedentes", v: "5 días hábiles", art: "propuesta, sin norma expresa" },
-    { k: "reclamo", n: "Reclamo ante la Agencia", v: "30 días hábiles desde la denegación", art: "art. 11 y 41" }
+    { n: "Acuse de recibo", v: "Al recibir la solicitud", art: "art. 11 inc. 2°" },
+    { n: "Respuesta a la solicitud", v: "30 días corridos desde la fecha de ingreso", art: "art. 11 inc. 2°" },
+    { n: "Prórroga", v: "Una sola vez, hasta 30 días corridos", art: "art. 11 inc. 2°" },
+    { n: "Bloqueo temporal", v: "Respuesta en 2 días hábiles desde la recepción; el rechazo se funda y se comunica electrónicamente a la Agencia", art: "art. 11 inc. 6°" },
+    { n: "Reclamo del titular ante la Agencia", v: "30 días hábiles desde la respuesta negativa o desde que venció el plazo sin respuesta", art: "art. 11 inc. 4° y 5°; art. 41 a)" },
+    { n: "Respuesta de CONAF a un reclamo", v: "30 días corridos desde la notificación de la Agencia, prorrogables por el mismo plazo", art: "art. 41 d)" },
+    { n: "Destinatario de la solicitud", v: "El jefe superior del servicio", art: "art. 23 inc. 3°" }
   ],
-  RESPUESTA: 30, PRORROGA: 30, BLOQUEO: 2, ANTECEDENTES: 5,
-  // Plazos internos por etapa: vacíos hasta que la contraparte los defina (días hábiles).
+  propuestos: [ // NO están en la ley: se muestran como propuesta
+    { n: "Plazo del titular para aportar antecedentes", v: "5 días hábiles", art: "Sin norma en la Ley N° 21.719 · por definir con Fiscalía" }
+  ],
+  RESPUESTA: 30, PRORROGA: 30, BLOQUEO: 2, ANTECEDENTES: 5, RECLAMO_RESP: 30,
   interno: { recepcion: null, admisibilidad: null, derivacion: null, analisis: null, revision: null, firma: null, respuesta: null },
-  // A qué sede se asignan las solicitudes web: por definir. Mientras tanto, Oficina Central.
   sedeWeb: "pendiente",
-  feriados: [
-    { f: "2026-12-08", n: "Inmaculada Concepción" }, { f: "2026-12-25", n: "Navidad" }, { f: "2027-01-01", n: "Año Nuevo" }
-  ]
+  feriados: [{ f: "2026-12-08", n: "Inmaculada Concepción" }, { f: "2026-12-25", n: "Navidad" }, { f: "2027-01-01", n: "Año Nuevo" }]
 };
 
-/* ---------- Sedes: Oficina Central y 16 direcciones regionales ---------- */
 const SEDES = ["Oficina Central"].concat(TERRITORIO.map(r => "Dirección Regional " + r.r));
 const corta = s => s === "Oficina Central" ? "Oficina Central" : s.replace("Dirección Regional ", "DR ");
 
-/* ---------- Etapas del flujo interno (procedimiento V1 tal como lo citaba la v3.7; responsables por definir) ---------- */
+/* ---------- Etapas (procedimiento V1, como lo citaba la v3.7; arts. 11 y 23 de la ley) ---------- */
 const ETAPAS = [
-  { k: "recepcion", n: "Recepción y registro", col: "recibe", hace: "Registra la fecha de ingreso, verifica identidad y representación y acusa recibo." },
-  { k: "admisibilidad", n: "Admisibilidad", col: "admisibilidad", hace: "Resuelve si la solicitud procede (Fiscalía, según la reunión del 08-09-2026)." },
+  { k: "recepcion", n: "Recepción y registro", col: "recibe", hace: "Registra la fecha de ingreso, verifica identidad y representación (art. 11 a) y acusa recibo." },
+  { k: "admisibilidad", n: "Admisibilidad", col: "admisibilidad", hace: "Resuelve si la solicitud procede, incluidas las causales del art. 23 inc. 2°." },
   { k: "derivacion", n: "Derivación", col: "deriva", hace: "Asigna el caso al área que trata los datos." },
   { k: "analisis", n: "Análisis y propuesta", col: "ambito", hace: "Localiza los datos, decide y redacta la propuesta de respuesta." },
-  { k: "revision", n: "Revisión jurídica", col: "revision", hace: "Revisa la propuesta antes de la firma." },
-  { k: "firma", n: "Firma", col: "firma", hace: "Firma de la respuesta (quién firma en Oficina Central y en regiones: por definir)." },
-  { k: "respuesta", n: "Respuesta y cierre", col: "responde", hace: "Envía la respuesta por el medio indicado y guarda el respaldo." }
+  { k: "revision", n: "Revisión jurídica", col: "revision", hace: "Revisa el fundamento antes de la firma (art. 11 inc. 4°)." },
+  { k: "firma", n: "Firma", col: "firma", hace: "Firma de la respuesta por quien corresponda (art. 23 inc. 3°: jefe superior del servicio)." },
+  { k: "respuesta", n: "Respuesta y cierre", col: "responde", hace: "Envía la respuesta escrita, guarda el respaldo y comunica a los cesionarios (art. 11)." }
 ];
 const ETAPA = Object.fromEntries(ETAPAS.map(e => [e.k, e]));
-const COLS = [["recibe", "Recibe y registra"], ["admisibilidad", "Admisibilidad"], ["deriva", "Deriva"], ["revision", "Revisión jurídica"], ["firma", "Firma"], ["responde", "Responde y cierra"]];
+const COLS = [["recibe", "Recibe y registra", "recepcion"], ["admisibilidad", "Admisibilidad y bloqueo", "fiscalia"], ["deriva", "Deriva", "recepcion"], ["revision", "Revisión jurídica", "fiscalia"], ["firma", "Firma", "firmante"], ["responde", "Responde y cierra", "recepcion"], ["reclamos", "Reclamos ante la Agencia", "fiscalia"]];
 
-/* ---------- Perfiles y usuarios de prueba (ficticios) ---------- */
+/* ---------- Perfiles: derivados de las funciones del canal ---------- */
 const PERFILES = {
-  solicitante: { n: "Persona solicitante", ico: "user", d: "Sitio público: página de datos personales, solicitud y consulta de sus casos." },
-  recepcion: { n: "Recepción", ico: "oficina", d: "Recibe, registra, verifica identidad, deriva y envía la respuesta." },
-  fiscalia: { n: "Fiscalía", ico: "balanza", d: "Admisibilidad, bloqueo temporal y revisión jurídica." },
-  gerencia: { n: "Área responsable de los datos", ico: "equipo", d: "Analiza y propone la respuesta de los casos de su ámbito." },
+  solicitante: { n: "Persona solicitante", ico: "user", d: "Titular, representante o heredero. Presenta solicitudes y consulta su estado." },
+  recepcion: { n: "Responsable de datos", ico: "oficina", d: "Recibe y registra (incluida la vía física), verifica identidad, deriva, responde y prorroga." },
+  fiscalia: { n: "Fiscalía", ico: "balanza", d: "Admisibilidad, bloqueo temporal, revisión jurídica y reclamos ante la Agencia." },
+  gerencia: { n: "Área que trata los datos", ico: "equipo", d: "Analiza los casos de su ámbito y propone la respuesta." },
+  firmante: { n: "Firmante", ico: "firma", d: "Firma las respuestas de su sede." },
+  delegado: { n: "Delegado de protección de datos", ico: "escudo", d: "Supervisa el cumplimiento, ve todos los casos y deja observaciones (art. 50)." },
   admin: { n: "Administración del canal", ico: "config", d: "Responsables por etapa y sede, plazos internos, feriados y bitácora." }
 };
 const USUARIOS = [
@@ -54,20 +56,21 @@ const USUARIOS = [
   { id: "u2", perfil: "recepcion", nom: "Paula Rojas Soto", cargo: "Oficina Central" },
   { id: "u3", perfil: "recepcion", nom: "Marcelo Fuentes Díaz", cargo: "Dirección Regional Biobío" },
   { id: "u4", perfil: "fiscalia", nom: "Andrés Contreras Silva", cargo: "Abogado de Fiscalía" },
-  { id: "u5", perfil: "gerencia", nom: "Natalia Herrera Torres", cargo: "Analista del ámbito Personal y ex funcionarios" },
+  { id: "u5", perfil: "gerencia", nom: "Natalia Herrera Torres", cargo: "Ámbito Personal y ex funcionarios" },
+  { id: "u7", perfil: "firmante", nom: "Ricardo Fuenzalida Mella", cargo: "Firmante de prueba · Oficina Central" },
+  { id: "u8", perfil: "delegado", nom: "Sergio Bravo Ulloa", cargo: "Usuario de prueba" },
   { id: "u6", perfil: "admin", nom: "Valeria Soto Araya", cargo: "Usuario de prueba" }
 ];
 const U = Object.fromEntries(USUARIOS.map(u => [u.id, u]));
 const nomU = id => U[id] ? U[id].nom : "—";
 
-/* ---------- Responsables por sede y etapa ----------
-   Por definir (pendiente de la contraparte, correo del 28-10-2026).
-   Oficina Central y Biobío llevan una asignación DE PRUEBA para que la maqueta se pueda recorrer. */
-const RESP = Object.fromEntries(SEDES.map(s => [s, { recibe: null, admisibilidad: null, deriva: null, revision: null, firma: null, responde: null, prueba: false }]));
-Object.assign(RESP["Oficina Central"], { recibe: "u2", admisibilidad: "u4", deriva: "u2", revision: "u4", responde: "u2", prueba: true });
-Object.assign(RESP["Dirección Regional Biobío"], { recibe: "u3", admisibilidad: "u4", deriva: "u3", revision: "u4", responde: "u3", prueba: true });
+/* Responsables por sede y etapa: POR DEFINIR (pendiente de la contraparte, correo del 28-10-2026).
+   Oficina Central y Biobío llevan una asignación DE PRUEBA para poder recorrer la maqueta. */
+const RESP = Object.fromEntries(SEDES.map(s => [s, { recibe: null, admisibilidad: null, deriva: null, revision: null, firma: null, responde: null, reclamos: null, prueba: false }]));
+Object.assign(RESP["Oficina Central"], { recibe: "u2", admisibilidad: "u4", deriva: "u2", revision: "u4", firma: "u7", responde: "u2", reclamos: "u4", prueba: true });
+Object.assign(RESP["Dirección Regional Biobío"], { recibe: "u3", admisibilidad: "u4", deriva: "u3", revision: "u4", responde: "u3", reclamos: "u4", prueba: true });
 
-/* Ámbitos de datos: EJEMPLO hasta cargar la matriz de datos personales que compartió el delegado el 28-10-2026. */
+/* Ámbitos de EJEMPLO hasta cargar la matriz de datos personales (compartida por el delegado el 28-10-2026). */
 const AMBITOS = [
   { k: "personal", n: "Personal y ex funcionarios", resp: "u5" },
   { k: "asp", n: "Áreas Silvestres Protegidas", resp: null },
@@ -77,48 +80,50 @@ const AMBITOS = [
 ];
 const AMB = k => AMBITOS.find(a => a.k === k);
 
-/* ---------- Derechos (Ley N° 21.719, según la v3.7) ---------- */
+/* ---------- Derechos ante un órgano público (arts. 4° a 9°, 21 y 23) ---------- */
 const DERECHOS = [
-  { k: "acceso", n: "Acceso", d: "Saber si CONAF trata sus datos, cuáles, con qué fin y a quién los comunica." },
-  { k: "rectificacion", n: "Rectificación", d: "Corregir datos inexactos, desactualizados o incompletos." },
-  { k: "supresion", n: "Supresión", d: "Eliminar sus datos, en los casos que la ley permite." },
-  { k: "oposicion", n: "Oposición", d: "Que CONAF no realice un tratamiento específico de sus datos." },
-  { k: "portabilidad", n: "Portabilidad", d: "Recibir una copia de sus datos en formato estructurado." },
-  { k: "bloqueo", n: "Bloqueo temporal", d: "Suspender el tratamiento mientras se resuelve otra solicitud. Se resuelve en 2 días hábiles." }
+  { k: "acceso", n: "Acceso", d: "Saber si CONAF trata sus datos, cuáles, su origen, finalidad, destinatarios y por cuánto tiempo (art. 5°).", art: "art. 5° y 23" },
+  { k: "rectificacion", n: "Rectificación", d: "Corregir datos inexactos, desactualizados o incompletos. Indique la corrección precisa (art. 6° y 11 d).", art: "art. 6° y 23" },
+  { k: "oposicion", n: "Oposición", d: "Oponerse a un tratamiento específico, también cuando sea contrario a las normas para órganos públicos (art. 8° y 23).", art: "art. 8° y 23" },
+  { k: "supresion", n: "Supresión", d: "Eliminar sus datos. En un órgano público procede en los casos del art. 22 inc. 3° (art. 23). Indique la causal.", art: "art. 7° y 23" },
+  { k: "bloqueo", n: "Bloqueo temporal", d: "Suspender el tratamiento mientras se resuelve su rectificación, supresión u oposición. Debe fundarse; se responde en 2 días hábiles (art. 8° ter y 11).", art: "art. 8° ter y 11" },
+  { k: "portabilidad", n: "Portabilidad", d: "Copia de sus datos en formato estructurado (art. 9°).", art: "art. 9°", verificar: "Su procedencia ante órganos públicos está por confirmar: los arts. 21 y 23 no la mencionan." }
 ];
 const DER = Object.fromEntries(DERECHOS.map(d => [d.k, d.n]));
 const VIAS = { web: "Formulario web", fisica: "Formulario físico · Oficina de Partes" };
 const MEDIOS = { correo: "Correo electrónico", carta: "Carta al domicilio", retiro: "Retiro en Oficina de Partes" };
-const CALIDAD = { titular: "Titular", representante: "Representante con poder notarial", heredero: "Heredero de titular fallecido" };
+const CALIDAD = { titular: "Titular", representante: "Representante o mandatario", heredero: "Heredero de titular fallecido" };
 
-/* ---------- Casos ficticios ---------- */
+/* ---------- Casos ficticios (fecha simulada: lunes 11-01-2027) ---------- */
 const NOMBRES = ["Javiera Soto Rivas", "Felipe Araya Morales", "Rosa Contreras León", "Tomás Sepúlveda Vera", "Elena Díaz Bravo", "Héctor Pinto Lagos", "Sofía Torres Garrido", "Diego Fuentes Lara", "Patricia Vidal Cáceres", "Luis Molina Reyes", "Francisca Navarro Gómez", "Jorge Espinoza Toro", "Camila Ortiz Vargas", "Matías Castro Peña"];
 function nuevoCaso(o) {
-  return Object.assign({ via: "web", sede: "Oficina Central", calidad: "titular", derechos: ["acceso"], detalle: "", medio: "correo", correo: "correo@ejemplo.cl", etapa: "recepcion", desde: o.ingreso, identidad: false, ambito: null, prorroga: null, ant: null, bloq: null, decision: null, propuesta: "", firma: null, cierre: null, bit: [] }, o);
+  return Object.assign({ via: "web", sede: "Oficina Central", calidad: "titular", derechos: ["acceso"], detalle: "", medio: "correo", correo: "correo@ejemplo.cl", etapa: "recepcion", desde: o.ingreso, identidad: false, ambito: null, prorroga: null, ant: null, bloq: null, decision: null, propuesta: "", firma: null, cierre: null, reclamo: null, obs: [], bit: [] }, o);
 }
 let n0 = 0;
 const T = (num, ingreso, o) => { const i = n0++; return nuevoCaso(Object.assign({ num, ingreso, tit: { nom: NOMBRES[i % NOMBRES.length], run: runFicticio(9100000 + i * 731177) } }, o)); };
 const CASOS = [
   T("DP-2026-000101", "2026-12-02", { etapa: "cerrado", identidad: true, ambito: "personal", desde: "2026-12-28", detalle: "Antecedentes de mi hoja de vida funcionaria entre 2015 y 2019.", cierre: { f: "2026-12-28", res: "Acogida", medio: "correo" }, tit: { nom: USUARIOS[0].nom, run: USUARIOS[0].run } }),
-  T("DP-2026-000102", "2026-12-03", { via: "fisica", folio: "OP-OC-4410", derechos: ["rectificacion"], etapa: "cerrado", identidad: true, ambito: "personal", desde: "2027-01-04", detalle: "Corregir mi domicilio registrado.", medio: "carta", cierre: { f: "2027-01-04", res: "Acogida", medio: "carta" } }),
-  T("DP-2026-000103", "2026-12-04", { derechos: ["supresion"], etapa: "cerrado", identidad: true, desde: "2026-12-10", detalle: "Eliminar mis datos de una denuncia.", cierre: { f: "2026-12-10", res: "No admitida", causal: "Los datos se tratan en cumplimiento de una función pública" } }),
-  T("DP-2026-000104", "2026-12-09", { etapa: "firma", identidad: true, ambito: "personal", desde: "2027-01-05", detalle: "Copia de los datos de mi postulación a un concurso.", decision: "Acoge", propuesta: "Se entregan los datos solicitados." }),
+  T("DP-2026-000102", "2026-12-03", { via: "fisica", folio: "OP-OC-4410", derechos: ["rectificacion"], etapa: "cerrado", identidad: true, ambito: "personal", desde: "2027-01-04", detalle: "Corregir mi domicilio registrado.", medio: "carta", cierre: { f: "2027-01-04", res: "Acogida", medio: "carta", cesion: "Se comunicó la rectificación a los destinatarios" } }),
+  T("DP-2026-000103", "2026-12-04", { derechos: ["supresion"], etapa: "cerrado", identidad: true, desde: "2026-12-10", detalle: "Eliminar mis datos de una denuncia.", cierre: { f: "2026-12-10", res: "No admitida", causal: "Art. 23 inc. 2° a): afectaría funciones fiscalizadoras" }, reclamo: { notif: "2027-01-04", folio: "Reclamo ficticio N° 0001", resp: null } }),
+  T("DP-2026-000104", "2026-12-09", { etapa: "firma", identidad: true, ambito: "personal", desde: "2027-01-05", detalle: "Copia de los datos de mi postulación a un concurso.", decision: "Acoge", propuesta: "Se entregan los datos solicitados con la información del art. 5°." }),
   T("DP-2026-000105", "2026-12-11", { via: "fisica", folio: "OP-OC-4471", derechos: ["oposicion"], etapa: "revision", identidad: true, ambito: "programas", desde: "2027-01-07", prorroga: "2027-01-06", detalle: "Oponerme al uso de mi teléfono para encuestas.", decision: "Acoge parcialmente", propuesta: "Se suspende el uso para encuestas; se mantiene para el programa." }),
   T("DP-2026-000106", "2026-12-14", { derechos: ["acceso", "rectificacion"], etapa: "analisis", identidad: true, ambito: "personal", desde: "2026-12-21", detalle: "Revisar mis datos previsionales y corregir la AFP registrada." }),
   T("DP-2026-000107", "2026-12-15", { via: "fisica", folio: "OP-BIO-0218", sede: "Dirección Regional Biobío", etapa: "analisis", identidad: true, ambito: "asp", desde: "2026-12-22", detalle: "Saber qué datos guardan de mis visitas a un parque.", medio: "retiro", retiro: "Dirección Regional Biobío" }),
-  T("DP-2026-000108", "2026-12-21", { derechos: ["rectificacion", "bloqueo"], etapa: "analisis", identidad: true, ambito: "personal", desde: "2026-12-28", bloq: { pide: "2026-12-21", res: "Acogido", f: "2026-12-22" }, detalle: "Mi nombre figura mal escrito en un certificado." }),
+  T("DP-2026-000108", "2026-12-21", { derechos: ["rectificacion", "bloqueo"], etapa: "analisis", identidad: true, ambito: "personal", desde: "2026-12-28", bloq: { pide: "2026-12-21", res: "Acogido", f: "2026-12-22", fund: "Mi nombre mal escrito me impide un trámite." }, detalle: "Mi nombre figura mal escrito en un certificado." }),
   T("DP-2026-000109", "2026-12-22", { via: "fisica", folio: "OP-VAL-0094", sede: "Dirección Regional Valparaíso", etapa: "recepcion", desde: "2026-12-22", detalle: "Acceso a los datos de mi permiso de corta.", medio: "carta" }),
   T("DP-2026-000110", "2026-12-28", { derechos: ["portabilidad"], etapa: "derivacion", identidad: true, desde: "2027-01-05", detalle: "Copia de mis datos de un trámite en línea en formato CSV." }),
-  T("DP-2026-000111", "2026-12-29", { via: "fisica", folio: "OP-OC-4502", etapa: "respuesta", identidad: true, ambito: "personal", desde: "2027-01-08", decision: "Acoge", propuesta: "Se entregan los datos solicitados.", firma: { f: "2027-01-08", doc: "Carta Oficial N° 18 (ficticia)" }, detalle: "Datos de mis licencias médicas registradas.", medio: "retiro", retiro: "Oficina Central" }),
+  T("DP-2026-000111", "2026-12-29", { via: "fisica", folio: "OP-OC-4502", etapa: "respuesta", identidad: true, ambito: "personal", desde: "2027-01-08", decision: "Acoge", propuesta: "Se entregan los datos solicitados.", firma: { f: "2027-01-08", doc: "Carta Oficial N° 18 (ficticia)", por: "u7" }, detalle: "Datos de mis licencias médicas registradas.", medio: "retiro", retiro: "Oficina Central" }),
+  T("DP-2026-000112", "2026-12-30", { via: "fisica", folio: "OP-BIO-0225", sede: "Dirección Regional Biobío", etapa: "firma", identidad: true, ambito: "personal", desde: "2027-01-08", decision: "Rechaza", propuesta: "Los datos no constan en las bases de CONAF.", detalle: "Datos de un contrato a honorarios de 2010." }),
   T("DP-2027-000001", "2027-01-04", { etapa: "admisibilidad", identidad: true, desde: "2027-01-05", ant: { pide: "2027-01-05", que: "Indique el año aproximado y la oficina donde realizó el trámite." }, detalle: "Datos de un trámite que hice en una oficina.", tit: { nom: USUARIOS[0].nom, run: USUARIOS[0].run } }),
   T("DP-2027-000002", "2027-01-06", { via: "fisica", folio: "OP-BIO-0231", sede: "Dirección Regional Biobío", derechos: ["supresion"], etapa: "admisibilidad", identidad: true, desde: "2027-01-07", detalle: "Eliminar mi correo de una lista de difusión." }),
-  T("DP-2027-000003", "2027-01-08", { derechos: ["oposicion", "bloqueo"], etapa: "admisibilidad", identidad: true, desde: "2027-01-08", bloq: { pide: "2027-01-08", res: null }, detalle: "Oponerme a que mis datos se usen en un estudio." }),
+  T("DP-2027-000003", "2027-01-08", { derechos: ["oposicion", "bloqueo"], etapa: "admisibilidad", identidad: true, desde: "2027-01-08", bloq: { pide: "2027-01-08", res: null, fund: "El estudio usa mis datos sin que lo haya pedido." }, detalle: "Oponerme a que mis datos se usen en un estudio." }),
   T("DP-2027-000004", "2027-01-11", { etapa: "recepcion", desde: "2027-01-11", detalle: "Saber qué datos personales tiene CONAF de mí." }),
   T("DP-2027-000005", "2027-01-07", { via: "fisica", folio: "OP-LAG-0057", sede: "Dirección Regional Los Lagos", derechos: ["rectificacion"], etapa: "recepcion", desde: "2027-01-07", detalle: "Corregir mi fecha de nacimiento.", medio: "carta" })
 ];
 CASOS.forEach(c => {
-  c.bit.push({ f: c.ingreso, u: c.via === "web" ? "Sistema" : "Recepción", a: c.via === "web" ? "Ingreso por formulario web · acuse enviado" : "Registro manual · formulario físico " + (c.folio || "") });
+  c.bit.push({ f: c.ingreso, u: c.via === "web" ? "Sistema" : "Responsable de datos", a: c.via === "web" ? "Ingreso por formulario web · acuse de recibo enviado" : "Registro manual del formulario físico " + (c.folio || "") + " · acuse de recibo" });
   if (c.etapa !== "recepcion") c.bit.push({ f: c.desde, u: "—", a: "En etapa: " + (ETAPA[c.etapa] ? ETAPA[c.etapa].n : "cerrado") });
+  if (c.reclamo) c.bit.push({ f: c.reclamo.notif, u: "Fiscalía", a: "La Agencia notificó un reclamo del titular (art. 41)" });
 });
-const BIT = []; // bitácora global (Administración)
+const BIT = [];
 let correlativo = { "2027": 6 };

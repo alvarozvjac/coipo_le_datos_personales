@@ -32,7 +32,7 @@ def entrar(pg, perfil_txt):
     pg.goto(URL)
     pg.wait_for_selector("#login:not([hidden])")
     pg.locator("#login .l-usuario", has_text=perfil_txt).first.click()
-    pg.wait_for_timeout(150)
+    pg.wait_for_selector("#vista .hero, #vista .portada")
 
 
 def tarjeta(pg, titulo):
@@ -58,7 +58,7 @@ with sync_playwright() as p:
         ok(y < (300 if tel else 400), f"{nombre}: el contenido empieza en y={y:.0f}")
         ok(pg.evaluate("document.documentElement.scrollWidth") <= op["viewport"]["width"], f"{nombre}: sin scroll horizontal en la portada")
         pg.locator(".p-tarjeta.dp").click()
-        ok(pg.locator(".items-14ter li").count() == 11, f"{nombre}: la página muestra los 11 ítems del art. 14 ter")
+        ok(pg.locator(".items-14ter li").count() == 12, f"{nombre}: la página muestra las 12 letras del art. 14 ter")
         pg.screenshot(path=str(SAL / f"{nombre}-02-pagina.png"))
         pg.get_by_role("button", name="Presentar una solicitud").click()
         pg.get_by_role("button", name="Continuar →").click()
@@ -131,6 +131,37 @@ with sync_playwright() as p:
         ok(pg.locator("#a-fb[aria-invalid=true]").count() == 1, f"{nombre}: rechazar el bloqueo exige fundamento")
         pg.locator("[data-a='bloq-ok']").click()
         ok("Bloqueo temporal acogido" in pg.locator("#capa").inner_text(), f"{nombre}: Fiscalía acoge el bloqueo")
+        pg.locator("#cerrar").click()
+
+        # --- Fiscalía: reclamo ante la Agencia (art. 41)
+        entrar(pg, "Fiscalía")
+        tarjeta(pg, "Reclamos ante la Agencia")
+        pg.locator("[data-caso='DP-2026-000103']:visible").first.click()
+        ok("03-02-2027" in pg.locator("#capa").inner_text(), f"{nombre}: el reclamo vence 30 días corridos después de la notificación")
+        pg.fill("#a-rec", "Se remiten los antecedentes de la causal del art. 23.")
+        pg.locator("[data-a='rec-resp']").click()
+        ok("Respuesta al reclamo enviada" in pg.locator("#capa").inner_text(), f"{nombre}: Fiscalía registra la respuesta a la Agencia")
+        pg.screenshot(path=str(SAL / f"{nombre}-12-reclamo.png"))
+        pg.locator("#cerrar").click()
+
+        # --- Firmante: firma una respuesta
+        entrar(pg, "Firmante")
+        pg.screenshot(path=str(SAL / f"{nombre}-13-inicio-firmante.png"))
+        tarjeta(pg, "Por firmar")
+        pg.locator("[data-caso='DP-2026-000104']:visible").first.click()
+        pg.fill("#a-doc", "Carta Oficial N° 21 (ficticia)")
+        pg.locator("[data-a='firmada']").click()
+        ok("Firmada · por enviar" in pg.locator("#capa").inner_text(), f"{nombre}: el firmante firma y el caso pasa a envío")
+        pg.locator("#cerrar").click()
+
+        # --- Delegado: observación
+        entrar(pg, "Delegado")
+        pg.screenshot(path=str(SAL / f"{nombre}-14-inicio-delegado.png"))
+        tarjeta(pg, "Plazos vencidos")
+        pg.locator("[data-caso]:visible").first.click()
+        pg.fill("#a-dpo", "Priorizar la respuesta: el plazo legal venció.")
+        pg.locator("[data-a='dpo']").click()
+        ok("Observación del delegado" in pg.locator("#capa").inner_text(), f"{nombre}: el delegado deja una observación")
         pg.locator("#cerrar").click()
 
         # --- Administración: responsables por sede
