@@ -5,14 +5,14 @@ sobre datos personales (acceso, rectificación, supresión, oposición, portabil
 bloqueo temporal), según la Ley N° 21.719. Iniciativa CON012, elaborada por la Unidad de
 Información y Análisis (UIA), línea de Gobernanza de Datos.
 
-**Ver la maqueta publicada (v3.7, rama `main`):** https://alvarozvjac.github.io/coipo_le_datos_personales/
+**Ver la maqueta publicada (v4.1, rama `main`):** https://alvarozvjac.github.io/coipo_le_datos_personales/
 
 > Demostración no operacional. Personas, RUN, casos y responsables son ficticios; los RUN
 > tienen dígito verificador inválido a propósito. Fecha simulada: lunes 11-01-2027. Nada se
 > envía a un servidor. El ingreso con Clave Única está simulado: CONAF hoy no cuenta con la
 > integración.
 
-## Versión 4.1 (rama `v4-formato-flota`, borrador sin aprobar)
+## Versión 4.1 (borrador sin aprobar)
 
 Nace del **estándar de interfaz de la fábrica**, no de una maqueta anterior: las hojas de
 `css/semilla/` son copia sin editar de `semilla/ESQUELETO/frontend/src` de
@@ -58,16 +58,15 @@ python -X utf8 pruebas/probar_v4.py            # 55 comprobaciones, escritorio y
 
 Requiere `playwright` para Python con Chromium. Las capturas quedan en `pruebas/capturas/`
 (no se versionan). Las pruebas de la v3.x (`recorrido_caso.py`, `probar_v3*.py`) corresponden
-a la rama `main`.
+a la versión 3.x, que queda en el historial (commit `775435f`).
 
-## Contenido del repositorio (rama v4)
+## Contenido del repositorio
 
 - `index.html`: estructura de la página.
 - `css/semilla/`: hojas del estándar, sin editar. `css/fuentes.css` y `fuentes/`: tipografía autoalojada (OFL). `css/con012.css`: estilos propios.
 - `js/`: `comun.js`, `datos.js`, `casos.js`, `publico.js`, `interno.js`, `admin.js`, `app.js` y `territorio.js`.
 - `img/`: banner de la Secretaría de Asuntos Institucionales generado por la semilla.
 - `manual/`: manual en PDF, su fuente HTML y los scripts de capturas e impresión.
-- `CON012_maqueta_canal_ley21719_2.html`: versión v0.5, conservada como referencia.
 
 Norma de referencia: Ley N° 21.719 (vigencia 01-12-2026) y el procedimiento institucional V1
 de atención de solicitudes de derechos.
