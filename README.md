@@ -12,6 +12,8 @@ Información y Análisis (UIA), línea de Gobernanza de Datos.
 > envía a un servidor. El ingreso con Clave Única está simulado: CONAF hoy no cuenta con la
 > integración.
 
+**Vista celular:** en computador, el botón flotante «Vista celular», abajo a la izquierda muestra la maqueta dentro de un marco de teléfono de 390 × 844 px, para presentarla sin abrir las herramientas del navegador. Se cierra con «Cerrar» o Esc. En un teléfono real el botón no aparece.
+
 ## Versión 4.2 (borrador, sin aprobar)
 
 Nace del **estándar de interfaz de la fábrica**, no de una maqueta anterior: las hojas de
