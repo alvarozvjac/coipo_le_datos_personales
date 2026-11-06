@@ -5,7 +5,7 @@ sobre datos personales (acceso, rectificación, supresión, oposición, portabil
 bloqueo temporal), según la Ley N° 21.719. Iniciativa CON012, elaborada por la Unidad de
 Información y Análisis (UIA), línea de Gobernanza de Datos.
 
-**Ver la maqueta publicada (v4.1, rama `main`):** https://alvarozvjac.github.io/coipo_le_datos_personales/
+**Ver la maqueta publicada (v4.1, rama `main`):** https://alvarozvjac.github.io/coipo_ley_datos_personales/
 
 > Demostración no operacional. Personas, RUN, casos y responsables son ficticios; los RUN
 > tienen dígito verificador inválido a propósito. Fecha simulada: lunes 11-01-2027. Nada se
